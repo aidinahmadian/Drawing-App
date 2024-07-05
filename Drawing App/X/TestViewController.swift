@@ -43,6 +43,7 @@ class TestViewController: UIViewController {
     @objc private func handleCP() {
         let picker = UIColorPickerViewController()
         picker.selectedColor = self.view.backgroundColor!
+        picker.delegate = self
         
         //  Subscribing selectedColor property changes.
         self.cancellable = picker.publisher(for: \.selectedColor)
@@ -51,6 +52,7 @@ class TestViewController: UIViewController {
                 //  Changing view color on main thread.
                 DispatchQueue.main.async {
                     self.view.backgroundColor = color
+                    self.helloLabel.text = color.toHexString() // Update the label with HEX value
                 }
             }
         
@@ -77,7 +79,9 @@ extension TestViewController: UIColorPickerViewControllerDelegate {
     
     //  Called once you have finished picking the color.
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-        self.view.backgroundColor = viewController.selectedColor
+        let selectedColor = viewController.selectedColor
+                self.view.backgroundColor = selectedColor
+                helloLabel.text = selectedColor.toHexString() // Update the label with HEX value
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
             self.cancellable?.cancel()
@@ -87,8 +91,21 @@ extension TestViewController: UIColorPickerViewControllerDelegate {
     
     //  Called on every color selection done in the picker.
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
-            self.view.backgroundColor = viewController.selectedColor
-        
+            let selectedColor = viewController.selectedColor
+            self.view.backgroundColor = selectedColor
+            helloLabel.text = selectedColor.toHexString() // Update the label with HEX value
+        }
+}
+
+
+extension UIColor {
+    func toHexString() -> String {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        let rgb: Int = (Int)(r * 255) << 16 | (Int)(g * 255) << 8 | (Int)(b * 255) << 0
+        return String(format: "#%06x", rgb)
     }
-    
 }
