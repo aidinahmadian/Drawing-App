@@ -24,8 +24,8 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         return vc
     }()
     
-    let colorPaletteVC: VarietiesViewController = {
-        let vc = VarietiesViewController()
+    let colorPaletteVC: TestViewController = {
+        let vc = TestViewController()
         let icon = UIImage(named: "icons8-paint-brush-25 (1)")?.withRenderingMode(.alwaysOriginal)
         let iconSelected = UIImage(named: "icons8-paint-brush-25")?.withRenderingMode(.alwaysOriginal)
         let tabBarItem = UITabBarItem(title: nil, image: icon, selectedImage: iconSelected)
