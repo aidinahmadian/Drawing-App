@@ -1,54 +1,60 @@
-//
-//  LeftTableViewCell.swift
-//  Test
-//
-//  Created by aidin ahmadian on 7/20/20.
-//  Copyright © 2020 aidin ahmadian. All rights reserved.
-//
 
 import UIKit
 
-//MARK: - Setup Left TableViewCell
+// MARK: - Setup Left TableViewCell
 
 class LeftTableViewCell: UITableViewCell {
 
-    lazy var nameLabel = UILabel()
-    private lazy var purpleView = UIView()
+    lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = .gray
+        label.highlightedTextColor = UIColor(red: 0.57, green: 0.27, blue: 1.00, alpha: 1.00)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
+    private lazy var purpleView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 0.57, green: 0.27, blue: 1.00, alpha: 1.00)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         selectionStyle = .none
         configureUI()
     }
     
-    func configureUI () {
-        nameLabel.frame = CGRect(x: 10, y: 10, width: 60, height: 40)
-        nameLabel.numberOfLines = 0
-        nameLabel.textAlignment = .center
-        nameLabel.font = UIFont.systemFont(ofSize: 15)
-        nameLabel.textColor = .gray
-        nameLabel.highlightedTextColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
-        contentView.addSubview(nameLabel)
-        
-        purpleView.frame = CGRect(x: 0, y: 5, width: 5, height: 45)
-        purpleView.backgroundColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
-        contentView.addSubview(purpleView)
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        configureUI()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func configureUI() {
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(purpleView)
+        
+        NSLayoutConstraint.activate([
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            nameLabel.widthAnchor.constraint(equalToConstant: 60),
+            nameLabel.heightAnchor.constraint(equalToConstant: 40),
+            
+            purpleView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            purpleView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            purpleView.widthAnchor.constraint(equalToConstant: 5),
+            purpleView.heightAnchor.constraint(equalToConstant: 45)
+        ])
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        contentView.backgroundColor = selected ? UIColor.white : #colorLiteral(red: 0.9739252856, green: 0.9739252856, blue: 0.9739252856, alpha: 1)
-        isHighlighted = selected
+        contentView.backgroundColor = selected ? .white : UIColor(white: 0.97, alpha: 1.0)
         nameLabel.isHighlighted = selected
         purpleView.isHidden = !selected
     }

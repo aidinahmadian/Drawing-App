@@ -18,8 +18,8 @@
 		E82FEAE72C35A2A0008BAD04 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAE62C35A2A0008BAD04 /* Global.swift */; };
 		E82FEAE92C35A2AB008BAD04 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAE82C35A2AB008BAD04 /* Line.swift */; };
 		E82FEAED2C35A327008BAD04 /* PageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAEC2C35A327008BAD04 /* PageCell.swift */; };
-		E82FEAF02C35A371008BAD04 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAEF2C35A371008BAD04 /* TableViewController.swift */; };
-		E82FEAF22C35A3AE008BAD04 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF12C35A3AE008BAD04 /* LeftTableViewCell.swift */; };
+		E82FEAF02C35A371008BAD04 /* OldTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAEF2C35A371008BAD04 /* OldTableViewController.swift */; };
+		E82FEAF22C35A3AE008BAD04 /* OldLeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF12C35A3AE008BAD04 /* OldLeftTableViewCell.swift */; };
 		E82FEAF42C35A3C6008BAD04 /* RightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF32C35A3C6008BAD04 /* RightTableViewCell.swift */; };
 		E82FEAF62C35A3E3008BAD04 /* TableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF52C35A3E3008BAD04 /* TableViewHeaderView.swift */; };
 		E82FEAF92C35A490008BAD04 /* PatternView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF82C35A490008BAD04 /* PatternView.swift */; };
@@ -29,11 +29,12 @@
 		E82FEB032C35A544008BAD04 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB022C35A544008BAD04 /* HomePageViewController.swift */; };
 		E82FEB052C35A559008BAD04 /* PatternViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB042C35A559008BAD04 /* PatternViewController.swift */; };
 		E82FEB072C35A572008BAD04 /* SimpleDrawController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB062C35A572008BAD04 /* SimpleDrawController.swift */; };
-		E82FEB092C35A587008BAD04 /* VarietiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB082C35A587008BAD04 /* VarietiesViewController.swift */; };
-		E82FEB0B2C35A59B008BAD04 /* BrightnessExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB0A2C35A59B008BAD04 /* BrightnessExtension.swift */; };
-		E82FEB0D2C35A5C4008BAD04 /* RoundViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB0C2C35A5C4008BAD04 /* RoundViewExtension.swift */; };
-		E82FEB0F2C35A5DE008BAD04 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB0E2C35A5DE008BAD04 /* ColorPicker.swift */; };
-		E82FEB122C35A609008BAD04 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB112C35A609008BAD04 /* TestViewController.swift */; };
+		E82FEB122C35A609008BAD04 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB112C35A609008BAD04 /* ColorPickerViewController.swift */; };
+		E8968CE62C39503500647497 /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8968CE52C39503500647497 /* Brush.swift */; };
+		E8E6700C2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700B2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift */; };
+		E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */; };
+		E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670132C380DEB00F1CE33 /* TableViewController.swift */; };
+		E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,8 +51,8 @@
 		E82FEAE62C35A2A0008BAD04 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E82FEAE82C35A2AB008BAD04 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		E82FEAEC2C35A327008BAD04 /* PageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCell.swift; sourceTree = "<group>"; };
-		E82FEAEF2C35A371008BAD04 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		E82FEAF12C35A3AE008BAD04 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
+		E82FEAEF2C35A371008BAD04 /* OldTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldTableViewController.swift; sourceTree = "<group>"; };
+		E82FEAF12C35A3AE008BAD04 /* OldLeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldLeftTableViewCell.swift; sourceTree = "<group>"; };
 		E82FEAF32C35A3C6008BAD04 /* RightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightTableViewCell.swift; sourceTree = "<group>"; };
 		E82FEAF52C35A3E3008BAD04 /* TableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderView.swift; sourceTree = "<group>"; };
 		E82FEAF82C35A490008BAD04 /* PatternView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternView.swift; sourceTree = "<group>"; };
@@ -61,11 +62,12 @@
 		E82FEB022C35A544008BAD04 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		E82FEB042C35A559008BAD04 /* PatternViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternViewController.swift; sourceTree = "<group>"; };
 		E82FEB062C35A572008BAD04 /* SimpleDrawController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrawController.swift; sourceTree = "<group>"; };
-		E82FEB082C35A587008BAD04 /* VarietiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VarietiesViewController.swift; sourceTree = "<group>"; };
-		E82FEB0A2C35A59B008BAD04 /* BrightnessExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrightnessExtension.swift; sourceTree = "<group>"; };
-		E82FEB0C2C35A5C4008BAD04 /* RoundViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundViewExtension.swift; sourceTree = "<group>"; };
-		E82FEB0E2C35A5DE008BAD04 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
-		E82FEB112C35A609008BAD04 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		E82FEB112C35A609008BAD04 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
+		E8968CE52C39503500647497 /* Brush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
+		E8E6700B2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertUIColorToHEX.swift; sourceTree = "<group>"; };
+		E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
+		E8E670132C380DEB00F1CE33 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				E82FEAE12C35A269008BAD04 /* Extensions.swift */,
+				E8E6700B2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 				E82FEAE42C35A294008BAD04 /* Page.swift */,
 				E82FEAE62C35A2A0008BAD04 /* Global.swift */,
 				E82FEAE82C35A2AB008BAD04 /* Line.swift */,
+				E8968CE52C39503500647497 /* Brush.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -162,8 +166,8 @@
 		E82FEAEE2C35A334008BAD04 /* TableView (Brush Styles) */ = {
 			isa = PBXGroup;
 			children = (
-				E82FEAEF2C35A371008BAD04 /* TableViewController.swift */,
-				E82FEAF12C35A3AE008BAD04 /* LeftTableViewCell.swift */,
+				E8E670132C380DEB00F1CE33 /* TableViewController.swift */,
+				E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */,
 				E82FEAF32C35A3C6008BAD04 /* RightTableViewCell.swift */,
 				E82FEAF52C35A3E3008BAD04 /* TableViewHeaderView.swift */,
 			);
@@ -194,10 +198,8 @@
 				E82FEB022C35A544008BAD04 /* HomePageViewController.swift */,
 				E82FEB042C35A559008BAD04 /* PatternViewController.swift */,
 				E82FEB062C35A572008BAD04 /* SimpleDrawController.swift */,
-				E82FEB082C35A587008BAD04 /* VarietiesViewController.swift */,
-				E82FEB0A2C35A59B008BAD04 /* BrightnessExtension.swift */,
-				E82FEB0C2C35A5C4008BAD04 /* RoundViewExtension.swift */,
-				E82FEB0E2C35A5DE008BAD04 /* ColorPicker.swift */,
+				E82FEB112C35A609008BAD04 /* ColorPickerViewController.swift */,
+				E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -205,7 +207,8 @@
 		E82FEB102C35A5FD008BAD04 /* X */ = {
 			isa = PBXGroup;
 			children = (
-				E82FEB112C35A609008BAD04 /* TestViewController.swift */,
+				E82FEAF12C35A3AE008BAD04 /* OldLeftTableViewCell.swift */,
+				E82FEAEF2C35A371008BAD04 /* OldTableViewController.swift */,
 			);
 			path = X;
 			sourceTree = "<group>";
@@ -281,28 +284,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				E82FEB072C35A572008BAD04 /* SimpleDrawController.swift in Sources */,
-				E82FEB092C35A587008BAD04 /* VarietiesViewController.swift in Sources */,
 				E82FEAE72C35A2A0008BAD04 /* Global.swift in Sources */,
 				E82FEAFE2C35A4F3008BAD04 /* SimpleDrawCanvas.swift in Sources */,
+				E8968CE62C39503500647497 /* Brush.swift in Sources */,
 				E82FEAD12C359FEB008BAD04 /* Drawing_App.xcdatamodeld in Sources */,
 				E82FEADF2C35A22F008BAD04 /* CustomTabBarController.swift in Sources */,
-				E82FEAF22C35A3AE008BAD04 /* LeftTableViewCell.swift in Sources */,
+				E82FEAF22C35A3AE008BAD04 /* OldLeftTableViewCell.swift in Sources */,
 				E82FEAE22C35A269008BAD04 /* Extensions.swift in Sources */,
 				E82FEAF42C35A3C6008BAD04 /* RightTableViewCell.swift in Sources */,
+				E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */,
 				E82FEAF62C35A3E3008BAD04 /* TableViewHeaderView.swift in Sources */,
-				E82FEB0D2C35A5C4008BAD04 /* RoundViewExtension.swift in Sources */,
 				E82FEAFB2C35A4A7008BAD04 /* PatternsArrayTableViewController.swift in Sources */,
 				E82FEAE52C35A294008BAD04 /* Page.swift in Sources */,
+				E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */,
+				E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */,
 				E82FEB052C35A559008BAD04 /* PatternViewController.swift in Sources */,
 				E82FEB012C35A524008BAD04 /* SwipingController.swift in Sources */,
-				E82FEAF02C35A371008BAD04 /* TableViewController.swift in Sources */,
+				E82FEAF02C35A371008BAD04 /* OldTableViewController.swift in Sources */,
+				E8E6700C2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift in Sources */,
 				E82FEAED2C35A327008BAD04 /* PageCell.swift in Sources */,
-				E82FEB122C35A609008BAD04 /* TestViewController.swift in Sources */,
+				E82FEB122C35A609008BAD04 /* ColorPickerViewController.swift in Sources */,
 				E82FEAE92C35A2AB008BAD04 /* Line.swift in Sources */,
-				E82FEB0B2C35A59B008BAD04 /* BrightnessExtension.swift in Sources */,
 				E82FEAC72C359FEB008BAD04 /* AppDelegate.swift in Sources */,
 				E82FEAC92C359FEB008BAD04 /* SceneDelegate.swift in Sources */,
-				E82FEB0F2C35A5DE008BAD04 /* ColorPicker.swift in Sources */,
 				E82FEAF92C35A490008BAD04 /* PatternView.swift in Sources */,
 				E82FEB032C35A544008BAD04 /* HomePageViewController.swift in Sources */,
 			);
