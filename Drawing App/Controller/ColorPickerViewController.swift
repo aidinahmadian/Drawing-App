@@ -9,7 +9,7 @@
 import UIKit
 import Combine
 
-class TestViewController: UIViewController {
+class ColorPickerViewController: UIViewController {
     
     let helloLabel: UILabel = {
             let hl = UILabel()
@@ -31,7 +31,6 @@ class TestViewController: UIViewController {
         
         override func viewDidLoad() {
             super.viewDidLoad()
-            
             view.backgroundColor = .white
             
             setupViews()
@@ -48,7 +47,6 @@ class TestViewController: UIViewController {
         //  Subscribing selectedColor property changes.
         self.cancellable = picker.publisher(for: \.selectedColor)
             .sink { color in
-                
                 //  Changing view color on main thread.
                 DispatchQueue.main.async {
                     self.view.backgroundColor = color
@@ -75,7 +73,7 @@ class TestViewController: UIViewController {
     }
 
 
-extension TestViewController: UIColorPickerViewControllerDelegate {
+extension ColorPickerViewController: UIColorPickerViewControllerDelegate {
     
     //  Called once you have finished picking the color.
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
@@ -95,17 +93,4 @@ extension TestViewController: UIColorPickerViewControllerDelegate {
             self.view.backgroundColor = selectedColor
             helloLabel.text = selectedColor.toHexString() // Update the label with HEX value
         }
-}
-
-
-extension UIColor {
-    func toHexString() -> String {
-        var r: CGFloat = 0
-        var g: CGFloat = 0
-        var b: CGFloat = 0
-        var a: CGFloat = 0
-        getRed(&r, green: &g, blue: &b, alpha: &a)
-        let rgb: Int = (Int)(r * 255) << 16 | (Int)(g * 255) << 8 | (Int)(b * 255) << 0
-        return String(format: "#%06x", rgb)
-    }
 }

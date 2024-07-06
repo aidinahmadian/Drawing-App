@@ -11,20 +11,32 @@ import UIKit
 //MARK: - Setup TableView Header
 
 class TableViewHeaderView: UIView {
- 
-    lazy var nameLabel = UILabel()
-    
+    let nameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 15)
+        return label
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        nameLabel.frame = CGRect(x: 15, y: 0, width: 200, height: 20)
-        nameLabel.font = UIFont.systemFont(ofSize: 13)
-        nameLabel.text = "123"
-        addSubview(nameLabel)
+        setupView()
     }
-    
-    required init?(coder aDecoder: NSCoder) {
+
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupView() {
+        backgroundColor = .systemBackground
+        addSubview(nameLabel)
+
+        // Setup constraints for nameLabel
+        NSLayoutConstraint.activate([
+            nameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
+            nameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
+            nameLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            nameLabel.heightAnchor.constraint(equalToConstant: 20)
+        ])
     }
 }

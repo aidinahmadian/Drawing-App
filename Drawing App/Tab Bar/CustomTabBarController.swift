@@ -24,8 +24,8 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         return vc
     }()
     
-    let colorPaletteVC: TestViewController = {
-        let vc = TestViewController()
+    let colorPaletteVC: ColorPickerViewController = {
+        let vc = ColorPickerViewController()
         let icon = UIImage(named: "icons8-paint-brush-25 (1)")?.withRenderingMode(.alwaysOriginal)
         let iconSelected = UIImage(named: "icons8-paint-brush-25")?.withRenderingMode(.alwaysOriginal)
         let tabBarItem = UITabBarItem(title: nil, image: icon, selectedImage: iconSelected)
@@ -66,7 +66,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         UITabBar.appearance().isTranslucent = false
         //UINavigationBar.appearance().isTranslucent = false
-        
         view.backgroundColor = .clear
         self.tabBar.tintColor = UIColor.white
         self.tabBar.backgroundColor = UIColor.white

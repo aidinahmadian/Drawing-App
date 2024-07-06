@@ -13,3 +13,8 @@ struct Line {
     let color: UIColor
     var points: [CGPoint]
 }
+
+struct LineWidthOption {
+    let width: Float
+    let label: String
+}
