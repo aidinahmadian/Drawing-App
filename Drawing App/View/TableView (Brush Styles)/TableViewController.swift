@@ -157,10 +157,14 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
             guard let view = self.view as? SimpleDrawCanvas else { return }
             view.strokeWidth = selectedOption.width
         } else {
-            let selectedFoodItem = brushData[indexPath.section][indexPath.row]
-            let detailVC = BrushDetailsViewController()
-            detailVC.brushItem = selectedFoodItem
-            navigationController?.pushViewController(detailVC, animated: true)
+            let selectedBrushItem = brushData[indexPath.section][indexPath.row]
+            let vc = BrushDetailsViewController()
+            vc.brushItem = selectedBrushItem
+            vc.navigationItem.largeTitleDisplayMode = .never
+            vc.modalTransitionStyle = .coverVertical
+            vc.sheetPresentationController?.prefersGrabberVisible = true
+            //navigationController?.pushViewController(vc, animated: true)
+            present(vc, animated: true, completion: nil)
         }
     }
 }
