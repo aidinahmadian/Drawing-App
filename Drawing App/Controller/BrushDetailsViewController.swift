@@ -41,8 +41,10 @@ class BrushDetailsViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        startBlinkingAnimations()
-        startDismissLabelIconAnimations()
+        dismissLabel.startBlink()
+        dismissIcon.startBlink()
+        dismissLabel.startBlinkingAnimations()
+        dismissIcon.startBlinkingAnimations()
     }
 
     private func setupUI() {
@@ -60,7 +62,7 @@ class BrushDetailsViewController: UIViewController {
             dismissIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
 
@@ -72,28 +74,5 @@ class BrushDetailsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         return label
-    }
-
-    private func startBlinkingAnimations() {
-        dismissLabel.startBlink()
-        dismissIcon.startBlink()
-    }
-
-    private func startDismissLabelIconAnimations() {
-        let animationDurations = [1.5, 1.5, 1.5, 1.5]
-        let animationDelays = [2.5, 3.5, 4.5, 5.5]
-        let animationTransforms = [
-            CGAffineTransform(translationX: 0, y: 25),
-            CGAffineTransform.identity,
-            CGAffineTransform(translationX: 0, y: 25),
-            CGAffineTransform.identity
-        ]
-
-        for i in 0..<animationDurations.count {
-            UILabel.animate(withDuration: animationDurations[i], delay: animationDelays[i], usingSpringWithDamping: 1, initialSpringVelocity: 2, options: [], animations: {
-                self.dismissLabel.transform = animationTransforms[i]
-                self.dismissIcon.transform = animationTransforms[i]
-            }, completion: nil)
-        }
     }
 }

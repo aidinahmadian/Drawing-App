@@ -30,7 +30,9 @@
 		E82FEB052C35A559008BAD04 /* PatternViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB042C35A559008BAD04 /* PatternViewController.swift */; };
 		E82FEB072C35A572008BAD04 /* SimpleDrawController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB062C35A572008BAD04 /* SimpleDrawController.swift */; };
 		E82FEB122C35A609008BAD04 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB112C35A609008BAD04 /* ColorPickerViewController.swift */; };
-		E8461DB92C3AABF800CBCC76 /* Label-ImageView Blinking Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8461DB82C3AABF800CBCC76 /* Label-ImageView Blinking Extension.swift */; };
+		E8461DB92C3AABF800CBCC76 /* BlinkingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8461DB82C3AABF800CBCC76 /* BlinkingAnimation.swift */; };
+		E8461DC02C3AC36B00CBCC76 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8461DBF2C3AC36B00CBCC76 /* GradientView.swift */; };
+		E8461DC22C3ADBA000CBCC76 /* NoiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8461DC12C3ADBA000CBCC76 /* NoiseView.swift */; };
 		E8968CE62C39503500647497 /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8968CE52C39503500647497 /* Brush.swift */; };
 		E8E6700C2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700B2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift */; };
 		E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */; };
@@ -64,7 +66,9 @@
 		E82FEB042C35A559008BAD04 /* PatternViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternViewController.swift; sourceTree = "<group>"; };
 		E82FEB062C35A572008BAD04 /* SimpleDrawController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrawController.swift; sourceTree = "<group>"; };
 		E82FEB112C35A609008BAD04 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
-		E8461DB82C3AABF800CBCC76 /* Label-ImageView Blinking Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Label-ImageView Blinking Extension.swift"; sourceTree = "<group>"; };
+		E8461DB82C3AABF800CBCC76 /* BlinkingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlinkingAnimation.swift; sourceTree = "<group>"; };
+		E8461DBF2C3AC36B00CBCC76 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		E8461DC12C3ADBA000CBCC76 /* NoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseView.swift; sourceTree = "<group>"; };
 		E8968CE52C39503500647497 /* Brush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
 		E8E6700B2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertUIColorToHEX.swift; sourceTree = "<group>"; };
 		E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
@@ -131,7 +135,7 @@
 			children = (
 				E82FEAE12C35A269008BAD04 /* Extensions.swift */,
 				E8E6700B2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift */,
-				E8461DB82C3AABF800CBCC76 /* Label-ImageView Blinking Extension.swift */,
+				E8461DB82C3AABF800CBCC76 /* BlinkingAnimation.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -154,6 +158,7 @@
 				E82FEAEE2C35A334008BAD04 /* TableView (Brush Styles) */,
 				E82FEAF72C35A471008BAD04 /* Drawing Pattern (View) */,
 				E82FEAFC2C35A4BA008BAD04 /* Simple Draw (View) */,
+				E8461DBE2C3AC35E00CBCC76 /* GradientView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -214,6 +219,15 @@
 				E82FEAEF2C35A371008BAD04 /* OldTableViewController.swift */,
 			);
 			path = X;
+			sourceTree = "<group>";
+		};
+		E8461DBE2C3AC35E00CBCC76 /* GradientView */ = {
+			isa = PBXGroup;
+			children = (
+				E8461DBF2C3AC36B00CBCC76 /* GradientView.swift */,
+				E8461DC12C3ADBA000CBCC76 /* NoiseView.swift */,
+			);
+			path = GradientView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +304,7 @@
 				E82FEAE72C35A2A0008BAD04 /* Global.swift in Sources */,
 				E82FEAFE2C35A4F3008BAD04 /* SimpleDrawCanvas.swift in Sources */,
 				E8968CE62C39503500647497 /* Brush.swift in Sources */,
+				E8461DC22C3ADBA000CBCC76 /* NoiseView.swift in Sources */,
 				E82FEAD12C359FEB008BAD04 /* Drawing_App.xcdatamodeld in Sources */,
 				E82FEADF2C35A22F008BAD04 /* CustomTabBarController.swift in Sources */,
 				E82FEAF22C35A3AE008BAD04 /* OldLeftTableViewCell.swift in Sources */,
@@ -304,7 +319,8 @@
 				E82FEB052C35A559008BAD04 /* PatternViewController.swift in Sources */,
 				E82FEB012C35A524008BAD04 /* SwipingController.swift in Sources */,
 				E82FEAF02C35A371008BAD04 /* OldTableViewController.swift in Sources */,
-				E8461DB92C3AABF800CBCC76 /* Label-ImageView Blinking Extension.swift in Sources */,
+				E8461DC02C3AC36B00CBCC76 /* GradientView.swift in Sources */,
+				E8461DB92C3AABF800CBCC76 /* BlinkingAnimation.swift in Sources */,
 				E8E6700C2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift in Sources */,
 				E82FEAED2C35A327008BAD04 /* PageCell.swift in Sources */,
 				E82FEB122C35A609008BAD04 /* ColorPickerViewController.swift in Sources */,
