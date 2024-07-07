@@ -94,11 +94,14 @@ class PatternViewController: UIViewController, UIPopoverPresentationControllerDe
     
     @objc func handleTip(_ sender: UIBarButtonItem) {
         guard let view = self.view as? PatternView else { return }
-        
+
         let items:[CGFloat] = [1.0, 2.0, 4.0, 8.0, 16.0]
-        let controller = ArrayChoiceTableViewController(items, header: "Line width", labels: { "\($0) points" + ($0 == view.lineWidth ? "*" : "") }) { (value) in
-            view.lineWidth = value
-        }
+        let controller = ArrayChoiceTableViewController(
+            items,
+            header: "Line width",
+            labels: { "\($0) points\($0 == view.lineWidth ? " ✔️" : "")" }
+        ) { view.lineWidth = $0 }
+
         presentPopover(controller, sender: sender)
     }
     
@@ -106,9 +109,16 @@ class PatternViewController: UIViewController, UIPopoverPresentationControllerDe
         guard let view = self.view as? PatternView else { return }
         
         let items:[UIColor] = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1), #colorLiteral(red: 0.6679978967, green: 0.4751212597, blue: 0.2586010993, alpha: 1), #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1), #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), #colorLiteral(red: 1, green: 0.2527923882, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1), #colorLiteral(red: 0.5791940689, green: 0.1280144453, blue: 0.5726861358, alpha: 1), #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1), #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1), #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)]
-        let controller = ArrayChoiceTableViewController(items, header: "Line color", labels: { value in "" }) { value in
+        let controller = ArrayChoiceTableViewController(
+            items,
+            header: "Line color",
+            labels: { value in
+                value == view.lineColor ? " ✔️" : ""
+            }
+        ) { value in
             view.lineColor = value
         }
+
         presentPopover(controller, sender: sender)
     }
     
@@ -116,9 +126,12 @@ class PatternViewController: UIViewController, UIPopoverPresentationControllerDe
         guard let view = self.view as? PatternView else { return }
         
         let items:[Int] = [1, 2, 3, 4, 8, 16, 32]
-        let controller = ArrayChoiceTableViewController(items, header: "Brushes", labels: { "\($0)x" + ($0 == view.turns ? "*" : "") }) { (value) in
-            view.turns = value
-        }
+        let controller = ArrayChoiceTableViewController(
+            items,
+            header: "Brushes",
+            labels: { "\($0)x\($0 == view.turns ? " ✔️" : "")" }
+        ) { view.turns = $0 }
+
         presentPopover(controller, sender: sender)
     }
     

@@ -67,9 +67,18 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         guard let view = self.view as? SimpleDrawCanvas else { return }
         
         let items:[Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
-        let controller = ArrayChoiceTableViewController(items, header: "Line width", labels: { "\($0) points" + ($0 == view.strokeWidth ? "*" : "") }) { (value) in
+
+        let controller = ArrayChoiceTableViewController(
+            items,
+            header: "Line width",
+            labels: { item in
+                "\(item) points" + (item == view.strokeWidth ? " ✔️" : "")
+            }
+        ) { value in
             view.strokeWidth = value
         }
+
+        
         presentPopover(controller, sender: sender)
     }
     
@@ -77,9 +86,17 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         guard let view = self.view as? SimpleDrawCanvas else { return }
         
         let items:[UIColor] = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1), #colorLiteral(red: 0.6679978967, green: 0.4751212597, blue: 0.2586010993, alpha: 1), #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1), #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), #colorLiteral(red: 1, green: 0.2527923882, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1), #colorLiteral(red: 0.5791940689, green: 0.1280144453, blue: 0.5726861358, alpha: 1), #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1), #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1), #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)]
-        let controller = ArrayChoiceTableViewController(items, header: "Line color", labels: { value in "" }) { value in
+        
+        let controller = ArrayChoiceTableViewController(
+            items,
+            header: "Line color",
+            labels: { item in
+                item == view.strokeColor ? " ✔️" : ""
+            }
+        ) { value in
             view.strokeColor = value
         }
+
         presentPopover(controller, sender: sender)
     }
 
