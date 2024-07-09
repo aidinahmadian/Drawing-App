@@ -10,35 +10,53 @@ import UIKit
 
 class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDelegate {
     
-    //MARK: - Setup MainView / Buttons / Slider
+    // MARK: - Properties
     
     let canvas = SimpleDrawCanvas()
     
     let drawSomethingLabel: UILabel! = {
-        let DSL = UILabel()
-        DSL.text = "Draw Somthing!"
-        DSL.translatesAutoresizingMaskIntoConstraints = false
-        DSL.textColor = .gray
-        return DSL
+        let label = UILabel()
+        label.text = "Draw Something!"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .gray
+        label.backgroundColor = .red
+        return label
     }()
     
     let savedLabel: UILabel! = {
-        let SL = UILabel()
-        SL.text = "Saved To Camera Roll"
-        SL.backgroundColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
-        SL.textAlignment = .center
-        SL.layer.cornerRadius = 8
-        SL.clipsToBounds = true
-        SL.isHidden = true
-        SL.textColor = .white
-        SL.translatesAutoresizingMaskIntoConstraints = false
-        return SL
+        let label = UILabel()
+        label.text = "Saved To Camera Roll"
+        label.backgroundColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
+        label.textAlignment = .center
+        label.layer.cornerRadius = 8
+        label.clipsToBounds = true
+        label.isHidden = true
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
-    // MARK: - Setup NavigationBar Buttons
+    // MARK: - Lifecycle Methods
+    
+    override func loadView() {
+        self.view = canvas
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupNavBarButtons()
+        setupLayout()
+        setupNavigationBarTitle()
+        canvas.backgroundColor = .white
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(SimpleDrawCanvas.viewWasTouched), object: nil)
+    }
+    
+    // MARK: - Setup Methods
     
     func setupNavBarButtons() {
-
         let undoButtonItem = UIBarButtonItem(title: "Undo", style: .plain, target: self, action: #selector(handleUndo))
         let clearButtonItem = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(handleClear))
         
@@ -48,12 +66,49 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         let colorImage = UIImage(systemName: "paintbrush.fill")
         let colorImageButtonItem = UIBarButtonItem(image: colorImage, style: .plain, target: self, action: #selector(colorButtonTapped))
         
-        navigationItem.rightBarButtonItems = [undoButtonItem, clearButtonItem, strokeButtonItem, colorImageButtonItem]
+        let brushImage = UIImage(systemName: "scribble")
+        let brushButtonItem = UIBarButtonItem(image: brushImage, style: .plain, target: self, action: #selector(brushButtonTapped))
+        
+        navigationItem.rightBarButtonItems = [undoButtonItem, clearButtonItem, strokeButtonItem, colorImageButtonItem, brushButtonItem]
     }
     
-    // MARK: - Setup Button/Slider Functions
+    func setupNavigationBarTitle() {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "Scribble"
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        titleLabel.textAlignment = .left
+        titleLabel.textColor = .black
+        
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        ])
+        
+        let leftItem = UIBarButtonItem(customView: containerView)
+        navigationItem.leftBarButtonItem = leftItem
+    }
     
-    @objc fileprivate func  handleUndo() {
+    fileprivate func setupLayout() {
+        view.addSubview(drawSomethingLabel)
+        drawSomethingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        drawSomethingLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        view.addSubview(savedLabel)
+        savedLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        savedLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        savedLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        savedLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
+    }
+    
+    // MARK: - Action Methods
+    
+    @objc fileprivate func handleUndo() {
         print("Undo Lines")
         canvas.undo()
     }
@@ -66,8 +121,8 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
     @objc func tipButtonTapped(_ sender: UIBarButtonItem) {
         guard let view = self.view as? SimpleDrawCanvas else { return }
         
-        let items:[Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
-
+        let items: [Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
+        
         let controller = ArrayChoiceTableViewController(
             items,
             header: "Line width",
@@ -77,7 +132,6 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         ) { value in
             view.strokeWidth = value
         }
-
         
         presentPopover(controller, sender: sender)
     }
@@ -85,66 +139,43 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
     @objc func colorButtonTapped(_ sender: UIBarButtonItem) {
         guard let view = self.view as? SimpleDrawCanvas else { return }
         
-        let items:[UIColor] = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1), #colorLiteral(red: 0.6679978967, green: 0.4751212597, blue: 0.2586010993, alpha: 1), #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1), #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), #colorLiteral(red: 1, green: 0.2527923882, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1), #colorLiteral(red: 0.5791940689, green: 0.1280144453, blue: 0.5726861358, alpha: 1), #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1), #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1), #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)]
+        let colorPicker = UIColorPickerViewController()
+        colorPicker.delegate = self
+        colorPicker.selectedColor = view.strokeColor
+        present(colorPicker, animated: true, completion: nil)
+    }
+    
+    @objc func brushButtonTapped(_ sender: UIBarButtonItem) {
+        let brushes: [(title: String, brush: Brush)] = [
+            ("Line", LineBrush()),
+            ("Dotted", DottedBrush()),
+            ("Chalk", ChalkBrush()),
+            ("Rust", RustBrush()),
+            ("Square Texture", SquareTextureBrush()),
+            ("Pencil", PencilBrush()),
+            ("Charcoal", CharcoalBrush()),
+            ("Pastel", PastelBrush())
+        ]
         
-        let controller = ArrayChoiceTableViewController(
-            items,
-            header: "Line color",
-            labels: { item in
-                item == view.strokeColor ? " ✔️" : ""
-            }
-        ) { value in
-            view.strokeColor = value
+        let alert = UIAlertController(title: "Select Brush", message: nil, preferredStyle: .actionSheet)
+        
+        for (title, brush) in brushes {
+            alert.addAction(UIAlertAction(title: title, style: .default, handler: { _ in
+                self.canvas.setBrush(brush)
+            }))
         }
-
-        presentPopover(controller, sender: sender)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
     }
 
-    // MARK: - UIViewController
-    
-    override func loadView() {
-        self.view = canvas
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupNavBarButtons()
-        setupLayout()
-        canvas.backgroundColor = .white
-        navigationController?.navigationBar.isHidden = false
-        
-        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 246.5, height: view.frame.height))
-        titleLabel.text = "Scribble"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        titleLabel.textAlignment = .left
-        titleLabel.textColor = .black
-        
-        navigationItem.titleView = titleLabel
-        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(SimpleDrawCanvas.viewWasTouched), object: nil)
-    }
     
     @objc func viewWasTouched(notification: NSNotification) {
         self.drawSomethingLabel.isHidden = true
     }
     
-    // MARK: - Setup Layout
-    
-    fileprivate func setupLayout() {
-        
-        view.addSubview(drawSomethingLabel)
-        drawSomethingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        drawSomethingLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -271).isActive = true
-        
-        view.addSubview(savedLabel)
-        savedLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        savedLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        savedLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        savedLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
-    }
-
-    // MARK: - Utility
+    // MARK: - Utility Methods
     
     func presentPopover(_ controller: UIViewController, sender: UIBarButtonItem) {
         self.dismiss(animated: false)
@@ -153,9 +184,20 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         if let presentationController = controller.popoverPresentationController {
             presentationController.delegate = self
             presentationController.barButtonItem = sender
-            //presentationController.sourceView = sender
             presentationController.permittedArrowDirections = [.down, .up]
         }
         self.present(controller, animated: true)
+    }
+}
+
+extension SimpleDrawController: UIColorPickerViewControllerDelegate {
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        guard let view = self.view as? SimpleDrawCanvas else { return }
+        view.strokeColor = viewController.selectedColor
+    }
+    
+    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
+        guard let view = self.view as? SimpleDrawCanvas else { return }
+        view.strokeColor = viewController.selectedColor
     }
 }
