@@ -12,6 +12,8 @@ import UIKit
 
 class SwipingController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    var onFinish: (() -> Void)?
+    
     //MARK: - Retrieve Data
     
     let pages = [
@@ -65,10 +67,14 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     }()
     
     @objc func handleSkip() {
-        print("Skip Button pressed")
-        let homeViewController = CustomTabBarController()
-        navigationController?.pushViewController(homeViewController, animated: true)
-    }
+            print("Skip Button pressed")
+            let homeViewController = CustomTabBarController()
+            UIView.transition(with: self.view.window!, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                self.navigationController?.pushViewController(homeViewController, animated: false)
+            }, completion: { _ in
+                self.onFinish?()
+            })
+        }
     
     @objc private func handleNext() {
         let nextIndex = min(pageControl.currentPage + 1, pages.count - 1)

@@ -22,7 +22,9 @@ class RightTableViewCell: UITableViewCell {
     
     private lazy var imageV: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .darkGray
+        //imageView.backgroundColor = .darkGray
+        imageView.image = UIImage(named: "PaintRoller")
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
