@@ -23,6 +23,7 @@ class PatternViewController: UIViewController, UIPopoverPresentationControllerDe
         DSL.text = "Draw Somthing!"
         DSL.translatesAutoresizingMaskIntoConstraints = false
         DSL.textColor = .gray
+        DSL.backgroundColor = .blue
         return DSL
     }()
     
@@ -46,20 +47,38 @@ class PatternViewController: UIViewController, UIPopoverPresentationControllerDe
         view.backgroundColor = .systemBackground
         setupLayout()
         setupNavBarButtons()
+        setupNavigationBarTitle()
         navigationController?.view.backgroundColor = .systemBackground
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
         
-        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 90, height: view.frame.height))
+        NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(PatternView.viewWasTouched), object: nil)
+    }
+    
+    func setupNavigationBarTitle() {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = "Pattern"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         titleLabel.textAlignment = .left
         titleLabel.textColor = .black
         
-        navigationItem.titleView = titleLabel
-        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(PatternView.viewWasTouched), object: nil)
+
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(titleLabel)
+
+        // Constraints for titleLabel within containerView
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)  // Optional: Ensures the label doesn't overflow
+        ])
+
+        // Set containerView as the custom view for leftBarButtonItem
+        let leftItem = UIBarButtonItem(customView: containerView)
+        navigationItem.leftBarButtonItem = leftItem
     }
     
     @objc func viewWasTouched(notification: NSNotification) {

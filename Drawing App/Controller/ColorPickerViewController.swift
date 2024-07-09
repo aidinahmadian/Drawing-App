@@ -11,6 +11,10 @@ import Combine
 
 class ColorPickerViewController: UIViewController {
     
+    private var gradientView: GradientView!
+    private var cancellable: AnyCancellable?
+    private var buttonGradientLayer: CAGradientLayer!
+    
     private let colorPickerlabel: UILabel = {
         let label = UILabel()
         label.text = "Choose Your Color"
@@ -37,7 +41,6 @@ class ColorPickerViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .center
-        //label.isUserInteractionEnabled = true
         return label
     }()
     
@@ -53,15 +56,10 @@ class ColorPickerViewController: UIViewController {
         button.layer.shadowOffset = CGSize(width: 5, height: 5)
         button.layer.shadowOpacity = 0.5
         button.layer.shadowRadius = 10
+        button.layer.borderWidth = 0.3
         button.layer.borderColor = UIColor.black.cgColor
-        button.layer.borderWidth = 1
-        
         return button
     }()
-    
-    private var gradientView: GradientView!
-    private var cancellable: AnyCancellable?
-    var gradientLayer: CAGradientLayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,14 +90,12 @@ class ColorPickerViewController: UIViewController {
     }
     
     private func setupViews() {
-        // Create a blur effect
         let blurEffect = UIBlurEffect(style: .systemThinMaterialLight)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
         blurEffectView.layer.cornerRadius = 10
         blurEffectView.layer.masksToBounds = true
         
-        // Create a noise effect view
         let noiseView = NoiseView()
         noiseView.translatesAutoresizingMaskIntoConstraints = false
         noiseView.layer.cornerRadius = 10
@@ -111,7 +107,6 @@ class ColorPickerViewController: UIViewController {
         view.addSubview(tapToCopylabel)
         view.addSubview(colorPickerButton)
         
-        // Set constraints for the blur effect view to match the label's frame
         NSLayoutConstraint.activate([
             blurEffectView.topAnchor.constraint(equalTo: colorPickerlabel.topAnchor),
             blurEffectView.bottomAnchor.constraint(equalTo: colorPickerlabel.bottomAnchor),
@@ -134,7 +129,6 @@ class ColorPickerViewController: UIViewController {
             tapToCopylabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tapToCopylabel.topAnchor.constraint(equalTo: colorPickerlabel.bottomAnchor, constant: 10),
             
-            //colorPickerButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             colorPickerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             colorPickerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
             colorPickerButton.widthAnchor.constraint(equalToConstant: 250),
@@ -142,39 +136,57 @@ class ColorPickerViewController: UIViewController {
         ])
     }
     
-    func setupGradientLayer() {
-            gradientLayer = CAGradientLayer()
-            gradientLayer.frame = colorPickerButton.bounds
-        gradientLayer.colors = [
-            #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1).cgColor,
-            #colorLiteral(red: 1, green: 0.9725490196, blue: 0.9529411765, alpha: 1).cgColor
+    private func setupGradientLayer() {
+        buttonGradientLayer = CAGradientLayer()
+        buttonGradientLayer.frame = colorPickerButton.bounds
+        buttonGradientLayer.colors = [
+            UIColor.white.cgColor,
+            #colorLiteral(red: 0.5764705882, green: 0.5058823529, blue: 1, alpha: 1).cgColor
         ]
-            gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-            gradientLayer.endPoint = CGPoint(x: 1, y: 1)
-            gradientLayer.cornerRadius = 10
-            
-        colorPickerButton.layer.insertSublayer(gradientLayer, at: 0)
-        }
+        buttonGradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        buttonGradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        buttonGradientLayer.cornerRadius = 10
+        colorPickerButton.layer.insertSublayer(buttonGradientLayer, at: 0)
+    }
+    
+    private func startGradientAnimation() {
+        let color1 = #colorLiteral(red: 0.5764705882, green: 0.5058823529, blue: 1, alpha: 1).cgColor
+        let color2 = #colorLiteral(red: 0.9725490196, green: 0.968627451, blue: 1, alpha: 1).cgColor
         
-        func startGradientAnimation() {
-            let color1 = #colorLiteral(red: 0.5764705882, green: 0.5058823529, blue: 1, alpha: 1).cgColor
-            let color2 = #colorLiteral(red: 0.9725490196, green: 0.968627451, blue: 1, alpha: 1).cgColor
-            
-            let gradientAnimation = CABasicAnimation(keyPath: "colors")
-            gradientAnimation.duration = 4.0
-            gradientAnimation.toValue = [color2, color1]
-            gradientAnimation.fillMode = .forwards
-            gradientAnimation.isRemovedOnCompletion = false
-            gradientAnimation.autoreverses = true
-            gradientAnimation.repeatCount = Float.infinity
-            
-            gradientLayer.add(gradientAnimation, forKey: "colorChange")
-        }
+        let gradientAnimation = CABasicAnimation(keyPath: "colors")
+        gradientAnimation.duration = 4.0
+        gradientAnimation.toValue = [color1, color2]
+        gradientAnimation.fillMode = .forwards
+        gradientAnimation.isRemovedOnCompletion = false
+        gradientAnimation.autoreverses = true
+        gradientAnimation.repeatCount = Float.infinity
+        
+        buttonGradientLayer.add(gradientAnimation, forKey: "colorChange")
+    }
+    
+    private func updateGradientColor(to color: UIColor) {
+        gradientView.updateGradientColor(at: 0, to: color) // Change the first color
+        colorPickerlabel.text = color.toHexString() // Update the label with HEX value
+        colorPickerlabel.attributedText = NSAttributedString(
+            string: color.toHexString(),
+            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
+        )
+        // Animate button gradient layer
+        let gradientAnimation = CABasicAnimation(keyPath: "colors")
+        gradientAnimation.duration = 4.0
+        gradientAnimation.toValue = [color.cgColor, UIColor.white.cgColor]
+        gradientAnimation.fillMode = .forwards
+        gradientAnimation.isRemovedOnCompletion = false
+        gradientAnimation.autoreverses = true
+        gradientAnimation.repeatCount = Float.infinity
+        
+        buttonGradientLayer.add(gradientAnimation, forKey: "colorChange")
+    }
     
     override func viewDidLayoutSubviews() {
-            super.viewDidLayoutSubviews()
-            gradientLayer.frame = colorPickerButton.bounds
-        }
+        super.viewDidLayoutSubviews()
+        buttonGradientLayer.frame = colorPickerButton.bounds
+    }
     
     private func setupGestureRecognizers() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleLabelTap))
@@ -192,15 +204,6 @@ class ColorPickerViewController: UIViewController {
         )
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
-    }
-    
-    private func updateGradientColor(to color: UIColor) {
-        gradientView.updateGradientColor(at: 0, to: color) // Change the first color
-        colorPickerlabel.text = color.toHexString() // Update the label with HEX value
-        colorPickerlabel.attributedText = NSAttributedString(
-            string: color.toHexString(),
-            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
-        )
     }
     
 }
