@@ -33,6 +33,8 @@
 		E8461DB92C3AABF800CBCC76 /* BlinkingAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8461DB82C3AABF800CBCC76 /* BlinkingAnimation.swift */; };
 		E8461DC02C3AC36B00CBCC76 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8461DBF2C3AC36B00CBCC76 /* GradientView.swift */; };
 		E8461DC22C3ADBA000CBCC76 /* NoiseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8461DC12C3ADBA000CBCC76 /* NoiseView.swift */; };
+		E849FFFD2C3EEA7000F66865 /* ExperimentalTableViewC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E849FFFC2C3EEA7000F66865 /* ExperimentalTableViewC.swift */; };
+		E849FFFF2C3EEAC600F66865 /* ExperimentalSimpleDrawController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E849FFFE2C3EEAC600F66865 /* ExperimentalSimpleDrawController.swift */; };
 		E85A94242C3D5DC00057AD8D /* Brushes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85A94232C3D5DC00057AD8D /* Brushes.swift */; };
 		E8968CE62C39503500647497 /* Brush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8968CE52C39503500647497 /* Brush.swift */; };
 		E8E6700C2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700B2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift */; };
@@ -70,6 +72,8 @@
 		E8461DB82C3AABF800CBCC76 /* BlinkingAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlinkingAnimation.swift; sourceTree = "<group>"; };
 		E8461DBF2C3AC36B00CBCC76 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		E8461DC12C3ADBA000CBCC76 /* NoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseView.swift; sourceTree = "<group>"; };
+		E849FFFC2C3EEA7000F66865 /* ExperimentalTableViewC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalTableViewC.swift; sourceTree = "<group>"; };
+		E849FFFE2C3EEAC600F66865 /* ExperimentalSimpleDrawController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalSimpleDrawController.swift; sourceTree = "<group>"; };
 		E85A94232C3D5DC00057AD8D /* Brushes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brushes.swift; sourceTree = "<group>"; };
 		E8968CE52C39503500647497 /* Brush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brush.swift; sourceTree = "<group>"; };
 		E8E6700B2C3801EA00F1CE33 /* ConvertUIColorToHEX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertUIColorToHEX.swift; sourceTree = "<group>"; };
@@ -220,6 +224,8 @@
 			children = (
 				E82FEAF12C35A3AE008BAD04 /* OldLeftTableViewCell.swift */,
 				E82FEAEF2C35A371008BAD04 /* OldTableViewController.swift */,
+				E849FFFC2C3EEA7000F66865 /* ExperimentalTableViewC.swift */,
+				E849FFFE2C3EEAC600F66865 /* ExperimentalSimpleDrawController.swift */,
 			);
 			path = X;
 			sourceTree = "<group>";
@@ -309,10 +315,12 @@
 				E8968CE62C39503500647497 /* Brush.swift in Sources */,
 				E8461DC22C3ADBA000CBCC76 /* NoiseView.swift in Sources */,
 				E82FEAD12C359FEB008BAD04 /* Drawing_App.xcdatamodeld in Sources */,
+				E849FFFD2C3EEA7000F66865 /* ExperimentalTableViewC.swift in Sources */,
 				E82FEADF2C35A22F008BAD04 /* CustomTabBarController.swift in Sources */,
 				E82FEAF22C35A3AE008BAD04 /* OldLeftTableViewCell.swift in Sources */,
 				E82FEAE22C35A269008BAD04 /* Extensions.swift in Sources */,
 				E82FEAF42C35A3C6008BAD04 /* RightTableViewCell.swift in Sources */,
+				E849FFFF2C3EEAC600F66865 /* ExperimentalSimpleDrawController.swift in Sources */,
 				E85A94242C3D5DC00057AD8D /* Brushes.swift in Sources */,
 				E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */,
 				E82FEAF62C35A3E3008BAD04 /* TableViewHeaderView.swift in Sources */,
