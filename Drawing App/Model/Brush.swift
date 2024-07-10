@@ -9,4 +9,5 @@ import Foundation
 
 struct BrushItem {
     let name: String
+//    let brush: Brush
 }

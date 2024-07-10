@@ -197,3 +197,80 @@ class PastelBrush: Brush {
         }
     }
 }
+
+class WatercolorBrush: Brush {
+    func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
+        context.setLineCap(.round)
+        context.setLineJoin(.round)
+        
+        guard let firstPoint = points.first else { return }
+        context.move(to: firstPoint)
+        
+        for (i, point) in points.enumerated() {
+            context.setLineWidth(CGFloat(strokeWidth))
+            let alpha = CGFloat.random(in: 0.1...0.5)
+            let color = strokeColor.withAlphaComponent(alpha).cgColor
+            context.setStrokeColor(color)
+            
+            if i > 0 {
+                let jitteredPoint = CGPoint(
+                    x: point.x + CGFloat.random(in: -1...1),
+                    y: point.y + CGFloat.random(in: -1...1)
+                )
+                context.addLine(to: jitteredPoint)
+                context.strokePath()
+                context.move(to: jitteredPoint)
+            }
+        }
+    }
+}
+
+class SplatterBrush: Brush {
+    func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
+        context.setLineCap(.round)
+        context.setLineJoin(.round)
+        
+        for point in points {
+            let splatterCount = Int.random(in: 5...15)
+            for _ in 0..<splatterCount {
+                let radius = CGFloat.random(in: 1...CGFloat(strokeWidth))
+                let offsetX = CGFloat.random(in: -10...10)
+                let offsetY = CGFloat.random(in: -10...10)
+                let splatterPoint = CGPoint(x: point.x + offsetX, y: point.y + offsetY)
+                
+                let alpha = CGFloat.random(in: 0.3...0.8)
+                let color = strokeColor.withAlphaComponent(alpha).cgColor
+                context.setFillColor(color)
+                context.fillEllipse(in: CGRect(x: splatterPoint.x - radius, y: splatterPoint.y - radius, width: radius * 2, height: radius * 2))
+            }
+        }
+    }
+}
+
+class InkBrush: Brush {
+    func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
+        context.setLineCap(.round)
+        context.setLineJoin(.round)
+        
+        guard let firstPoint = points.first else { return }
+        context.move(to: firstPoint)
+        
+        for (i, point) in points.enumerated() {
+            context.setLineWidth(CGFloat(strokeWidth))
+            context.setStrokeColor(strokeColor.cgColor)
+            
+            if i > 0 {
+                context.addLine(to: point)
+                context.strokePath()
+                context.move(to: point)
+                
+                // Random ink blobs
+                if Int.random(in: 0...10) > 7 {
+                    let blobRadius = CGFloat.random(in: CGFloat(strokeWidth / 2)...CGFloat(strokeWidth))
+                    context.setFillColor(strokeColor.cgColor)
+                    context.fillEllipse(in: CGRect(x: point.x - blobRadius, y: point.y - blobRadius, width: blobRadius * 2, height: blobRadius * 2))
+                }
+            }
+        }
+    }
+}

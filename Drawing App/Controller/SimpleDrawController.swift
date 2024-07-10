@@ -49,6 +49,8 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         setupNavigationBarTitle()
         canvas.backgroundColor = .white
         navigationController?.navigationBar.isHidden = false
+        navigationController?.view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
         
         NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(SimpleDrawCanvas.viewWasTouched), object: nil)
@@ -146,30 +148,43 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     @objc func brushButtonTapped(_ sender: UIBarButtonItem) {
-        let brushes: [(title: String, brush: Brush)] = [
-            ("Line", LineBrush()),
-            ("Dotted", DottedBrush()),
-            ("Chalk", ChalkBrush()),
-            ("Rust", RustBrush()),
-            ("Square Texture", SquareTextureBrush()),
-            ("Pencil", PencilBrush()),
-            ("Charcoal", CharcoalBrush()),
-            ("Pastel", PastelBrush())
-        ]
-        
         let alert = UIAlertController(title: "Select Brush", message: nil, preferredStyle: .actionSheet)
-        
-        for (title, brush) in brushes {
-            alert.addAction(UIAlertAction(title: title, style: .default, handler: { _ in
-                self.canvas.setBrush(brush)
-            }))
-        }
-        
+        alert.addAction(UIAlertAction(title: "Line", style: .default, handler: { _ in
+            self.canvas.setBrush(LineBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Dotted", style: .default, handler: { _ in
+            self.canvas.setBrush(DottedBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Chalk", style: .default, handler: { _ in
+            self.canvas.setBrush(ChalkBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Rust", style: .default, handler: { _ in
+            self.canvas.setBrush(RustBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Square Texture", style: .default, handler: { _ in
+            self.canvas.setBrush(SquareTextureBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Pencil", style: .default, handler: { _ in
+            self.canvas.setBrush(PencilBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Charcoal", style: .default, handler: { _ in
+            self.canvas.setBrush(CharcoalBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Pastel", style: .default, handler: { _ in
+            self.canvas.setBrush(PastelBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Watercolor", style: .default, handler: { _ in
+            self.canvas.setBrush(WatercolorBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Splatter", style: .default, handler: { _ in
+            self.canvas.setBrush(SplatterBrush())
+        }))
+        alert.addAction(UIAlertAction(title: "Ink", style: .default, handler: { _ in
+            self.canvas.setBrush(InkBrush())
+        }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
         present(alert, animated: true, completion: nil)
     }
-
     
     @objc func viewWasTouched(notification: NSNotification) {
         self.drawSomethingLabel.isHidden = true
