@@ -66,7 +66,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         UITabBar.appearance().isTranslucent = false
         //UINavigationBar.appearance().isTranslucent = false
-        view.backgroundColor = .clear
+        view.backgroundColor = .white
         self.tabBar.tintColor = UIColor.white
         self.tabBar.backgroundColor = UIColor.white
         self.tabBarItem.title = nil

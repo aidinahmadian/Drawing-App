@@ -19,3 +19,8 @@ struct LineWidthOption {
     let width: Float
     let label: String
 }
+
+struct BrushItem {
+    let name: String
+//    let brush: Brush
+}
