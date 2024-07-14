@@ -19,7 +19,6 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         label.text = "Draw Something!"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
-        label.backgroundColor = .red
         return label
     }()
     

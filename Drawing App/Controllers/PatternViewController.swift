@@ -20,10 +20,9 @@ class PatternViewController: UIViewController, UIPopoverPresentationControllerDe
     
     let drawSomethingLabel: UILabel! = {
         let DSL = UILabel()
-        DSL.text = "Draw Somthing!"
+        DSL.text = "Draw Something!"
         DSL.translatesAutoresizingMaskIntoConstraints = false
         DSL.textColor = .gray
-        DSL.backgroundColor = .blue
         return DSL
     }()
     
