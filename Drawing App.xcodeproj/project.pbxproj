@@ -46,7 +46,6 @@
 		E87194F22C403F57006A79AA /* WatercolorBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194F12C403F57006A79AA /* WatercolorBrush.swift */; };
 		E87194F42C403F61006A79AA /* SplatterBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194F32C403F61006A79AA /* SplatterBrush.swift */; };
 		E87194F62C403F6B006A79AA /* InkBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194F52C403F6B006A79AA /* InkBrush.swift */; };
-		E87194F82C404475006A79AA /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194F72C404475006A79AA /* UIViewController+Extensions.swift */; };
 		E87194FC2C4044C2006A79AA /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */; };
 		E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */; };
 		E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670132C380DEB00F1CE33 /* TableViewController.swift */; };
@@ -95,7 +94,6 @@
 		E87194F12C403F57006A79AA /* WatercolorBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatercolorBrush.swift; sourceTree = "<group>"; };
 		E87194F32C403F61006A79AA /* SplatterBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplatterBrush.swift; sourceTree = "<group>"; };
 		E87194F52C403F6B006A79AA /* InkBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkBrush.swift; sourceTree = "<group>"; };
-		E87194F72C404475006A79AA /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
 		E8E670132C380DEB00F1CE33 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
@@ -159,7 +157,6 @@
 		E82FEAE02C35A259008BAD04 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				E87194F72C404475006A79AA /* UIViewController+Extensions.swift */,
 				E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */,
 				E8461DB82C3AABF800CBCC76 /* UIView+BlinkingAnimation.swift */,
 				E87194DE2C403EAE006A79AA /* Brushes */,
@@ -390,7 +387,6 @@
 				E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */,
 				E87194EA2C403F27006A79AA /* SquareTextureBrush.swift in Sources */,
 				E82FEB052C35A559008BAD04 /* PatternViewController.swift in Sources */,
-				E87194F82C404475006A79AA /* UIViewController+Extensions.swift in Sources */,
 				E82FEB012C35A524008BAD04 /* SwipingController.swift in Sources */,
 				E82FEAF02C35A371008BAD04 /* OldTableViewController.swift in Sources */,
 				E8461DC02C3AC36B00CBCC76 /* GradientView.swift in Sources */,
