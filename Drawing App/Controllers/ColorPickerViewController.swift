@@ -141,7 +141,7 @@ class ColorPickerViewController: UIViewController {
         buttonGradientLayer.frame = colorPickerButton.bounds
         buttonGradientLayer.colors = [
             UIColor.white.cgColor,
-            #colorLiteral(red: 0.5764705882, green: 0.5058823529, blue: 1, alpha: 1).cgColor
+            #colorLiteral(red: 0.4756349325, green: 0.4756467342, blue: 0.4756404161, alpha: 1).cgColor
         ]
         buttonGradientLayer.startPoint = CGPoint(x: 0, y: 0)
         buttonGradientLayer.endPoint = CGPoint(x: 1, y: 1)
@@ -150,11 +150,11 @@ class ColorPickerViewController: UIViewController {
     }
     
     private func startGradientAnimation() {
-        let color1 = #colorLiteral(red: 0.5764705882, green: 0.5058823529, blue: 1, alpha: 1).cgColor
+        let color1 = #colorLiteral(red: 0.4756349325, green: 0.4756467342, blue: 0.4756404161, alpha: 1).cgColor
         let color2 = #colorLiteral(red: 0.9725490196, green: 0.968627451, blue: 1, alpha: 1).cgColor
         
         let gradientAnimation = CABasicAnimation(keyPath: "colors")
-        gradientAnimation.duration = 4.0
+        gradientAnimation.duration = 3.5
         gradientAnimation.toValue = [color1, color2]
         gradientAnimation.fillMode = .forwards
         gradientAnimation.isRemovedOnCompletion = false

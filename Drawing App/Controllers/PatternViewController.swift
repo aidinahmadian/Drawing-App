@@ -126,18 +126,10 @@ class PatternViewController: UIViewController, UIPopoverPresentationControllerDe
     @objc func handleColor(_ sender: UIBarButtonItem) {
         guard let view = self.view as? PatternView else { return }
         
-        let items:[UIColor] = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1), #colorLiteral(red: 0.6679978967, green: 0.4751212597, blue: 0.2586010993, alpha: 1), #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1), #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1), #colorLiteral(red: 1, green: 0.2527923882, blue: 1, alpha: 1), #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1), #colorLiteral(red: 0.5791940689, green: 0.1280144453, blue: 0.5726861358, alpha: 1), #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1), #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1), #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)]
-        let controller = ArrayChoiceTableViewController(
-            items,
-            header: "Line color",
-            labels: { value in
-                value == view.lineColor ? " ✔️" : ""
-            }
-        ) { value in
-            view.lineColor = value
-        }
-
-        presentPopover(controller, sender: sender)
+        let colorPicker = UIColorPickerViewController()
+        colorPicker.delegate = self
+        colorPicker.selectedColor = view.lineColor
+        present(colorPicker, animated: true, completion: nil)
     }
     
     @objc func handleTurn(_ sender: UIBarButtonItem) {
@@ -199,5 +191,17 @@ class PatternViewController: UIViewController, UIPopoverPresentationControllerDe
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
+    }
+}
+
+extension PatternViewController: UIColorPickerViewControllerDelegate {
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        guard let view = self.view as? PatternView else { return }
+        view.lineColor = viewController.selectedColor
+    }
+    
+    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
+        guard let view = self.view as? PatternView else { return }
+        view.lineColor = viewController.selectedColor
     }
 }
