@@ -11,10 +11,11 @@ import UIKit
 class PatternViewController: BaseDrawController {
     
     // Properties
-    let patternView = PatternView()
+    private let patternView = PatternView()
     
+    // Lifecycle
     override func loadView() {
-        self.view = patternView
+        view = patternView
     }
     
     override func viewDidLoad() {
@@ -22,37 +23,30 @@ class PatternViewController: BaseDrawController {
         setupNavBarButtons()
         setupLayout()
         setupNavigationBarTitle(title: "Pattern")
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(PatternView.viewWasTouched), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: .init(PatternView.viewWasTouched), object: nil)
     }
     
     // Setup Methods
     override func setupNavBarButtons() {
-        let clearImage = UIImage(systemName: "trash")
-        let clearImageButtonItem = UIBarButtonItem(image: clearImage, style: .plain, target: self, action: #selector(handleClear))
+        let buttonItems = [
+            ("trash", #selector(handleClear)),
+            ("pencil.tip", #selector(handleTip)),
+            ("paintbrush.fill", #selector(handleColor)),
+            ("light.max", #selector(handleTurn)),
+            ("arrow.down.circle.fill", #selector(handleSave))
+        ].map { (systemName, selector) in
+            UIBarButtonItem(image: UIImage(systemName: systemName), style: .plain, target: self, action: selector)
+        }
         
-        let tipImage = UIImage(systemName: "pencil.tip")
-        let tipImageButtonItem = UIBarButtonItem(image: tipImage, style: .plain, target: self, action: #selector(handleTip))
-        
-        let colorImage = UIImage(systemName: "paintbrush.fill")
-        let colorImageButtonItem = UIBarButtonItem(image: colorImage, style: .plain, target: self, action: #selector(handleColor))
-        
-        let turnImage = UIImage(systemName: "light.max")
-        let turnImageButtonItem = UIBarButtonItem(image: turnImage, style: .plain, target: self, action: #selector(handleTurn))
-        
-        let saveImage = UIImage(systemName: "arrow.down.circle.fill")
-        let saveImageButtonItem = UIBarButtonItem(image: saveImage, style: .plain, target: self, action: #selector(handleSave))
-        
-        navigationItem.rightBarButtonItems = [clearImageButtonItem, tipImageButtonItem, colorImageButtonItem, turnImageButtonItem, saveImageButtonItem]
+        navigationItem.rightBarButtonItems = buttonItems
     }
     
     // Action Methods
-    @objc func handleClear(_ sender: UIBarButtonItem) {
-        guard let view = self.view as? PatternView else { return }
-        view.clear()
+    @objc private func handleClear(_ sender: UIBarButtonItem) {
+        (view as? PatternView)?.clear()
     }
     
-    @objc func handleTip(_ sender: UIBarButtonItem) {
+    @objc private func handleTip(_ sender: UIBarButtonItem) {
         guard let view = self.view as? PatternView else { return }
 
         let items: [CGFloat] = [1.0, 2.0, 4.0, 8.0, 16.0]
@@ -65,16 +59,15 @@ class PatternViewController: BaseDrawController {
         presentPopover(controller, sender: sender)
     }
     
-    @objc func handleColor(_ sender: UIBarButtonItem) {
-        guard let view = self.view as? PatternView else { return }
-        
+    @objc private func handleColor(_ sender: UIBarButtonItem) {
+        guard let view = view as? PatternView else { return }
         let colorPicker = UIColorPickerViewController()
         colorPicker.delegate = self
         colorPicker.selectedColor = view.lineColor
-        present(colorPicker, animated: true, completion: nil)
+        present(colorPicker, animated: true)
     }
     
-    @objc func handleTurn(_ sender: UIBarButtonItem) {
+    @objc private func handleTurn(_ sender: UIBarButtonItem) {
         guard let view = self.view as? PatternView else { return }
         
         let items: [Int] = [1, 2, 3, 4, 8, 16, 32]
@@ -87,14 +80,18 @@ class PatternViewController: BaseDrawController {
         presentPopover(controller, sender: sender)
     }
     
-    @objc func handleSave(_ sender: UIButton) {
-        guard let view = self.view as? PatternView, let image = view.getImage() else { return }
+    @objc private func handleSave(_ sender: UIBarButtonItem) {
+        guard let view = view as? PatternView, let image = view.getImage() else { return }
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        animateSaveLabel()
+    }
+    
+    private func animateSaveLabel() {
         savedLabel.isHidden = false
         savedLabel.alpha = 1.0
-        UIView.animate(withDuration: 1.0, delay: 1.0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 1.0, options: .curveEaseIn) {
             self.savedLabel.alpha = 0.0
-        }) { _ in
+        } completion: { _ in
             self.savedLabel.isHidden = true
         }
     }

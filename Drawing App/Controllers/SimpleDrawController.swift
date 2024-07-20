@@ -11,10 +11,10 @@ import UIKit
 class SimpleDrawController: BaseDrawController {
     
     // Properties
-    let canvas = SimpleDrawCanvas()
+    private let canvas = SimpleDrawCanvas()
     
     override func loadView() {
-        self.view = canvas
+        view = canvas
     }
     
     override func viewDidLoad() {
@@ -24,42 +24,57 @@ class SimpleDrawController: BaseDrawController {
         setupNavigationBarTitle(title: "Scribble")
         canvas.backgroundColor = .white
         
-        NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(SimpleDrawCanvas.viewWasTouched), object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(viewWasTouched),
+            name: Notification.Name(SimpleDrawCanvas.viewWasTouched),
+            object: nil
+        )
     }
     
     // Setup Methods
     override func setupNavBarButtons() {
-        let undoButtonItem = UIBarButtonItem(title: "Undo", style: .plain, target: self, action: #selector(handleUndo))
-        let clearButtonItem = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(handleClear))
+        navigationItem.rightBarButtonItems = createNavBarButtonItems()
+    }
+    
+    private func createNavBarButtonItems() -> [UIBarButtonItem] {
+        let buttonItems = [
+            ("Undo", nil, #selector(handleUndo)),
+            ("Clear", nil, #selector(handleClear)),
+            (nil, "pencil.tip", #selector(tipButtonTapped)),
+            (nil, "paintbrush.fill", #selector(colorButtonTapped)),
+            (nil, "scribble", #selector(brushButtonTapped))
+        ].map { (title, imageName, selector) in
+            if let title = title {
+                return UIBarButtonItem(title: title, style: .plain, target: self, action: selector)
+            } else if let imageName = imageName {
+                return UIBarButtonItem(image: UIImage(systemName: imageName), style: .plain, target: self, action: selector)
+            }
+            fatalError("Either title or imageName must be provided")
+        }
         
-        let strokeImage = UIImage(systemName: "pencil.tip")
-        let strokeButtonItem = UIBarButtonItem(image: strokeImage, style: .plain, target: self, action: #selector(tipButtonTapped))
-        
-        let colorImage = UIImage(systemName: "paintbrush.fill")
-        let colorImageButtonItem = UIBarButtonItem(image: colorImage, style: .plain, target: self, action: #selector(colorButtonTapped))
-        
-        let brushImage = UIImage(systemName: "scribble")
-        let brushButtonItem = UIBarButtonItem(image: brushImage, style: .plain, target: self, action: #selector(brushButtonTapped))
-        
-        navigationItem.rightBarButtonItems = [undoButtonItem, clearButtonItem, strokeButtonItem, colorImageButtonItem, brushButtonItem]
+        return buttonItems
     }
     
     // Action Methods
-    @objc fileprivate func handleUndo() {
+    @objc private func handleUndo() {
         print("Undo Lines")
         canvas.undo()
     }
     
-    @objc fileprivate func handleClear() {
+    @objc private func handleClear() {
         print("Clear Canvas")
         canvas.clear()
     }
     
-    @objc func tipButtonTapped(_ sender: UIBarButtonItem) {
-        guard let view = self.view as? SimpleDrawCanvas else { return }
+    @objc private func tipButtonTapped(_ sender: UIBarButtonItem) {
+        presentLineWidthPicker(sender: sender)
+    }
+    
+    private func presentLineWidthPicker(sender: UIBarButtonItem) {
+        guard let view = view as? SimpleDrawCanvas else { return }
         
         let items: [Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
-        
         let controller = ArrayChoiceTableViewController(
             items,
             header: "Line width",
@@ -73,8 +88,12 @@ class SimpleDrawController: BaseDrawController {
         presentPopover(controller, sender: sender)
     }
     
-    @objc func colorButtonTapped(_ sender: UIBarButtonItem) {
-        guard let view = self.view as? SimpleDrawCanvas else { return }
+    @objc private func colorButtonTapped(_ sender: UIBarButtonItem) {
+        presentColorPicker(sender: sender)
+    }
+    
+    private func presentColorPicker(sender: UIBarButtonItem) {
+        guard let view = view as? SimpleDrawCanvas else { return }
         
         let colorPicker = UIColorPickerViewController()
         colorPicker.delegate = self
@@ -82,41 +101,33 @@ class SimpleDrawController: BaseDrawController {
         present(colorPicker, animated: true, completion: nil)
     }
     
-    @objc func brushButtonTapped(_ sender: UIBarButtonItem) {
+    @objc private func brushButtonTapped(_ sender: UIBarButtonItem) {
+        presentBrushPicker(sender: sender)
+    }
+    
+    private func presentBrushPicker(sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Select Brush", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Line", style: .default, handler: { _ in
-            self.canvas.setBrush(LineBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Dotted", style: .default, handler: { _ in
-            self.canvas.setBrush(DottedBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Chalk", style: .default, handler: { _ in
-            self.canvas.setBrush(ChalkBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Rust", style: .default, handler: { _ in
-            self.canvas.setBrush(RustBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Square Texture", style: .default, handler: { _ in
-            self.canvas.setBrush(SquareTextureBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Pencil", style: .default, handler: { _ in
-            self.canvas.setBrush(PencilBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Charcoal", style: .default, handler: { _ in
-            self.canvas.setBrush(CharcoalBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Pastel", style: .default, handler: { _ in
-            self.canvas.setBrush(PastelBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Watercolor", style: .default, handler: { _ in
-            self.canvas.setBrush(WatercolorBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Splatter", style: .default, handler: { _ in
-            self.canvas.setBrush(SplatterBrush())
-        }))
-        alert.addAction(UIAlertAction(title: "Ink", style: .default, handler: { _ in
-            self.canvas.setBrush(InkBrush())
-        }))
+        
+        let brushes: [(String, Brush)] = [
+            ("Line", LineBrush()),
+            ("Dotted", DottedBrush()),
+            ("Chalk", ChalkBrush()),
+            ("Rust", RustBrush()),
+            ("Square Texture", SquareTextureBrush()),
+            ("Pencil", PencilBrush()),
+            ("Charcoal", CharcoalBrush()),
+            ("Pastel", PastelBrush()),
+            ("Watercolor", WatercolorBrush()),
+            ("Splatter", SplatterBrush()),
+            ("Ink", InkBrush())
+        ]
+        
+        brushes.forEach { brush in
+            alert.addAction(UIAlertAction(title: brush.0, style: .default) { _ in
+                self.canvas.setBrush(brush.1)
+            })
+        }
+        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }
@@ -124,12 +135,15 @@ class SimpleDrawController: BaseDrawController {
 
 extension SimpleDrawController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-        guard let view = self.view as? SimpleDrawCanvas else { return }
-        view.strokeColor = viewController.selectedColor
+        updateCanvasColor(with: viewController.selectedColor)
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
-        guard let view = self.view as? SimpleDrawCanvas else { return }
-        view.strokeColor = viewController.selectedColor
+        updateCanvasColor(with: viewController.selectedColor)
+    }
+    
+    private func updateCanvasColor(with color: UIColor) {
+        guard let view = view as? SimpleDrawCanvas else { return }
+        view.strokeColor = color
     }
 }
