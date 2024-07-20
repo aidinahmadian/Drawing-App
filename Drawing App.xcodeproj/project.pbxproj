@@ -48,6 +48,7 @@
 		E87194F62C403F6B006A79AA /* InkBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194F52C403F6B006A79AA /* InkBrush.swift */; };
 		E87194FC2C4044C2006A79AA /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */; };
 		E8BF779A2C4B90F000B761DD /* BaseDrawController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BF77992C4B90F000B761DD /* BaseDrawController.swift */; };
+		E8BF779E2C4C21BD00B761DD /* TextureDrawableBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BF779D2C4C21BD00B761DD /* TextureDrawableBrush.swift */; };
 		E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */; };
 		E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670132C380DEB00F1CE33 /* TableViewController.swift */; };
 		E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */; };
@@ -97,6 +98,7 @@
 		E87194F52C403F6B006A79AA /* InkBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkBrush.swift; sourceTree = "<group>"; };
 		E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E8BF77992C4B90F000B761DD /* BaseDrawController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDrawController.swift; sourceTree = "<group>"; };
+		E8BF779D2C4C21BD00B761DD /* TextureDrawableBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureDrawableBrush.swift; sourceTree = "<group>"; };
 		E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
 		E8E670132C380DEB00F1CE33 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushDetailsViewController.swift; sourceTree = "<group>"; };
@@ -134,7 +136,7 @@
 			children = (
 				E82FEAC62C359FEB008BAD04 /* AppDelegate.swift */,
 				E82FEAC82C359FEB008BAD04 /* SceneDelegate.swift */,
-				E82FEADD2C35A220008BAD04 /* Tab Bar */,
+				E82FEADD2C35A220008BAD04 /* TabBar */,
 				E82FEAE02C35A259008BAD04 /* Helpers */,
 				E82FEAE32C35A287008BAD04 /* Model */,
 				E82FEAEA2C35A2E4008BAD04 /* Views */,
@@ -148,12 +150,12 @@
 			path = "Drawing App";
 			sourceTree = "<group>";
 		};
-		E82FEADD2C35A220008BAD04 /* Tab Bar */ = {
+		E82FEADD2C35A220008BAD04 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
 				E82FEADE2C35A22F008BAD04 /* CustomTabBarController.swift */,
 			);
-			path = "Tab Bar";
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 		E82FEAE02C35A259008BAD04 /* Helpers */ = {
@@ -245,6 +247,7 @@
 				E82FEAEF2C35A371008BAD04 /* OldTableViewController.swift */,
 				E849FFFC2C3EEA7000F66865 /* ExperimentalTableViewC.swift */,
 				E849FFFE2C3EEAC600F66865 /* ExperimentalSimpleDrawController.swift */,
+				E8BF779D2C4C21BD00B761DD /* TextureDrawableBrush.swift */,
 			);
 			path = X;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 				E82FEAC92C359FEB008BAD04 /* SceneDelegate.swift in Sources */,
 				E87194EC2C403F31006A79AA /* PencilBrush.swift in Sources */,
 				E82FEAF92C35A490008BAD04 /* PatternView.swift in Sources */,
+				E8BF779E2C4C21BD00B761DD /* TextureDrawableBrush.swift in Sources */,
 				E82FEB032C35A544008BAD04 /* HomePageViewController.swift in Sources */,
 				E87194F62C403F6B006A79AA /* InkBrush.swift in Sources */,
 			);

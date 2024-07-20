@@ -43,7 +43,7 @@ class SimpleDrawController: BaseDrawController {
             ("Clear", nil, #selector(handleClear)),
             (nil, "pencil.tip", #selector(tipButtonTapped)),
             (nil, "paintbrush.fill", #selector(colorButtonTapped)),
-            (nil, "scribble", #selector(brushButtonTapped))
+            (nil, "scribble.variable", #selector(brushButtonTapped))
         ].map { (title, imageName, selector) in
             if let title = title {
                 return UIBarButtonItem(title: title, style: .plain, target: self, action: selector)

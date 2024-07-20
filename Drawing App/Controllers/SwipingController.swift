@@ -63,8 +63,9 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         let pc = UIPageControl()
         pc.currentPage = 0
         pc.numberOfPages = pages.count
-        pc.currentPageIndicatorTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        pc.pageIndicatorTintColor = UIColor(red: 249/255, green: 207/255, blue: 224/255, alpha: 1)
+        pc.currentPageIndicatorTintColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        //pc.pageIndicatorTintColor = UIColor(red: 249/255, green: 207/255, blue: 224/255, alpha: 1)
+        pc.pageIndicatorTintColor = #colorLiteral(red: 0.8352941176, green: 0.7254901961, blue: 0.5254901961, alpha: 1)
         pc.addTarget(self, action: #selector(handlePageControlChange), for: .valueChanged)
         return pc
     }()
@@ -188,12 +189,12 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
             if animated {
                 UIView.transition(with: nextButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
                     self.nextButton.setTitle("SKIP", for: .normal)
-                    self.nextButton.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                    self.nextButton.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
                     self.nextButton.setTitleColor(.white, for: .normal)
                 })
             } else {
                 nextButton.setTitle("SKIP", for: .normal)
-                nextButton.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                nextButton.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
                 nextButton.setTitleColor(.white, for: .normal)
             }
         } else {

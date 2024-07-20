@@ -15,7 +15,7 @@ class SimpleDrawCanvas: UIView {
     var currentBrush: Brush = LineBrush()
     static let viewWasTouched = "viewWasTouched"
     var lastPoint = CGPoint.zero
-        
+    
     // MARK: - Setup Functions
     
     func setStrokeWidth(width: Float) {
@@ -39,7 +39,7 @@ class SimpleDrawCanvas: UIView {
         lines.removeAll()
         setNeedsDisplay()
     }
-        
+    
     fileprivate var lines = [Line]()
     
     // MARK: - Setup Draw Rect
@@ -65,8 +65,16 @@ class SimpleDrawCanvas: UIView {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let point = touches.first?.location(in: self) else { return }
         guard var lastLine = lines.popLast() else { return }
+        
         lastLine.points.append(point)
         lines.append(lastLine)
         setNeedsDisplay()
+        
+        // Only redraw the necessary area
+//        let dirtyRect = CGRect(x: min(lastPoint.x, point.x) - 10, y: min(lastPoint.y, point.y) - 10, width: abs(lastPoint.x - point.x) + 20, height: abs(lastPoint.y - point.y) + 20)
+//        setNeedsDisplay(dirtyRect)
+//        
+//        lastPoint = point
+        
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 class GradientView: UIView {
-    private var colors: [CGColor] = [#colorLiteral(red: 0.5741485357, green: 0.5741624236, blue: 0.574154973, alpha: 1), UIColor.white.cgColor, UIColor.white.cgColor]
+    private var colors: [CGColor] = [#colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1), UIColor.white.cgColor, UIColor.white.cgColor]
     
     override init(frame: CGRect) {
         super.init(frame: frame)

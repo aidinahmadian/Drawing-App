@@ -14,22 +14,21 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     let brushesTVC: TableViewController = {
         let vc = TableViewController()
-        let icon = UIImage(named: "icons8-drawing-25 (1)")?.withRenderingMode(.alwaysOriginal)
-        let iconSelected = UIImage(named: "icons8-drawing-25")?.withRenderingMode(.alwaysOriginal)
-        let tabBarItem = UITabBarItem(title: nil, image: icon, selectedImage: iconSelected)
+        let icon = UIImage(systemName: "wand.and.stars.inverse")?.withRenderingMode(.alwaysOriginal)
+        let iconSelected = UIImage(systemName: "wand.and.stars.inverse")?.withRenderingMode(.alwaysTemplate)
+        let tabBarItem = UITabBarItem(title: "VC1", image: icon, selectedImage: iconSelected)
         tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         tabBarItem.tag = 1
-        vc.tabBarItem.selectedImage = iconSelected
         vc.tabBarItem = tabBarItem
+        vc.tabBarItem.selectedImage = iconSelected
         return vc
     }()
     
     let colorPaletteVC: ColorPickerViewController = {
         let vc = ColorPickerViewController()
-        let icon = UIImage(named: "icons8-paint-brush-25 (1)")?.withRenderingMode(.alwaysOriginal)
-        let iconSelected = UIImage(named: "icons8-paint-brush-25")?.withRenderingMode(.alwaysOriginal)
-        let tabBarItem = UITabBarItem(title: nil, image: icon, selectedImage: iconSelected)
-        tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        let icon = UIImage(systemName: "paintpalette")?.withRenderingMode(.alwaysTemplate)
+        let iconSelected = UIImage(systemName: "paintpalette.fill")?.withRenderingMode(.alwaysTemplate)
+        let tabBarItem = UITabBarItem(title: "VC4", image: icon, selectedImage: iconSelected)
         tabBarItem.tag = 4
         vc.tabBarItem.selectedImage = iconSelected
         vc.tabBarItem = tabBarItem
@@ -38,10 +37,9 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     let scribbleVC: SimpleDrawController = {
         let vc = SimpleDrawController()
-        let icon = UIImage(named: "icons8-signature-25")?.withRenderingMode(.alwaysOriginal)
-        let iconSelected = UIImage(named: "icons8-signature-25-2")?.withRenderingMode(.alwaysOriginal)
-        let tabBarItem = UITabBarItem(title: nil, image: icon, selectedImage: iconSelected)
-        tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        let icon = UIImage(systemName: "pencil.and.scribble")?.withRenderingMode(.alwaysOriginal)
+        let iconSelected = UIImage(systemName: "pencil.and.scribble")?.withRenderingMode(.alwaysTemplate)
+        let tabBarItem = UITabBarItem(title: "VC3", image: icon, selectedImage: iconSelected)
         tabBarItem.tag = 3
         vc.tabBarItem.selectedImage = iconSelected
         vc.tabBarItem = tabBarItem
@@ -50,10 +48,9 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     let patternVC: PatternViewController = {
         let vc = PatternViewController()
-        let icon = UIImage(named: "icons8-paint-roller-25 (1)")?.withRenderingMode(.alwaysOriginal)
-        let iconSelected = UIImage(named: "icons8-paint-roller-25")?.withRenderingMode(.alwaysOriginal)
-        let tabBarItem = UITabBarItem(title: nil, image: icon, selectedImage: iconSelected)
-        tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        let icon = UIImage(systemName: "lasso.badge.sparkles")?.withRenderingMode(.alwaysOriginal)
+        let iconSelected = UIImage(systemName: "lasso.badge.sparkles")?.withRenderingMode(.alwaysTemplate)
+        let tabBarItem = UITabBarItem(title: "VC2", image: icon, selectedImage: iconSelected)
         tabBarItem.tag = 2
         vc.tabBarItem.selectedImage = iconSelected
         vc.tabBarItem = tabBarItem
@@ -67,8 +64,8 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         UITabBar.appearance().isTranslucent = false
         //UINavigationBar.appearance().isTranslucent = false
         view.backgroundColor = .white
-        self.tabBar.tintColor = UIColor.white
-        self.tabBar.backgroundColor = UIColor.white
+        self.tabBar.tintColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        //self.tabBar.backgroundColor = UIColor.white
         self.tabBarItem.title = nil
         
         let controllers = [brushesTVC, patternVC, scribbleVC, colorPaletteVC]
