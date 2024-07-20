@@ -8,34 +8,10 @@
 
 import UIKit
 
-class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDelegate {
+class SimpleDrawController: BaseDrawController {
     
-    // MARK: - Properties
-    
+    // Properties
     let canvas = SimpleDrawCanvas()
-    
-    let drawSomethingLabel: UILabel! = {
-        let label = UILabel()
-        label.text = "Draw Something!"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .gray
-        return label
-    }()
-    
-    let savedLabel: UILabel! = {
-        let label = UILabel()
-        label.text = "Saved To Camera Roll"
-        label.backgroundColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
-        label.textAlignment = .center
-        label.layer.cornerRadius = 8
-        label.clipsToBounds = true
-        label.isHidden = true
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    // MARK: - Lifecycle Methods
     
     override func loadView() {
         self.view = canvas
@@ -45,19 +21,14 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         super.viewDidLoad()
         setupNavBarButtons()
         setupLayout()
-        setupNavigationBarTitle()
+        setupNavigationBarTitle(title: "Scribble")
         canvas.backgroundColor = .white
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.view.backgroundColor = .systemBackground
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.5710545182, green: 0.2737172544, blue: 0.9993438125, alpha: 1)
         
         NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(SimpleDrawCanvas.viewWasTouched), object: nil)
     }
     
-    // MARK: - Setup Methods
-    
-    func setupNavBarButtons() {
+    // Setup Methods
+    override func setupNavBarButtons() {
         let undoButtonItem = UIBarButtonItem(title: "Undo", style: .plain, target: self, action: #selector(handleUndo))
         let clearButtonItem = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(handleClear))
         
@@ -73,42 +44,7 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         navigationItem.rightBarButtonItems = [undoButtonItem, clearButtonItem, strokeButtonItem, colorImageButtonItem, brushButtonItem]
     }
     
-    func setupNavigationBarTitle() {
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "Scribble"
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        titleLabel.textAlignment = .left
-        titleLabel.textColor = .black
-        
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(titleLabel)
-        
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
-        ])
-        
-        let leftItem = UIBarButtonItem(customView: containerView)
-        navigationItem.leftBarButtonItem = leftItem
-    }
-    
-    fileprivate func setupLayout() {
-        view.addSubview(drawSomethingLabel)
-        drawSomethingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        drawSomethingLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        view.addSubview(savedLabel)
-        savedLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        savedLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        savedLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        savedLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
-    }
-    
-    // MARK: - Action Methods
-    
+    // Action Methods
     @objc fileprivate func handleUndo() {
         print("Undo Lines")
         canvas.undo()
@@ -183,24 +119,6 @@ class SimpleDrawController: UIViewController, UIPopoverPresentationControllerDel
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
-    }
-    
-    @objc func viewWasTouched(notification: NSNotification) {
-        self.drawSomethingLabel.isHidden = true
-    }
-    
-    // MARK: - Utility Methods
-    
-    func presentPopover(_ controller: UIViewController, sender: UIBarButtonItem) {
-        self.dismiss(animated: false)
-        controller.modalPresentationStyle = .popover
-        controller.preferredContentSize = CGSize(width: 300, height: 200)
-        if let presentationController = controller.popoverPresentationController {
-            presentationController.delegate = self
-            presentationController.barButtonItem = sender
-            presentationController.permittedArrowDirections = [.down, .up]
-        }
-        self.present(controller, animated: true)
     }
 }
 
