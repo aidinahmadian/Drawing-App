@@ -54,10 +54,14 @@ class SimpleDrawCanvas: UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        lines.append(Line(strokeWidth: strokeWidth, color: strokeColor, points: [], brush: currentBrush))
+        guard let point = touches.first?.location(in: self) else { return }
+        var newLine = Line(strokeWidth: strokeWidth, color: strokeColor, points: [], brush: currentBrush)
+        newLine.points.append(point) // Add the initial point to handle the dot case
+        lines.append(newLine)
+        setNeedsDisplay()
         NotificationCenter.default.post(name: Notification.Name(SimpleDrawCanvas.viewWasTouched), object: nil)
         
-        lastPoint = touches.first!.location(in: self)
+        lastPoint = point
     }
     
     // MARK: - Tracking The Finger
@@ -69,12 +73,9 @@ class SimpleDrawCanvas: UIView {
         lastLine.points.append(point)
         lines.append(lastLine)
         setNeedsDisplay()
-        
-        // Only redraw the necessary area
-//        let dirtyRect = CGRect(x: min(lastPoint.x, point.x) - 10, y: min(lastPoint.y, point.y) - 10, width: abs(lastPoint.x - point.x) + 20, height: abs(lastPoint.y - point.y) + 20)
-//        setNeedsDisplay(dirtyRect)
-//        
-//        lastPoint = point
-        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        setNeedsDisplay()
     }
 }

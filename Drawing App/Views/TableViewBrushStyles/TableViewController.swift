@@ -54,14 +54,27 @@ class TableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        
         setupUI()
+        setupNavigationBar()
     }
+    
+    private func setupNavigationBar() {
+            let rightBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "info.circle"),
+                style: .plain,
+                target: self,
+                action: #selector(rightBarButtonTapped)
+            )
+            navigationItem.rightBarButtonItem = rightBarButtonItem
+        }
     
     // MARK: - UI Setup
     
     private func setupUI() {
         view.backgroundColor = .white
-        navigationController?.navigationBar.prefersLargeTitles = true
+        //navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Brush Library"
         navigationItem.largeTitleDisplayMode = .never
         
@@ -89,6 +102,13 @@ class TableViewController: UIViewController {
             rightTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    // MARK: - Actions
+    
+    @objc private func rightBarButtonTapped() {
+        // Handle the button tap here
+        print("Right bar button tapped")
+    }
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
@@ -111,7 +131,7 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RightTableViewCell", for: indexPath) as! RightTableViewCell
-            cell.nameLabel.text = brushData[indexPath.section][indexPath.row].name
+            //cell.nameLabel.text = brushData[indexPath.section][indexPath.row].name
             return cell
         }
     }
@@ -123,7 +143,7 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard tableView != leftTableView else { return nil }
         let headerView = TableViewHeaderView()
-            headerView.nameLabel.text = "Header \(section)"
+            headerView.nameLabel.text = "Brushes \(section)"
             //
             return headerView
     }

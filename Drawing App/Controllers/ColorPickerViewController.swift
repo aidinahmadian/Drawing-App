@@ -131,8 +131,9 @@ class ColorPickerViewController: UIViewController {
             
             colorPickerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             colorPickerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            colorPickerButton.widthAnchor.constraint(equalToConstant: 250),
-            colorPickerButton.heightAnchor.constraint(equalToConstant: 50)
+            colorPickerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            colorPickerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            colorPickerButton.heightAnchor.constraint(equalToConstant: 55)
         ])
     }
     

@@ -104,7 +104,7 @@ extension OldTableViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: kRightTableViewCell, for: indexPath) as! RightTableViewCell
-            cell.nameLabel.text = foodData[indexPath.section][indexPath.row]
+            //cell.nameLabel.text = foodData[indexPath.section][indexPath.row]
             return cell
         }
     }

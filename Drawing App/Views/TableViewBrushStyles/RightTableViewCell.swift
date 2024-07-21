@@ -12,10 +12,10 @@ import UIKit
 
 class RightTableViewCell: UITableViewCell {
     
-    lazy var nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.backgroundColor = .black
+    lazy var imageB: UIImageView = {
+        let label = UIImageView()
+        label.image = UIImage(named: "testBrush1")
+        label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -23,7 +23,7 @@ class RightTableViewCell: UITableViewCell {
     private lazy var imageV: UIImageView = {
         let imageView = UIImageView()
         //imageView.backgroundColor = .darkGray
-        imageView.image = UIImage(named: "PaintRoller")
+        imageView.image = UIImage(named: "brush100")
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -32,8 +32,8 @@ class RightTableViewCell: UITableViewCell {
     private lazy var secondLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = .red
-        label.backgroundColor = .blue
+        label.text = "Test Brush"
+        //label.backgroundColor = .blue
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -49,7 +49,7 @@ class RightTableViewCell: UITableViewCell {
     
     private func configureUI() {
         contentView.addSubview(imageV)
-        contentView.addSubview(nameLabel)
+        contentView.addSubview(imageB)
         contentView.addSubview(secondLabel)
         
         // Image View Constraints
@@ -62,16 +62,16 @@ class RightTableViewCell: UITableViewCell {
         
         // Name Label Constraints
         NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: imageV.trailingAnchor, constant: 15),
-            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            nameLabel.heightAnchor.constraint(equalToConstant: 30)
+            imageB.leadingAnchor.constraint(equalTo: imageV.trailingAnchor, constant: 15),
+            imageB.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            imageB.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            imageB.heightAnchor.constraint(equalToConstant: 30)
         ])
         
         // Price Label Constraints
         NSLayoutConstraint.activate([
             secondLabel.leadingAnchor.constraint(equalTo: imageV.trailingAnchor, constant: 15),
-            secondLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5),
+            secondLabel.topAnchor.constraint(equalTo: imageB.bottomAnchor, constant: 5),
             secondLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
             secondLabel.heightAnchor.constraint(equalToConstant: 30)
         ])
@@ -80,9 +80,19 @@ class RightTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        contentView.backgroundColor = selected ? UIColor(red: 0.57, green: 0.27, blue: 1.0, alpha: 1.0) : .white
-        contentView.layer.cornerRadius = 10
+        if selected {
+            contentView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            // Optional: Add a border
+            contentView.layer.borderWidth = 1
+            contentView.layer.borderColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        } else {
+            contentView.backgroundColor = .white
+            // Optional: Remove the border
+            contentView.layer.borderWidth = 0
+            contentView.layer.borderColor = nil
+        }
+        
         isHighlighted = selected
-        nameLabel.isHighlighted = selected
+        imageB.isHighlighted = selected
     }
 }

@@ -17,14 +17,14 @@ class LeftTableViewCell: UITableViewCell {
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = .gray
-        label.highlightedTextColor = UIColor(red: 0.57, green: 0.27, blue: 1.00, alpha: 1.00)
+        label.highlightedTextColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private lazy var purpleView: UIView = {
+    private lazy var customGreenView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 0.57, green: 0.27, blue: 1.00, alpha: 1.00)
+        view.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -42,7 +42,7 @@ class LeftTableViewCell: UITableViewCell {
     
     private func configureUI() {
         contentView.addSubview(nameLabel)
-        contentView.addSubview(purpleView)
+        contentView.addSubview(customGreenView)
         
         NSLayoutConstraint.activate([
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
@@ -50,10 +50,10 @@ class LeftTableViewCell: UITableViewCell {
             nameLabel.widthAnchor.constraint(equalToConstant: 60),
             nameLabel.heightAnchor.constraint(equalToConstant: 40),
             
-            purpleView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            purpleView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            purpleView.widthAnchor.constraint(equalToConstant: 5),
-            purpleView.heightAnchor.constraint(equalToConstant: 45)
+            customGreenView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            customGreenView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            customGreenView.widthAnchor.constraint(equalToConstant: 5),
+            customGreenView.heightAnchor.constraint(equalToConstant: 45)
         ])
     }
     
@@ -62,6 +62,6 @@ class LeftTableViewCell: UITableViewCell {
         
         contentView.backgroundColor = selected ? .white : UIColor(white: 0.97, alpha: 1.0)
         nameLabel.isHighlighted = selected
-        purpleView.isHidden = !selected
+        customGreenView.isHidden = !selected
     }
 }
