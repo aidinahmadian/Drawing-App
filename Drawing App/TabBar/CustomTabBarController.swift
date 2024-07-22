@@ -14,8 +14,8 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     let brushesTVC: TableViewController = {
         let vc = TableViewController()
-        let icon = UIImage(systemName: "wand.and.stars.inverse")?.withRenderingMode(.alwaysOriginal)
-        let iconSelected = UIImage(systemName: "wand.and.stars.inverse")?.withRenderingMode(.alwaysTemplate)
+        let icon = UIImage(systemName: "theatermask.and.paintbrush")?.withRenderingMode(.alwaysOriginal)
+        let iconSelected = UIImage(systemName: "theatermask.and.paintbrush.fill")?.withRenderingMode(.alwaysTemplate)
         let tabBarItem = UITabBarItem(title: "VC1", image: icon, selectedImage: iconSelected)
         //tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         tabBarItem.tag = 1

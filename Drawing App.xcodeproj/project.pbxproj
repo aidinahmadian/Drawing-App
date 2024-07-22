@@ -52,6 +52,7 @@
 		E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */; };
 		E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670132C380DEB00F1CE33 /* TableViewController.swift */; };
 		E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */; };
+		E8EF9A5B2C4D1FBF00FC9ABC /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EF9A5A2C4D1FBF00FC9ABC /* Haptics.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
 		E8E670132C380DEB00F1CE33 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushDetailsViewController.swift; sourceTree = "<group>"; };
+		E8EF9A5A2C4D1FBF00FC9ABC /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +163,7 @@
 		E82FEAE02C35A259008BAD04 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				E8EF9A5A2C4D1FBF00FC9ABC /* Haptics.swift */,
 				E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */,
 				E8461DB82C3AABF800CBCC76 /* UIView+BlinkingAnimation.swift */,
 				E87194DE2C403EAE006A79AA /* Brushes */,
@@ -390,6 +393,7 @@
 				E82FEAF62C35A3E3008BAD04 /* TableViewHeaderView.swift in Sources */,
 				E82FEAFB2C35A4A7008BAD04 /* PatternsArrayTableViewController.swift in Sources */,
 				E82FEAE52C35A294008BAD04 /* Page.swift in Sources */,
+				E8EF9A5B2C4D1FBF00FC9ABC /* Haptics.swift in Sources */,
 				E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */,
 				E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */,
 				E87194EA2C403F27006A79AA /* SquareTextureBrush.swift in Sources */,

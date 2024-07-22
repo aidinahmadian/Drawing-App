@@ -38,31 +38,41 @@ class SimpleDrawController: BaseDrawController {
     }
     
     private func createNavBarButtonItems() -> [UIBarButtonItem] {
-        let buttonItems = [
-            ("Undo", nil, #selector(handleUndo)),
-            ("Clear", nil, #selector(handleClear)),
-            (nil, "pencil.tip", #selector(tipButtonTapped)),
-            (nil, "paintbrush.fill", #selector(colorButtonTapped)),
-            (nil, "scribble.variable", #selector(brushButtonTapped))
-        ].map { (title, imageName, selector) in
-            if let title = title {
-                return UIBarButtonItem(title: title, style: .plain, target: self, action: selector)
-            } else if let imageName = imageName {
-                return UIBarButtonItem(image: UIImage(systemName: imageName), style: .plain, target: self, action: selector)
-            }
-            fatalError("Either title or imageName must be provided")
+        // Define actions for the dropdown menu
+        let trashAction = UIAction(title: "Trash", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+            self.handleClear()
         }
+        
+        let undoAction = UIAction(title: "Undo", image: UIImage(systemName: "arrow.uturn.backward.circle")) { _ in
+            self.handleUndo()
+        }
+        
+        // Create a menu with the actions
+        let menu = UIMenu(title: "", children: [trashAction, undoAction])
+        
+        // Create a bar button item with the menu
+        let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark.circle"), menu: menu)
+        
+        // Define other bar button items
+        let buttonItems = [
+            cancelButton,
+            UIBarButtonItem(image: UIImage(systemName: "pencil.tip"), style: .plain, target: self, action: #selector(tipButtonTapped)),
+            UIBarButtonItem(image: UIImage(systemName: "paintbrush.fill"), style: .plain, target: self, action: #selector(colorButtonTapped)),
+            UIBarButtonItem(image: UIImage(systemName: "scribble.variable"), style: .plain, target: self, action: #selector(brushButtonTapped))
+        ]
         
         return buttonItems
     }
     
     // Action Methods
     @objc private func handleUndo() {
+        generateHapticFeedback(.soft)
         print("Undo Lines")
         canvas.undo()
     }
     
     @objc private func handleClear() {
+        generateHapticFeedback(.rigid)
         print("Clear Canvas")
         canvas.clear()
     }
@@ -73,23 +83,42 @@ class SimpleDrawController: BaseDrawController {
     
     private func presentLineWidthPicker(sender: UIBarButtonItem) {
         guard let view = view as? SimpleDrawCanvas else { return }
-        
+
         let items: [Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
         let controller = ArrayChoiceTableViewController(
             items,
             header: "Line width",
-            labels: { item in
-                "\(item) points" + (item == view.strokeWidth ? " ✔️" : "")
+            labels: { (item: Float) -> NSAttributedString in
+                let labelText = "\(item) points"
+                if item == view.strokeWidth {
+                    let attachment = NSTextAttachment()
+                    if let checkmarkImage = UIImage(systemName: "checkmark.circle") {
+                        // Tint the checkmark image with color literal
+                        let tintedImage = checkmarkImage.withTintColor(#colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1), renderingMode: .alwaysOriginal)
+                        attachment.image = tintedImage
+                    }
+
+                    let attachmentString = NSAttributedString(attachment: attachment)
+                    let attributedString = NSMutableAttributedString(string: labelText)
+                    attributedString.append(NSAttributedString(string: " "))
+                    attributedString.append(attachmentString)
+
+                    return attributedString
+                } else {
+                    return NSAttributedString(string: labelText)
+                }
             }
         ) { value in
             view.strokeWidth = value
         }
-        
+
         presentPopover(controller, sender: sender)
+        generateHapticFeedback(.selection)
     }
     
     @objc private func colorButtonTapped(_ sender: UIBarButtonItem) {
         presentColorPicker(sender: sender)
+        generateHapticFeedback(.selection)
     }
     
     private func presentColorPicker(sender: UIBarButtonItem) {
@@ -103,6 +132,7 @@ class SimpleDrawController: BaseDrawController {
     
     @objc private func brushButtonTapped(_ sender: UIBarButtonItem) {
         presentBrushPicker(sender: sender)
+        generateHapticFeedback(.selection)
     }
     
     private func presentBrushPicker(sender: UIBarButtonItem) {
@@ -130,16 +160,25 @@ class SimpleDrawController: BaseDrawController {
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
+        generateHapticFeedback(.selection)
     }
 }
 
 extension SimpleDrawController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         updateCanvasColor(with: viewController.selectedColor)
+        generateHapticFeedback(.selection)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    viewController.dismiss(animated: true, completion: nil)
+                }
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         updateCanvasColor(with: viewController.selectedColor)
+        generateHapticFeedback(.selection)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    viewController.dismiss(animated: true, completion: nil)
+                }
     }
     
     private func updateCanvasColor(with color: UIColor) {

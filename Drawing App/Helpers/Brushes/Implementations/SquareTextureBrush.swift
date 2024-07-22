@@ -5,7 +5,6 @@
 //  Created by Aidin Ahmadian on 7/11/24.
 //
 
-import Foundation
 import UIKit
 
 class SquareTextureBrush: Brush {

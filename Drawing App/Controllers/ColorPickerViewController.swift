@@ -63,7 +63,7 @@ class ColorPickerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tapToCopylabel.startBlink()
+        //tapToCopylabel.startBlink()
         gradientView = GradientView(frame: self.view.bounds)
         gradientView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(gradientView)
@@ -75,17 +75,22 @@ class ColorPickerViewController: UIViewController {
         setupGestureRecognizers()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tapToCopylabel.startBlink()
+    }
+    
     @objc private func handleCP() {
         let picker = UIColorPickerViewController()
         picker.selectedColor = .white
         picker.delegate = self
+        picker.modalPresentationStyle = .popover
         
         cancellable = picker.publisher(for: \.selectedColor)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] color in
-                self?.updateGradientColor(to: color)
+                // Do nothing here, handle in delegate methods
             }
-        
         present(picker, animated: true, completion: nil)
     }
     
@@ -195,12 +200,16 @@ class ColorPickerViewController: UIViewController {
     }
     
     @objc private func handleLabelTap() {
+        generateHapticFeedback(.success)
         guard let labelText = colorPickerlabel.text else { return }
         
-        UIPasteboard.general.string = labelText
+        // Remove the # sign from the labelText
+        let hexValue = labelText.replacingOccurrences(of: "#", with: "")
+        
+        UIPasteboard.general.string = hexValue
         let alert = UIAlertController(
             title: "Copied",
-            message: "HEX value copied to clipboard \n(\(labelText))",
+            message: "HEX value copied to clipboard \n(\(hexValue))",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -213,14 +222,27 @@ extension ColorPickerViewController: UIColorPickerViewControllerDelegate {
     
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         updateGradientColor(to: viewController.selectedColor)
+        generateHapticFeedback(.selection)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            self?.cancellable?.cancel()
-            print(self?.cancellable == nil)
+        // Add a slight delay before dismissing to ensure a smoother animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.dismiss(animated: true, completion: {
+                self?.cancellable?.cancel()
+                print(self?.cancellable == nil)
+            })
         }
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         updateGradientColor(to: viewController.selectedColor)
+        generateHapticFeedback(.selection)
+        
+        // Add a slight delay before dismissing to ensure a smoother animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.dismiss(animated: true, completion: {
+                self?.cancellable?.cancel()
+                print(self?.cancellable == nil)
+            })
+        }
     }
 }

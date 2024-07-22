@@ -14,6 +14,11 @@ import CoreGraphics
 class PatternView: UIView {
     
     static let viewWasTouched = "viewWasTouched"
+    
+    // Add an array to keep track of the drawing states
+    var undoStack: [UIImage] = []
+    var currentImage: UIImage?
+    
     lazy var bitmapCtx: CGContext? = {
         let width = Int(ceil(self.bounds.size.width * self.contentScaleFactor))
         let height = Int(ceil(self.bounds.size.height * self.contentScaleFactor))
@@ -38,6 +43,23 @@ class PatternView: UIView {
     func clear() {
         guard let ctx = bitmapCtx else { return }
         ctx.fill(self.bounds)
+        setNeedsDisplay()
+    }
+    
+    //MARK: - Undo Functionality
+    
+    func undo() {
+        guard !undoStack.isEmpty else { return }
+        
+        // Restore the previous state
+        let previousImage = undoStack.removeLast()
+        guard let ctx = bitmapCtx else { return }
+        
+        ctx.saveGState()
+        ctx.setBlendMode(.copy)
+        ctx.draw(previousImage.cgImage!, in: self.bounds)
+        ctx.restoreGState()
+        
         setNeedsDisplay()
     }
     
@@ -88,6 +110,11 @@ class PatternView: UIView {
         NotificationCenter.default.post(name: Notification.Name(PatternView.viewWasTouched), object: nil)
         
         lastPoint = touches.first!.location(in: self)
+        
+        // Save the current state at the beginning of a drawing action
+        if let image = getImage() {
+            currentImage = image
+        }
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = touches.first!.location(in: self)
@@ -97,6 +124,12 @@ class PatternView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let point = touches.first!.location(in: self)
         drawLine(startPoint: lastPoint, endPoint: point)
+        
+        // Push the saved state to the undo stack once the drawing is complete
+        if let image = currentImage {
+            undoStack.append(image)
+            currentImage = nil
+        }
     }
     
     override func draw(_ rect: CGRect) {

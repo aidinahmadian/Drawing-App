@@ -22,7 +22,6 @@ class RightTableViewCell: UITableViewCell {
     
     private lazy var imageV: UIImageView = {
         let imageView = UIImageView()
-        //imageView.backgroundColor = .darkGray
         imageView.image = UIImage(named: "brush100")
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,6 +80,7 @@ class RightTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         
         if selected {
+            generateHapticFeedback(.selection)
             contentView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             // Optional: Add a border
             contentView.layer.borderWidth = 1

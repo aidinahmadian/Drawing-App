@@ -143,6 +143,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     // MARK: - Button Actions
     
     @objc private func handlePrev() {
+        generateHapticFeedback(.light)
         let nextIndex = max(pageControl.currentPage - 1, 0)
         let indexPath = IndexPath(item: nextIndex, section: 0)
         pageControl.currentPage = nextIndex
@@ -151,6 +152,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     @objc private func handleNextOrSkip() {
+        generateHapticFeedback(.light)
         if pageControl.currentPage == pages.count - 1 {
             handleSkip()
         } else {
@@ -164,6 +166,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     
     @objc func handleSkip() {
         let homeViewController = CustomTabBarController()
+        generateHapticFeedback(.medium)
         
         guard let windowScene = view.window?.windowScene else { return }
         if let window = windowScene.windows.first {
@@ -180,6 +183,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         let indexPath = IndexPath(item: currentPage, section: 0)
         collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         updateNextButtonTitle(animated: true)
+        generateHapticFeedback(.soft)
     }
     
     // MARK: - Helper Functions
@@ -252,6 +256,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         let x = targetContentOffset.pointee.x
         pageControl.currentPage = Int(x / view.frame.width)
         updateNextButtonTitle(animated: true)
+        generateHapticFeedback(.soft)
     }
     
     // MARK: - View Transition
