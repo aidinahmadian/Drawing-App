@@ -106,7 +106,9 @@ class TableViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func rightBarButtonTapped() {
-        // Handle the button tap here
+        let moreInfoVC = MoreInfoVC()
+        present(moreInfoVC, animated: true, completion: nil)
+        //navigationController?.pushViewController(moreInfoVC, animated: true)
         print("Right bar button tapped")
     }
 }
