@@ -9,6 +9,9 @@ import UIKit
 
 class MoreInfoView: UIView {
     
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    
     let heartImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "heart.fill")
@@ -93,11 +96,13 @@ class MoreInfoView: UIView {
     
     private func setupView() {
         setupGradientBackground()
-        addSubview(heartImageView)
-        addSubview(thankYouLabel)
-        addSubview(messageLabel)
-        addSubview(wallpaperButton)
-        addSubview(pixelPalsButton)
+        addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(heartImageView)
+        contentView.addSubview(thankYouLabel)
+        contentView.addSubview(messageLabel)
+        contentView.addSubview(wallpaperButton)
+        contentView.addSubview(pixelPalsButton)
         setupConstraints()
     }
     
@@ -114,29 +119,43 @@ class MoreInfoView: UIView {
     }
     
     private func setupConstraints() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
-            heartImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            heartImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            heartImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 20),
+            heartImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             heartImageView.widthAnchor.constraint(equalToConstant: 50),
             heartImageView.heightAnchor.constraint(equalToConstant: 50),
             
             thankYouLabel.topAnchor.constraint(equalTo: heartImageView.bottomAnchor, constant: 20),
-            thankYouLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            thankYouLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             
             messageLabel.topAnchor.constraint(equalTo: thankYouLabel.bottomAnchor, constant: 20),
-            messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
             wallpaperButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20),
-            wallpaperButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            wallpaperButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            wallpaperButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            wallpaperButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             wallpaperButton.heightAnchor.constraint(equalToConstant: 50),
             
             pixelPalsButton.topAnchor.constraint(equalTo: wallpaperButton.bottomAnchor, constant: 10),
-            pixelPalsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            pixelPalsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            pixelPalsButton.heightAnchor.constraint(equalToConstant: 50)
+            pixelPalsButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            pixelPalsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            pixelPalsButton.heightAnchor.constraint(equalToConstant: 50),
+            pixelPalsButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
         ])
     }
 }
-
