@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		E80102FA2C4F93CD008B9482 /* MoreInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80102F92C4F93CD008B9482 /* MoreInfoView.swift */; };
+		E801030A2C4FA386008B9482 /* FilterCategoryTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80103022C4FA386008B9482 /* FilterCategoryTVCell.swift */; };
+		E801030B2C4FA386008B9482 /* FilterCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80103032C4FA386008B9482 /* FilterCategoryView.swift */; };
+		E801030C2C4FA386008B9482 /* FilterDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80103042C4FA386008B9482 /* FilterDetailTableViewCell.swift */; };
+		E801030D2C4FA386008B9482 /* FilterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80103052C4FA386008B9482 /* FilterDetailView.swift */; };
+		E801030E2C4FA386008B9482 /* FilterLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80103062C4FA386008B9482 /* FilterLauncher.swift */; };
+		E801030F2C4FA386008B9482 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80103072C4FA386008B9482 /* FilterView.swift */; };
+		E80103112C4FA402008B9482 /* FilterDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80103102C4FA402008B9482 /* FilterDataModel.swift */; };
+		E80103132C4FA453008B9482 /* helperX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80103122C4FA453008B9482 /* helperX.swift */; };
 		E82FEAC72C359FEB008BAD04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAC62C359FEB008BAD04 /* AppDelegate.swift */; };
 		E82FEAC92C359FEB008BAD04 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAC82C359FEB008BAD04 /* SceneDelegate.swift */; };
 		E82FEAD12C359FEB008BAD04 /* Drawing_App.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E82FEACF2C359FEB008BAD04 /* Drawing_App.xcdatamodeld */; };
@@ -59,6 +67,14 @@
 
 /* Begin PBXFileReference section */
 		E80102F92C4F93CD008B9482 /* MoreInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfoView.swift; sourceTree = "<group>"; };
+		E80103022C4FA386008B9482 /* FilterCategoryTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCategoryTVCell.swift; sourceTree = "<group>"; };
+		E80103032C4FA386008B9482 /* FilterCategoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCategoryView.swift; sourceTree = "<group>"; };
+		E80103042C4FA386008B9482 /* FilterDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterDetailTableViewCell.swift; sourceTree = "<group>"; };
+		E80103052C4FA386008B9482 /* FilterDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterDetailView.swift; sourceTree = "<group>"; };
+		E80103062C4FA386008B9482 /* FilterLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterLauncher.swift; sourceTree = "<group>"; };
+		E80103072C4FA386008B9482 /* FilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		E80103102C4FA402008B9482 /* FilterDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterDataModel.swift; sourceTree = "<group>"; };
+		E80103122C4FA453008B9482 /* helperX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helperX.swift; sourceTree = "<group>"; };
 		E82FEAC32C359FEB008BAD04 /* Drawing App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Drawing App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E82FEAC62C359FEB008BAD04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E82FEAC82C359FEB008BAD04 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +145,38 @@
 			path = MoreInfoView;
 			sourceTree = "<group>";
 		};
+		E80102FB2C4F9F0C008B9482 /* AppBase */ = {
+			isa = PBXGroup;
+			children = (
+				E82FEAC62C359FEB008BAD04 /* AppDelegate.swift */,
+				E82FEAC82C359FEB008BAD04 /* SceneDelegate.swift */,
+			);
+			path = AppBase;
+			sourceTree = "<group>";
+		};
+		E80103082C4FA386008B9482 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E80103022C4FA386008B9482 /* FilterCategoryTVCell.swift */,
+				E80103032C4FA386008B9482 /* FilterCategoryView.swift */,
+				E80103042C4FA386008B9482 /* FilterDetailTableViewCell.swift */,
+				E80103052C4FA386008B9482 /* FilterDetailView.swift */,
+				E80103062C4FA386008B9482 /* FilterLauncher.swift */,
+				E80103072C4FA386008B9482 /* FilterView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E80103092C4FA386008B9482 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				E80103122C4FA453008B9482 /* helperX.swift */,
+				E80103102C4FA402008B9482 /* FilterDataModel.swift */,
+				E80103082C4FA386008B9482 /* Views */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
 		E82FEABA2C359FEA008BAD04 = {
 			isa = PBXGroup;
 			children = (
@@ -148,8 +196,7 @@
 		E82FEAC52C359FEB008BAD04 /* Drawing App */ = {
 			isa = PBXGroup;
 			children = (
-				E82FEAC62C359FEB008BAD04 /* AppDelegate.swift */,
-				E82FEAC82C359FEB008BAD04 /* SceneDelegate.swift */,
+				E80102FB2C4F9F0C008B9482 /* AppBase */,
 				E82FEADD2C35A220008BAD04 /* TabBar */,
 				E82FEAE02C35A259008BAD04 /* Helpers */,
 				E82FEAE32C35A287008BAD04 /* Model */,
@@ -260,6 +307,7 @@
 		E82FEB102C35A5FD008BAD04 /* X */ = {
 			isa = PBXGroup;
 			children = (
+				E80103092C4FA386008B9482 /* Filter */,
 				E82FEAF12C35A3AE008BAD04 /* OldLeftTableViewCell.swift */,
 				E82FEAEF2C35A371008BAD04 /* OldTableViewController.swift */,
 				E849FFFC2C3EEA7000F66865 /* ExperimentalTableViewC.swift */,
@@ -383,12 +431,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E801030F2C4FA386008B9482 /* FilterView.swift in Sources */,
 				E87194E42C403F0A006A79AA /* DottedBrush.swift in Sources */,
+				E801030C2C4FA386008B9482 /* FilterDetailTableViewCell.swift in Sources */,
+				E801030A2C4FA386008B9482 /* FilterCategoryTVCell.swift in Sources */,
+				E801030B2C4FA386008B9482 /* FilterCategoryView.swift in Sources */,
 				E82FEB072C35A572008BAD04 /* SimpleDrawController.swift in Sources */,
 				E82FEAE72C35A2A0008BAD04 /* Global.swift in Sources */,
 				E87194E62C403F15006A79AA /* ChalkBrush.swift in Sources */,
 				E82FEAFE2C35A4F3008BAD04 /* SimpleDrawCanvas.swift in Sources */,
 				E8461DC22C3ADBA000CBCC76 /* NoiseView.swift in Sources */,
+				E801030D2C4FA386008B9482 /* FilterDetailView.swift in Sources */,
 				E87194F22C403F57006A79AA /* WatercolorBrush.swift in Sources */,
 				E82FEAD12C359FEB008BAD04 /* Drawing_App.xcdatamodeld in Sources */,
 				E87194E82C403F1E006A79AA /* RustBrush.swift in Sources */,
@@ -400,6 +453,7 @@
 				E82FEADF2C35A22F008BAD04 /* CustomTabBarController.swift in Sources */,
 				E82FEAF22C35A3AE008BAD04 /* OldLeftTableViewCell.swift in Sources */,
 				E82FEAF42C35A3C6008BAD04 /* RightTableViewCell.swift in Sources */,
+				E801030E2C4FA386008B9482 /* FilterLauncher.swift in Sources */,
 				E849FFFF2C3EEAC600F66865 /* ExperimentalSimpleDrawController.swift in Sources */,
 				E85A94242C3D5DC00057AD8D /* Brush.swift in Sources */,
 				E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */,
@@ -410,6 +464,7 @@
 				E82FEAFB2C35A4A7008BAD04 /* PatternsArrayTableViewController.swift in Sources */,
 				E82FEAE52C35A294008BAD04 /* Page.swift in Sources */,
 				E8EF9A5B2C4D1FBF00FC9ABC /* Haptics.swift in Sources */,
+				E80103112C4FA402008B9482 /* FilterDataModel.swift in Sources */,
 				E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */,
 				E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */,
 				E87194EA2C403F27006A79AA /* SquareTextureBrush.swift in Sources */,
@@ -420,6 +475,7 @@
 				E8461DB92C3AABF800CBCC76 /* UIView+BlinkingAnimation.swift in Sources */,
 				E82FEAED2C35A327008BAD04 /* PageCell.swift in Sources */,
 				E82FEB122C35A609008BAD04 /* ColorPickerViewController.swift in Sources */,
+				E80103132C4FA453008B9482 /* helperX.swift in Sources */,
 				E87194F42C403F61006A79AA /* SplatterBrush.swift in Sources */,
 				E82FEAE92C35A2AB008BAD04 /* Line.swift in Sources */,
 				E82FEAC72C359FEB008BAD04 /* AppDelegate.swift in Sources */,

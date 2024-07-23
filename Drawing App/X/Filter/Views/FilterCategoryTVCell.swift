@@ -1,0 +1,71 @@
+//
+//  FilterCategoryTVCell.swift
+//  Drawing App
+//
+//  Created by Aidin Ahmadian on 05/02/22.
+//
+
+import UIKit
+
+class FilterCategoryTVCell: UITableViewCell {
+
+    // MARK: PROPERTIES -
+    
+    override var isSelected: Bool {
+        didSet {
+            cellLabel.textColor = isSelected ?  .black : .black.withAlphaComponent(0.4)
+            backgroundColor = isSelected ? .white : .clear
+        }
+    }
+    
+    let cellLabel: UILabel = {
+        let l = UILabel()
+        l.translatesAutoresizingMaskIntoConstraints = false
+        l.font = UIFont.boldSystemFont(ofSize: 14)
+        l.numberOfLines = 0
+        return l
+    }()
+    
+    let changeIndicator: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        v.layer.cornerRadius = 3
+        v.isHidden = true
+        return v
+    }()
+    
+    // MARK: MAIN -
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUpViews()
+        setUpConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: FUNCTIONS -
+    
+    func setUpViews(){
+        addSubview(cellLabel)
+        addSubview(changeIndicator)
+    }
+    
+    func setUpConstraints(){
+        NSLayoutConstraint.activate([
+            cellLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            cellLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            cellLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15),
+            cellLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
+            
+            changeIndicator.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            changeIndicator.heightAnchor.constraint(equalToConstant: 6),
+            changeIndicator.widthAnchor.constraint(equalToConstant: 6),
+            changeIndicator.topAnchor.constraint(equalTo: topAnchor, constant: 20)
+        ])
+    }
+
+}

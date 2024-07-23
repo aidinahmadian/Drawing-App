@@ -11,6 +11,8 @@ import Combine
 
 class ColorPickerViewController: UIViewController {
     
+    let filterLaucher = FilterLauncher()
+    
     private var gradientView: GradientView!
     private var cancellable: AnyCancellable?
     private var buttonGradientLayer: CAGradientLayer!
@@ -50,7 +52,8 @@ class ColorPickerViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.setTitleColor(.black, for: .normal)
-        button.addTarget(self, action: #selector(handleCP), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(handleCP), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didFilterBtnTapped), for: .touchUpInside)
         button.layer.cornerRadius = 10
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 5, height: 5)
@@ -78,6 +81,10 @@ class ColorPickerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tapToCopylabel.startBlink()
+    }
+    
+    @objc private func didFilterBtnTapped() {
+        filterLaucher.showFilter()
     }
     
     @objc private func handleCP() {
