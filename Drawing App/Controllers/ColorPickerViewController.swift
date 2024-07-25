@@ -52,8 +52,8 @@ class ColorPickerViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.setTitleColor(.black, for: .normal)
-        //button.addTarget(self, action: #selector(handleCP), for: .touchUpInside)
-        button.addTarget(self, action: #selector(didFilterBtnTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleCP), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(didFilterBtnTapped), for: .touchUpInside)
         button.layer.cornerRadius = 10
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 5, height: 5)

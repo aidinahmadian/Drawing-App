@@ -70,33 +70,35 @@ class PatternViewController: BaseDrawController {
         guard let view = self.view as? PatternView else { return }
 
         let items: [CGFloat] = [1.0, 2.0, 4.0, 8.0, 16.0]
+        let selectedValue = view.lineWidth
         let controller = ArrayChoiceTableViewController(
             items,
-            header: "Line width",
+            selectedValue: selectedValue,
+            header: "Line Width",
             labels: { (value: CGFloat) -> NSAttributedString in
                 let labelText = "\(value) points"
+                let attributedString = NSMutableAttributedString(string: labelText, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.darkGray])
+
                 if value == view.lineWidth {
                     let attachment = NSTextAttachment()
-                    if let checkmarkImage = UIImage(systemName: "checkmark.circle") {
-                        let tintedImage = checkmarkImage.withTintColor(#colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1), renderingMode: .alwaysOriginal)
+                    if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
+                        let tintedImage = checkmarkImage.withTintColor(UIColor.systemGreen, renderingMode: .alwaysOriginal)
                         attachment.image = tintedImage
                     }
-                    
+
                     let attachmentString = NSAttributedString(attachment: attachment)
-                    let attributedString = NSMutableAttributedString(string: labelText)
                     attributedString.append(NSAttributedString(string: " "))
                     attributedString.append(attachmentString)
-                    
-                    return attributedString
-                } else {
-                    return NSAttributedString(string: labelText)
                 }
+
+                return attributedString
             }
         ) { view.lineWidth = $0 }
 
         presentPopover(controller, sender: sender)
         generateHapticFeedback(.selection)
     }
+
 
     @objc private func handleColor(_ sender: UIBarButtonItem) {
         guard let view = view as? PatternView else { return }
@@ -111,33 +113,35 @@ class PatternViewController: BaseDrawController {
         guard let view = self.view as? PatternView else { return }
 
         let items: [Int] = [1, 2, 3, 4, 8, 16, 32]
+        let selectedValue = view.turns
         let controller = ArrayChoiceTableViewController(
             items,
+            selectedValue: selectedValue,
             header: "Brushes",
             labels: { (value: Int) -> NSAttributedString in
                 let labelText = "\(value)x"
+                let attributedString = NSMutableAttributedString(string: labelText, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.darkGray])
+
                 if value == view.turns {
                     let attachment = NSTextAttachment()
-                    if let checkmarkImage = UIImage(systemName: "checkmark.circle") {
-                        let tintedImage = checkmarkImage.withTintColor(#colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1), renderingMode: .alwaysOriginal)
+                    if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
+                        let tintedImage = checkmarkImage.withTintColor(UIColor.systemGreen, renderingMode: .alwaysOriginal)
                         attachment.image = tintedImage
                     }
-                    
+
                     let attachmentString = NSAttributedString(attachment: attachment)
-                    let attributedString = NSMutableAttributedString(string: labelText)
                     attributedString.append(NSAttributedString(string: " "))
                     attributedString.append(attachmentString)
-                    
-                    return attributedString
-                } else {
-                    return NSAttributedString(string: labelText)
                 }
+
+                return attributedString
             }
         ) { view.turns = $0 }
 
         presentPopover(controller, sender: sender)
         generateHapticFeedback(.selection)
     }
+
     
     @objc private func handleSave(_ sender: UIBarButtonItem) {
         guard let view = view as? PatternView, let image = view.getImage() else { return }

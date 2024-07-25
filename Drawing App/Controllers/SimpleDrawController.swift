@@ -82,39 +82,39 @@ class SimpleDrawController: BaseDrawController {
     }
     
     private func presentLineWidthPicker(sender: UIBarButtonItem) {
-        guard let view = view as? SimpleDrawCanvas else { return }
+            guard let view = view as? SimpleDrawCanvas else { return }
 
-        let items: [Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
-        let controller = ArrayChoiceTableViewController(
-            items,
-            header: "Line width",
-            labels: { (item: Float) -> NSAttributedString in
-                let labelText = "\(item) points"
-                if item == view.strokeWidth {
-                    let attachment = NSTextAttachment()
-                    if let checkmarkImage = UIImage(systemName: "checkmark.circle") {
-                        // Tint the checkmark image with color literal
-                        let tintedImage = checkmarkImage.withTintColor(#colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1), renderingMode: .alwaysOriginal)
-                        attachment.image = tintedImage
+            let items: [Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
+            let selectedValue = view.strokeWidth
+            let controller = ArrayChoiceTableViewController(
+                items,
+                selectedValue: selectedValue,
+                header: "Line Width",
+                labels: { (item: Float) -> NSAttributedString in
+                    let labelText = "\(item) points"
+                    let attributedString = NSMutableAttributedString(string: labelText, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.darkGray])
+
+                    if item == view.strokeWidth {
+                        let attachment = NSTextAttachment()
+                        if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
+                            let tintedImage = checkmarkImage.withTintColor(UIColor.systemGreen, renderingMode: .alwaysOriginal)
+                            attachment.image = tintedImage
+                        }
+
+                        let attachmentString = NSAttributedString(attachment: attachment)
+                        attributedString.append(NSAttributedString(string: " "))
+                        attributedString.append(attachmentString)
                     }
 
-                    let attachmentString = NSAttributedString(attachment: attachment)
-                    let attributedString = NSMutableAttributedString(string: labelText)
-                    attributedString.append(NSAttributedString(string: " "))
-                    attributedString.append(attachmentString)
-
                     return attributedString
-                } else {
-                    return NSAttributedString(string: labelText)
                 }
+            ) { value in
+                view.strokeWidth = value
             }
-        ) { value in
-            view.strokeWidth = value
-        }
 
-        presentPopover(controller, sender: sender)
-        generateHapticFeedback(.selection)
-    }
+            presentPopover(controller, sender: sender)
+            generateHapticFeedback(.selection)
+        }
     
     @objc private func colorButtonTapped(_ sender: UIBarButtonItem) {
         presentColorPicker(sender: sender)
