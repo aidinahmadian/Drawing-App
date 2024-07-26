@@ -31,7 +31,7 @@
 		E82FEAF42C35A3C6008BAD04 /* RightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF32C35A3C6008BAD04 /* RightTableViewCell.swift */; };
 		E82FEAF62C35A3E3008BAD04 /* TableViewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF52C35A3E3008BAD04 /* TableViewHeaderView.swift */; };
 		E82FEAF92C35A490008BAD04 /* PatternView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF82C35A490008BAD04 /* PatternView.swift */; };
-		E82FEAFB2C35A4A7008BAD04 /* PatternsArrayTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAFA2C35A4A7008BAD04 /* PatternsArrayTableViewController.swift */; };
+		E82FEAFB2C35A4A7008BAD04 /* ArrayChoiceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAFA2C35A4A7008BAD04 /* ArrayChoiceTableViewController.swift */; };
 		E82FEAFE2C35A4F3008BAD04 /* SimpleDrawCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAFD2C35A4F3008BAD04 /* SimpleDrawCanvas.swift */; };
 		E82FEB012C35A524008BAD04 /* SwipingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB002C35A524008BAD04 /* SwipingController.swift */; };
 		E82FEB032C35A544008BAD04 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEB022C35A544008BAD04 /* HomePageViewController.swift */; };
@@ -95,7 +95,7 @@
 		E82FEAF32C35A3C6008BAD04 /* RightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightTableViewCell.swift; sourceTree = "<group>"; };
 		E82FEAF52C35A3E3008BAD04 /* TableViewHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewHeaderView.swift; sourceTree = "<group>"; };
 		E82FEAF82C35A490008BAD04 /* PatternView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternView.swift; sourceTree = "<group>"; };
-		E82FEAFA2C35A4A7008BAD04 /* PatternsArrayTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatternsArrayTableViewController.swift; sourceTree = "<group>"; };
+		E82FEAFA2C35A4A7008BAD04 /* ArrayChoiceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayChoiceTableViewController.swift; sourceTree = "<group>"; };
 		E82FEAFD2C35A4F3008BAD04 /* SimpleDrawCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrawCanvas.swift; sourceTree = "<group>"; };
 		E82FEB002C35A524008BAD04 /* SwipingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingController.swift; sourceTree = "<group>"; };
 		E82FEB022C35A544008BAD04 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
@@ -283,7 +283,6 @@
 			isa = PBXGroup;
 			children = (
 				E82FEAF82C35A490008BAD04 /* PatternView.swift */,
-				E82FEAFA2C35A4A7008BAD04 /* PatternsArrayTableViewController.swift */,
 			);
 			path = DrawingPatternView;
 			sourceTree = "<group>";
@@ -320,6 +319,7 @@
 				E849FFFC2C3EEA7000F66865 /* ExperimentalTableViewC.swift */,
 				E849FFFE2C3EEAC600F66865 /* ExperimentalSimpleDrawController.swift */,
 				E8BF779D2C4C21BD00B761DD /* TextureDrawableBrush.swift */,
+				E82FEAFA2C35A4A7008BAD04 /* ArrayChoiceTableViewController.swift */,
 			);
 			path = X;
 			sourceTree = "<group>";
@@ -473,7 +473,7 @@
 				E80102FA2C4F93CD008B9482 /* MoreInfoView.swift in Sources */,
 				E86980AB2C4E626000DFCAB5 /* MoreInfoVC.swift in Sources */,
 				E82FEAF62C35A3E3008BAD04 /* TableViewHeaderView.swift in Sources */,
-				E82FEAFB2C35A4A7008BAD04 /* PatternsArrayTableViewController.swift in Sources */,
+				E82FEAFB2C35A4A7008BAD04 /* ArrayChoiceTableViewController.swift in Sources */,
 				E82FEAE52C35A294008BAD04 /* Page.swift in Sources */,
 				E8EF9A5B2C4D1FBF00FC9ABC /* Haptics.swift in Sources */,
 				E80103112C4FA402008B9482 /* FilterDataModel.swift in Sources */,

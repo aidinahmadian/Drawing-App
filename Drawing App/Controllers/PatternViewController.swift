@@ -16,6 +16,9 @@ class PatternViewController: BaseDrawController {
     private var navBarButtonItems: [UIBarButtonItem] = []
     private var titleView: UIView?
     
+    private var selectedLineWidth: CGFloat?
+    private var selectedTurn: Int?
+    
     // Lifecycle
     override func loadView() {
         view = patternView
@@ -47,22 +50,88 @@ class PatternViewController: BaseDrawController {
             self.handleUndo()
         }
         
+        let redoAction = UIAction(title: "Redo", image: UIImage(systemName: "arrow.uturn.forward.circle")) { _ in
+            self.handleRedo()
+        }
+        
         // Create a menu with the actions
-        let menu = UIMenu(title: "", children: [trashAction, undoAction])
+        let menu = UIMenu(title: "", children: [undoAction, redoAction, trashAction])
         
         // Create a bar button item with the menu
         let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark.bin"), menu: menu)
         
+        // Define line width picker menu
+        let lineWidthActions = createLineWidthActions()
+        let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
+        let lineWidthButton = UIBarButtonItem(image: UIImage(systemName: "pencil.tip"), menu: lineWidthMenu)
+        
+        // Define turn picker menu
+        let turnActions = createTurnActions()
+        let turnMenu = UIMenu(title: "Number of Lines", children: turnActions)
+        let turnButton = UIBarButtonItem(image: UIImage(systemName: "light.max"), menu: turnMenu)
+        
         // Define other bar button items
         let buttonItems = [
             cancelButton,
-            UIBarButtonItem(image: UIImage(systemName: "pencil.tip"), style: .plain, target: self, action: #selector(handleTip)),
+            lineWidthButton,
             UIBarButtonItem(image: UIImage(systemName: "paintbrush.fill"), style: .plain, target: self, action: #selector(handleColor)),
-            UIBarButtonItem(image: UIImage(systemName: "light.max"), style: .plain, target: self, action: #selector(handleTurn)),
+            turnButton,
             UIBarButtonItem(image: UIImage(systemName: "arrow.down.circle.fill"), style: .plain, target: self, action: #selector(handleSave))
         ]
         
         return buttonItems
+    }
+    
+    private func createLineWidthActions() -> [UIAction] {
+        let lineWidths: [CGFloat] = [1.0, 2.0, 4.0, 8.0, 16.0]
+        
+        return lineWidths.map { lineWidth in
+            let isSelected = lineWidth == selectedLineWidth
+            let action = UIAction(
+                title: "\(lineWidth) points",
+                image: isSelected ? UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal) : nil
+            ) { _ in
+                self.selectedLineWidth = lineWidth
+                self.patternView.lineWidth = lineWidth
+                self.updateLineWidthMenu()
+            }
+            return action
+        }
+    }
+    
+    private func createTurnActions() -> [UIAction] {
+        let turns: [Int] = [1, 2, 3, 4, 8, 16, 32]
+        
+        return turns.map { turn in
+            let isSelected = turn == selectedTurn
+            let action = UIAction(
+                title: "\(turn)x",
+                image: isSelected ? UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal) : nil
+            ) { _ in
+                self.selectedTurn = turn
+                self.patternView.turns = turn
+                self.updateTurnMenu()
+            }
+            return action
+        }
+    }
+    
+    private func updateLineWidthMenu() {
+        let lineWidthActions = createLineWidthActions()
+        let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
+        
+        if let lineWidthButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "pencil.tip") }) {
+            lineWidthButton.menu = lineWidthMenu
+        }
+    }
+    
+    private func updateTurnMenu() {
+        let turnActions = createTurnActions()
+        let turnMenu = UIMenu(title: "Number of Lines", children: turnActions)
+        
+        if let turnButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "light.max") }) {
+            turnButton.menu = turnMenu
+        }
     }
     
     @objc private func toggleNavBarButtons() {
@@ -100,7 +169,7 @@ class PatternViewController: BaseDrawController {
         let alert = UIAlertController(title: "Clear Canvas", message: "Are you sure you want to clear the canvas? This action cannot be undone.", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Clear", style: .destructive) { _ in
             generateHapticFeedback(.rigid)
-            (self.view as? PatternView)?.clear()
+            self.patternView.clear()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
@@ -110,43 +179,14 @@ class PatternViewController: BaseDrawController {
         present(alert, animated: true, completion: nil)
     }
     
-    
     @objc private func handleUndo() {
         generateHapticFeedback(.soft)
-        (view as? PatternView)?.undo()
+        patternView.undo()
     }
     
-    @objc private func handleTip(_ sender: UIBarButtonItem) {
-        guard let view = self.view as? PatternView else { return }
-        
-        let items: [CGFloat] = [1.0, 2.0, 4.0, 8.0, 16.0]
-        let selectedValue = view.lineWidth
-        let controller = ArrayChoiceTableViewController(
-            items,
-            selectedValue: selectedValue,
-            header: "Line Width",
-            labels: { (value: CGFloat) -> NSAttributedString in
-                let labelText = "\(value) points"
-                let attributedString = NSMutableAttributedString(string: labelText, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.darkGray])
-                
-                if value == view.lineWidth {
-                    let attachment = NSTextAttachment()
-                    if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
-                        let tintedImage = checkmarkImage.withTintColor(UIColor.systemGreen, renderingMode: .alwaysOriginal)
-                        attachment.image = tintedImage
-                    }
-                    
-                    let attachmentString = NSAttributedString(attachment: attachment)
-                    attributedString.append(NSAttributedString(string: " "))
-                    attributedString.append(attachmentString)
-                }
-                
-                return attributedString
-            }
-        ) { view.lineWidth = $0 }
-        
-        presentPopover(controller, sender: sender)
-        generateHapticFeedback(.selection)
+    @objc private func handleRedo() {
+        generateHapticFeedback(.soft)
+        patternView.redo()
     }
     
     @objc private func handleColor(_ sender: UIBarButtonItem) {
@@ -155,39 +195,6 @@ class PatternViewController: BaseDrawController {
         colorPicker.delegate = self
         colorPicker.selectedColor = view.lineColor
         present(colorPicker, animated: true)
-        generateHapticFeedback(.selection)
-    }
-    
-    @objc private func handleTurn(_ sender: UIBarButtonItem) {
-        guard let view = self.view as? PatternView else { return }
-        
-        let items: [Int] = [1, 2, 3, 4, 8, 16, 32]
-        let selectedValue = view.turns
-        let controller = ArrayChoiceTableViewController(
-            items,
-            selectedValue: selectedValue,
-            header: "Brushes",
-            labels: { (value: Int) -> NSAttributedString in
-                let labelText = "\(value)x"
-                let attributedString = NSMutableAttributedString(string: labelText, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.darkGray])
-                
-                if value == view.turns {
-                    let attachment = NSTextAttachment()
-                    if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
-                        let tintedImage = checkmarkImage.withTintColor(UIColor.systemGreen, renderingMode: .alwaysOriginal)
-                        attachment.image = tintedImage
-                    }
-                    
-                    let attachmentString = NSAttributedString(attachment: attachment)
-                    attributedString.append(NSAttributedString(string: " "))
-                    attributedString.append(attachmentString)
-                }
-                
-                return attributedString
-            }
-        ) { view.turns = $0 }
-        
-        presentPopover(controller, sender: sender)
         generateHapticFeedback(.selection)
     }
     
@@ -214,17 +221,11 @@ extension PatternViewController: UIColorPickerViewControllerDelegate {
         guard let view = self.view as? PatternView else { return }
         view.lineColor = viewController.selectedColor
         generateHapticFeedback(.selection)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            viewController.dismiss(animated: true, completion: nil)
-        }
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         guard let view = self.view as? PatternView else { return }
         view.lineColor = viewController.selectedColor
         generateHapticFeedback(.selection)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            viewController.dismiss(animated: true, completion: nil)
-        }
     }
 }

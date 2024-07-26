@@ -18,6 +18,9 @@ class SimpleDrawController: BaseDrawController {
     private var titleView: UIView?
     private var gridButton: UIBarButtonItem?
     
+    private var selectedBrushTitle: String?
+    private var selectedLineWidth: Float?
+    
     // MARK: - Lifecycle Methods
     override func loadView() {
         view = canvas
@@ -68,22 +71,102 @@ class SimpleDrawController: BaseDrawController {
         }
         
         // Create a menu with the actions
-        let menu = UIMenu(title: "", children: [trashAction, undoAction, redoAction])
+        let menu = UIMenu(title: "", children: [undoAction, redoAction, trashAction])
         
         // Create a bar button item with the menu
         let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark.bin"), menu: menu)
+        
+        // Define brush picker menu
+        let brushActions = createBrushActions()
+        let brushMenu = UIMenu(title: "Select Brush", children: brushActions)
+        let brushButton = UIBarButtonItem(image: UIImage(systemName: "scribble.variable"), menu: brushMenu)
+        
+        // Define line width picker menu
+        let lineWidthActions = createLineWidthActions()
+        let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
+        let lineWidthButton = UIBarButtonItem(image: UIImage(systemName: "pencil.tip"), menu: lineWidthMenu)
         
         // Define other bar button items
         gridButton = UIBarButtonItem(image: UIImage(systemName: "grid.circle"), style: .plain, target: self, action: #selector(toggleGrid))
         let buttonItems = [
             cancelButton,
-            UIBarButtonItem(image: UIImage(systemName: "pencil.tip"), style: .plain, target: self, action: #selector(tipButtonTapped)),
+            lineWidthButton,
             UIBarButtonItem(image: UIImage(systemName: "paintbrush.fill"), style: .plain, target: self, action: #selector(colorButtonTapped)),
-            UIBarButtonItem(image: UIImage(systemName: "scribble.variable"), style: .plain, target: self, action: #selector(brushButtonTapped)),
+            brushButton,
             gridButton!
         ]
         
         return buttonItems
+    }
+    
+    private func createBrushActions() -> [UIAction] {
+        let brushes: [(String, Brush)] = [
+            ("Line", LineBrush()),
+            ("Straight Line", StraightLineBrush()),
+            ("Circle", CircleBrush()),
+            ("Dotted", DottedBrush()),
+            ("Chalk", ChalkBrush()),
+            ("Rust", RustBrush()),
+            ("Square Texture", SquareTextureBrush()),
+            ("Pencil", PencilBrush()),
+            ("Charcoal", CharcoalBrush()),
+            ("Pastel", PastelBrush()),
+            ("Watercolor", WatercolorBrush()),
+            ("Splatter", SplatterBrush()),
+            ("Ink", InkBrush())
+        ]
+        
+        return brushes.map { brush in
+            let isSelected = brush.0 == selectedBrushTitle
+            let attributes: UIMenuElement.Attributes = isSelected ? .disabled : []
+            let action = UIAction(
+                title: brush.0,
+                image: isSelected ? UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal) : nil,
+                attributes: attributes
+            ) { _ in
+                self.selectedBrushTitle = brush.0
+                self.canvas.setBrush(brush.1)
+                self.updateBrushMenu()
+            }
+            return action
+        }
+    }
+    
+    private func createLineWidthActions() -> [UIAction] {
+        let lineWidths: [Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
+        
+        return lineWidths.map { lineWidth in
+            let isSelected = lineWidth == selectedLineWidth
+            let attributes: UIMenuElement.Attributes = isSelected ? .disabled : []
+            let action = UIAction(
+                title: "\(lineWidth) points",
+                image: isSelected ? UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal) : nil,
+                attributes: attributes
+            ) { _ in
+                self.selectedLineWidth = lineWidth
+                self.canvas.strokeWidth = lineWidth
+                self.updateLineWidthMenu()
+            }
+            return action
+        }
+    }
+    
+    private func updateBrushMenu() {
+        let brushActions = createBrushActions()
+        let brushMenu = UIMenu(title: "Select Brush", children: brushActions)
+        
+        if let brushButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "scribble.variable") }) {
+            brushButton.menu = brushMenu
+        }
+    }
+    
+    private func updateLineWidthMenu() {
+        let lineWidthActions = createLineWidthActions()
+        let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
+        
+        if let lineWidthButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "pencil.tip") }) {
+            lineWidthButton.menu = lineWidthMenu
+        }
     }
     
     override func setupNavigationBarTitle(title: String) {
@@ -152,56 +235,12 @@ class SimpleDrawController: BaseDrawController {
         gridButton?.image = UIImage(systemName: gridImageName)
     }
     
-    @objc private func tipButtonTapped(_ sender: UIBarButtonItem) {
-        presentLineWidthPicker(sender: sender)
-    }
-    
     @objc private func colorButtonTapped(_ sender: UIBarButtonItem) {
         presentColorPicker(sender: sender)
         generateHapticFeedback(.selection)
     }
     
-    @objc private func brushButtonTapped(_ sender: UIBarButtonItem) {
-        presentBrushPicker(sender: sender)
-        generateHapticFeedback(.selection)
-    }
-    
     // MARK: - Helper Methods
-    private func presentLineWidthPicker(sender: UIBarButtonItem) {
-        guard let view = view as? SimpleDrawCanvas else { return }
-        
-        let items: [Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
-        let selectedValue = view.strokeWidth
-        let controller = ArrayChoiceTableViewController(
-            items,
-            selectedValue: selectedValue,
-            header: "Line Width",
-            labels: { (item: Float) -> NSAttributedString in
-                let labelText = "\(item) points"
-                let attributedString = NSMutableAttributedString(string: labelText, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.darkGray])
-                
-                if item == view.strokeWidth {
-                    let attachment = NSTextAttachment()
-                    if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
-                        let tintedImage = checkmarkImage.withTintColor(UIColor.systemGreen, renderingMode: .alwaysOriginal)
-                        attachment.image = tintedImage
-                    }
-                    
-                    let attachmentString = NSAttributedString(attachment: attachment)
-                    attributedString.append(NSAttributedString(string: " "))
-                    attributedString.append(attachmentString)
-                }
-                
-                return attributedString
-            }
-        ) { value in
-            view.strokeWidth = value
-        }
-        
-        presentPopover(controller, sender: sender)
-        generateHapticFeedback(.selection)
-    }
-    
     private func presentColorPicker(sender: UIBarButtonItem) {
         guard let view = view as? SimpleDrawCanvas else { return }
         
@@ -210,37 +249,6 @@ class SimpleDrawController: BaseDrawController {
         colorPicker.selectedColor = view.strokeColor
         present(colorPicker, animated: true, completion: nil)
     }
-    
-    private func presentBrushPicker(sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Select Brush", message: nil, preferredStyle: .actionSheet)
-        
-        let brushes: [(String, Brush)] = [
-            ("Line", LineBrush()),
-            ("Straight Line", StraightLineBrush()),
-            ("Circle", CircleBrush()),
-            ("Dotted", DottedBrush()),
-            ("Chalk", ChalkBrush()),
-            ("Rust", RustBrush()),
-            ("Square Texture", SquareTextureBrush()),
-            ("Pencil", PencilBrush()),
-            ("Charcoal", CharcoalBrush()),
-            ("Pastel", PastelBrush()),
-            ("Watercolor", WatercolorBrush()),
-            ("Splatter", SplatterBrush()),
-            ("Ink", InkBrush())
-        ]
-        
-        brushes.forEach { brush in
-            alert.addAction(UIAlertAction(title: brush.0, style: .default) { _ in
-                self.canvas.setBrush(brush.1)
-            })
-        }
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
-        generateHapticFeedback(.selection)
-    }
-    
 }
 
 // MARK: - UIColorPickerViewControllerDelegate
@@ -248,17 +256,11 @@ extension SimpleDrawController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         updateCanvasColor(with: viewController.selectedColor)
         generateHapticFeedback(.selection)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            viewController.dismiss(animated: true, completion: nil)
-        }
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         updateCanvasColor(with: viewController.selectedColor)
         generateHapticFeedback(.selection)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            viewController.dismiss(animated: true, completion: nil)
-        }
     }
     
     private func updateCanvasColor(with color: UIColor) {

@@ -15,8 +15,9 @@ class PatternView: UIView {
     
     static let viewWasTouched = "viewWasTouched"
     
-    // Add an array to keep track of the drawing states
+    // Add arrays to keep track of the drawing states for undo and redo
     var undoStack: [UIImage] = []
+    var redoStack: [UIImage] = []
     var currentImage: UIImage?
     
     lazy var bitmapCtx: CGContext? = {
@@ -43,6 +44,8 @@ class PatternView: UIView {
     func clear() {
         guard let ctx = bitmapCtx else { return }
         ctx.fill(self.bounds)
+        undoStack.removeAll()
+        redoStack.removeAll()
         setNeedsDisplay()
     }
     
@@ -51,13 +54,36 @@ class PatternView: UIView {
     func undo() {
         guard !undoStack.isEmpty else { return }
         
-        // Restore the previous state
+        if let currentImage = getImage() {
+            redoStack.append(currentImage)
+        }
+        
         let previousImage = undoStack.removeLast()
         guard let ctx = bitmapCtx else { return }
         
         ctx.saveGState()
         ctx.setBlendMode(.copy)
         ctx.draw(previousImage.cgImage!, in: self.bounds)
+        ctx.restoreGState()
+        
+        setNeedsDisplay()
+    }
+    
+    //MARK: - Redo Functionality
+    
+    func redo() {
+        guard !redoStack.isEmpty else { return }
+        
+        if let currentImage = getImage() {
+            undoStack.append(currentImage)
+        }
+        
+        let nextImage = redoStack.removeLast()
+        guard let ctx = bitmapCtx else { return }
+        
+        ctx.saveGState()
+        ctx.setBlendMode(.copy)
+        ctx.draw(nextImage.cgImage!, in: self.bounds)
         ctx.restoreGState()
         
         setNeedsDisplay()
@@ -129,6 +155,7 @@ class PatternView: UIView {
         if let image = currentImage {
             undoStack.append(image)
             currentImage = nil
+            redoStack.removeAll()
         }
     }
     
