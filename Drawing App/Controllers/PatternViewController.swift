@@ -12,6 +12,9 @@ class PatternViewController: BaseDrawController {
     
     // Properties
     private let patternView = PatternView()
+    private var areNavBarButtonsExpanded = false
+    private var navBarButtonItems: [UIBarButtonItem] = []
+    private var titleView: UIView?
     
     // Lifecycle
     override func loadView() {
@@ -28,6 +31,13 @@ class PatternViewController: BaseDrawController {
     
     // Setup Methods
     override func setupNavBarButtons() {
+        let expandButton = UIBarButtonItem(image: UIImage(systemName: "rectangle.stack.badge.plus"), style: .plain, target: self, action: #selector(toggleNavBarButtons))
+        
+        navigationItem.rightBarButtonItems = [expandButton]
+        navBarButtonItems = createNavBarButtonItems()
+    }
+    
+    private func createNavBarButtonItems() -> [UIBarButtonItem] {
         // Define actions for the dropdown menu
         let trashAction = UIAction(title: "Trash", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
             self.handleClear()
@@ -41,8 +51,8 @@ class PatternViewController: BaseDrawController {
         let menu = UIMenu(title: "", children: [trashAction, undoAction])
         
         // Create a bar button item with the menu
-        let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark.circle"), menu: menu)
-
+        let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark.bin"), menu: menu)
+        
         // Define other bar button items
         let buttonItems = [
             cancelButton,
@@ -52,14 +62,54 @@ class PatternViewController: BaseDrawController {
             UIBarButtonItem(image: UIImage(systemName: "arrow.down.circle.fill"), style: .plain, target: self, action: #selector(handleSave))
         ]
         
-        navigationItem.rightBarButtonItems = buttonItems
+        return buttonItems
     }
     
-    // Action Methods
-    @objc private func handleClear() {
-        generateHapticFeedback(.rigid)
-        (view as? PatternView)?.clear()
+    @objc private func toggleNavBarButtons() {
+        NavBarAnimationManager.toggleNavBarButtons(for: self, navBarButtonItems: navBarButtonItems, areNavBarButtonsExpanded: areNavBarButtonsExpanded, titleView: titleView) { expanded in
+            self.areNavBarButtonsExpanded = expanded
+        }
     }
+    
+    // Override the setupNavigationBarTitle method to keep a reference to the title view
+    override func setupNavigationBarTitle(title: String) {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = title
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        titleLabel.textAlignment = .left
+        titleLabel.textColor = .black
+        
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(titleLabel)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+        ])
+        
+        let leftItem = UIBarButtonItem(customView: containerView)
+        navigationItem.leftBarButtonItem = leftItem
+        
+        titleView = containerView // Keep a reference to the title view
+    }
+    
+    @objc private func handleClear() {
+        let alert = UIAlertController(title: "Clear Canvas", message: "Are you sure you want to clear the canvas? This action cannot be undone.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Clear", style: .destructive) { _ in
+            generateHapticFeedback(.rigid)
+            (self.view as? PatternView)?.clear()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     @objc private func handleUndo() {
         generateHapticFeedback(.soft)
@@ -68,7 +118,7 @@ class PatternViewController: BaseDrawController {
     
     @objc private func handleTip(_ sender: UIBarButtonItem) {
         guard let view = self.view as? PatternView else { return }
-
+        
         let items: [CGFloat] = [1.0, 2.0, 4.0, 8.0, 16.0]
         let selectedValue = view.lineWidth
         let controller = ArrayChoiceTableViewController(
@@ -78,28 +128,27 @@ class PatternViewController: BaseDrawController {
             labels: { (value: CGFloat) -> NSAttributedString in
                 let labelText = "\(value) points"
                 let attributedString = NSMutableAttributedString(string: labelText, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.darkGray])
-
+                
                 if value == view.lineWidth {
                     let attachment = NSTextAttachment()
                     if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
                         let tintedImage = checkmarkImage.withTintColor(UIColor.systemGreen, renderingMode: .alwaysOriginal)
                         attachment.image = tintedImage
                     }
-
+                    
                     let attachmentString = NSAttributedString(attachment: attachment)
                     attributedString.append(NSAttributedString(string: " "))
                     attributedString.append(attachmentString)
                 }
-
+                
                 return attributedString
             }
         ) { view.lineWidth = $0 }
-
+        
         presentPopover(controller, sender: sender)
         generateHapticFeedback(.selection)
     }
-
-
+    
     @objc private func handleColor(_ sender: UIBarButtonItem) {
         guard let view = view as? PatternView else { return }
         let colorPicker = UIColorPickerViewController()
@@ -111,7 +160,7 @@ class PatternViewController: BaseDrawController {
     
     @objc private func handleTurn(_ sender: UIBarButtonItem) {
         guard let view = self.view as? PatternView else { return }
-
+        
         let items: [Int] = [1, 2, 3, 4, 8, 16, 32]
         let selectedValue = view.turns
         let controller = ArrayChoiceTableViewController(
@@ -121,27 +170,26 @@ class PatternViewController: BaseDrawController {
             labels: { (value: Int) -> NSAttributedString in
                 let labelText = "\(value)x"
                 let attributedString = NSMutableAttributedString(string: labelText, attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.darkGray])
-
+                
                 if value == view.turns {
                     let attachment = NSTextAttachment()
                     if let checkmarkImage = UIImage(systemName: "checkmark.circle.fill") {
                         let tintedImage = checkmarkImage.withTintColor(UIColor.systemGreen, renderingMode: .alwaysOriginal)
                         attachment.image = tintedImage
                     }
-
+                    
                     let attachmentString = NSAttributedString(attachment: attachment)
                     attributedString.append(NSAttributedString(string: " "))
                     attributedString.append(attachmentString)
                 }
-
+                
                 return attributedString
             }
         ) { view.turns = $0 }
-
+        
         presentPopover(controller, sender: sender)
         generateHapticFeedback(.selection)
     }
-
     
     @objc private func handleSave(_ sender: UIBarButtonItem) {
         guard let view = view as? PatternView, let image = view.getImage() else { return }
@@ -167,8 +215,8 @@ extension PatternViewController: UIColorPickerViewControllerDelegate {
         view.lineColor = viewController.selectedColor
         generateHapticFeedback(.selection)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    viewController.dismiss(animated: true, completion: nil)
-                }
+            viewController.dismiss(animated: true, completion: nil)
+        }
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
@@ -176,7 +224,7 @@ extension PatternViewController: UIColorPickerViewControllerDelegate {
         view.lineColor = viewController.selectedColor
         generateHapticFeedback(.selection)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    viewController.dismiss(animated: true, completion: nil)
-                }
+            viewController.dismiss(animated: true, completion: nil)
+        }
     }
 }

@@ -62,6 +62,9 @@
 		E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */; };
 		E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670132C380DEB00F1CE33 /* TableViewController.swift */; };
 		E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */; };
+		E8ECBE1E2C53A7FD00A93AD6 /* StraightLineBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */; };
+		E8ECBE202C53AA1000A93AD6 /* CircleBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE1F2C53AA1000A93AD6 /* CircleBrush.swift */; };
+		E8ECBE262C53CD2D00A93AD6 /* NavBarAnimationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE252C53CD2D00A93AD6 /* NavBarAnimationManager.swift */; };
 		E8EF9A5B2C4D1FBF00FC9ABC /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EF9A5A2C4D1FBF00FC9ABC /* Haptics.swift */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +126,9 @@
 		E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
 		E8E670132C380DEB00F1CE33 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushDetailsViewController.swift; sourceTree = "<group>"; };
+		E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraightLineBrush.swift; sourceTree = "<group>"; };
+		E8ECBE1F2C53AA1000A93AD6 /* CircleBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBrush.swift; sourceTree = "<group>"; };
+		E8ECBE252C53CD2D00A93AD6 /* NavBarAnimationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarAnimationManager.swift; sourceTree = "<group>"; };
 		E8EF9A5A2C4D1FBF00FC9ABC /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				E8EF9A5A2C4D1FBF00FC9ABC /* Haptics.swift */,
+				E8ECBE252C53CD2D00A93AD6 /* NavBarAnimationManager.swift */,
 				E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */,
 				E8461DB82C3AABF800CBCC76 /* UIView+BlinkingAnimation.swift */,
 				E87194DE2C403EAE006A79AA /* Brushes */,
@@ -347,6 +354,8 @@
 			isa = PBXGroup;
 			children = (
 				E87194E12C403EFE006A79AA /* LineBrush.swift */,
+				E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */,
+				E8ECBE1F2C53AA1000A93AD6 /* CircleBrush.swift */,
 				E87194E32C403F0A006A79AA /* DottedBrush.swift */,
 				E87194E52C403F15006A79AA /* ChalkBrush.swift */,
 				E87194E72C403F1E006A79AA /* RustBrush.swift */,
@@ -432,6 +441,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E801030F2C4FA386008B9482 /* FilterView.swift in Sources */,
+				E8ECBE1E2C53A7FD00A93AD6 /* StraightLineBrush.swift in Sources */,
 				E87194E42C403F0A006A79AA /* DottedBrush.swift in Sources */,
 				E801030C2C4FA386008B9482 /* FilterDetailTableViewCell.swift in Sources */,
 				E801030A2C4FA386008B9482 /* FilterCategoryTVCell.swift in Sources */,
@@ -440,6 +450,7 @@
 				E82FEAE72C35A2A0008BAD04 /* Global.swift in Sources */,
 				E87194E62C403F15006A79AA /* ChalkBrush.swift in Sources */,
 				E82FEAFE2C35A4F3008BAD04 /* SimpleDrawCanvas.swift in Sources */,
+				E8ECBE262C53CD2D00A93AD6 /* NavBarAnimationManager.swift in Sources */,
 				E8461DC22C3ADBA000CBCC76 /* NoiseView.swift in Sources */,
 				E801030D2C4FA386008B9482 /* FilterDetailView.swift in Sources */,
 				E87194F22C403F57006A79AA /* WatercolorBrush.swift in Sources */,
@@ -448,6 +459,7 @@
 				E87194F02C403F49006A79AA /* PastelBrush.swift in Sources */,
 				E849FFFD2C3EEA7000F66865 /* ExperimentalTableViewC.swift in Sources */,
 				E87194EE2C403F3D006A79AA /* CharcoalBrush.swift in Sources */,
+				E8ECBE202C53AA1000A93AD6 /* CircleBrush.swift in Sources */,
 				E87194E22C403EFE006A79AA /* LineBrush.swift in Sources */,
 				E8BF779A2C4B90F000B761DD /* BaseDrawController.swift in Sources */,
 				E82FEADF2C35A22F008BAD04 /* CustomTabBarController.swift in Sources */,
