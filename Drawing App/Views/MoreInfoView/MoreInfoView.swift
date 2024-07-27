@@ -107,7 +107,8 @@ class MoreInfoView: UIView {
     }
     
     private func setupGradientBackground() {
-        gradientLayer.colors = [#colorLiteral(red: 0.6807965636, green: 0.6584963202, blue: 0.9920480847, alpha: 1).cgColor, #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor]
+        //gradientLayer.colors = [#colorLiteral(red: 0.6807965636, green: 0.6584963202, blue: 0.9920480847, alpha: 1).cgColor, #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor]
+        gradientLayer.colors = [#colorLiteral(red: 0.8549019608, green: 0.8862745098, blue: 0.9725490196, alpha: 1).cgColor, #colorLiteral(red: 0.8392156863, green: 0.6431372549, blue: 0.6431372549, alpha: 1).cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0.7, y: 0.7)
         layer.insertSublayer(gradientLayer, at: 0)

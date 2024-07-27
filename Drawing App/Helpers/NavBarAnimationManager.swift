@@ -11,45 +11,43 @@ class NavBarAnimationManager {
     
     static func toggleNavBarButtons(for controller: UIViewController, navBarButtonItems: [UIBarButtonItem], areNavBarButtonsExpanded: Bool, titleView: UIView?, completion: @escaping (Bool) -> Void) {
         let expanded = !areNavBarButtonsExpanded
-        
-        // Update the expand button icon immediately based on the state
         let expandButtonIcon = expanded ? UIImage(systemName: "arrow.up.right.circle.fill") : UIImage(systemName: "rectangle.stack.badge.plus")
-        controller.navigationItem.rightBarButtonItems?.first?.image = expandButtonIcon
         
-        // Flip animation for the navigation bar
-        UIView.transition(with: controller.navigationController!.navigationBar, duration: 0.4, options: .transitionFlipFromTop, animations: {
-            
+        guard let navigationBar = controller.navigationController?.navigationBar else {
+            completion(false)
+            return
+        }
+        
+        controller.navigationItem.rightBarButtonItems?.first?.image = expandButtonIcon
+        let transitionOptions: UIView.AnimationOptions = expanded ? .transitionFlipFromTop : .transitionCrossDissolve
+        
+        UIView.transition(with: navigationBar, duration: 0.4, options: transitionOptions, animations: {
             if expanded {
                 controller.navigationItem.rightBarButtonItems?.append(contentsOf: navBarButtonItems)
                 navBarButtonItems.forEach { button in
                     button.customView?.alpha = 0
-                    button.customView?.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+                    button.customView?.transform = CGAffineTransform(translationX: 50, y: 0)
                 }
-                titleView?.alpha = 0
-                titleView?.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
             } else {
                 controller.navigationItem.rightBarButtonItems = [controller.navigationItem.rightBarButtonItems?.first].compactMap { $0 }
             }
-            
         }) { _ in
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
-                
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: .curveEaseInOut, animations: {
                 navBarButtonItems.forEach { button in
                     button.customView?.alpha = expanded ? 1 : 0
-                    button.customView?.transform = expanded ? .identity : CGAffineTransform(scaleX: 0.5, y: 0.5)
+                    button.customView?.transform = expanded ? .identity : CGAffineTransform(translationX: 50, y: 0)
                 }
-                
-                titleView?.alpha = expanded ? 0 : 1
-                titleView?.transform = expanded ? CGAffineTransform(scaleX: 0.5, y: 0.5) : .identity
-                
-                // Update the expand button icon rotation
-                controller.navigationItem.rightBarButtonItems?.first?.customView?.transform = expanded ? CGAffineTransform(rotationAngle: .pi) : .identity
-                
+                controller.navigationItem.rightBarButtonItems?.first?.customView?.transform = expanded ? CGAffineTransform(rotationAngle: .pi / 4) : .identity
             }) { _ in
                 completion(expanded)
             }
         }
         
-        generateHapticFeedback(.selection)
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+            titleView?.alpha = expanded ? 0 : 1
+            titleView?.transform = expanded ? CGAffineTransform(scaleX: 0.9, y: 0.9) : .identity
+        })
+        
+        generateHapticFeedback(.rigid)
     }
 }

@@ -88,6 +88,7 @@ class SimpleDrawController: BaseDrawController {
         
         // Define other bar button items
         gridButton = UIBarButtonItem(image: UIImage(systemName: "grid.circle"), style: .plain, target: self, action: #selector(toggleGrid))
+        
         let buttonItems = [
             cancelButton,
             lineWidthButton,
@@ -99,11 +100,11 @@ class SimpleDrawController: BaseDrawController {
         return buttonItems
     }
     
-    private func createBrushActions() -> [UIAction] {
+    private func createBrushActions() -> [UIMenuElement] {
         let brushes: [(String, Brush)] = [
             ("Line", LineBrush()),
             ("Straight Line", StraightLineBrush()),
-            ("Circle", CircleBrush()),
+            ("Oval", OvalBrush()),
             ("Dotted", DottedBrush()),
             ("Chalk", ChalkBrush()),
             ("Rust", RustBrush()),
@@ -113,13 +114,24 @@ class SimpleDrawController: BaseDrawController {
             ("Pastel", PastelBrush()),
             ("Watercolor", WatercolorBrush()),
             ("Splatter", SplatterBrush()),
-            ("Ink", InkBrush())
+            ("Ink", InkBrush()),
+            ("Rectangle", RectangleBrush()),
+            ("Star", StarBrush()),
+            ("Arrow", ArrowBrush()),
+            ("Hexagon", HexagonBrush()),
+            ("Triangle", TriangleBrush()),
+            ("Spiral", SpiralBrush()),
         ]
+
+        // Separate shape brushes
+        let shapeBrushes = brushes.filter { ["Arrow" ,"Oval", "Rectangle", "Star", "Hexagon", "Triangle", "Heart", "Spiral"].contains($0.0) }
+        let otherBrushes = brushes.filter { !["Arrow", "Oval", "Rectangle", "Star", "Hexagon", "Triangle", "Heart", "Spiral"].contains($0.0) }
         
-        return brushes.map { brush in
+        // Create actions for shape brushes
+        let shapeActions = shapeBrushes.map { brush in
             let isSelected = brush.0 == selectedBrushTitle
             let attributes: UIMenuElement.Attributes = isSelected ? .disabled : []
-            let action = UIAction(
+            return UIAction(
                 title: brush.0,
                 image: isSelected ? UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal) : nil,
                 attributes: attributes
@@ -128,8 +140,28 @@ class SimpleDrawController: BaseDrawController {
                 self.canvas.setBrush(brush.1)
                 self.updateBrushMenu()
             }
-            return action
         }
+
+        // Create shapes submenu
+        let shapesMenu = UIMenu(title: "Shapes", children: shapeActions)
+        
+        // Create actions for other brushes
+        let otherActions = otherBrushes.map { brush in
+            let isSelected = brush.0 == selectedBrushTitle
+            let attributes: UIMenuElement.Attributes = isSelected ? .disabled : []
+            return UIAction(
+                title: brush.0,
+                image: isSelected ? UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal) : nil,
+                attributes: attributes
+            ) { _ in
+                self.selectedBrushTitle = brush.0
+                self.canvas.setBrush(brush.1)
+                self.updateBrushMenu()
+            }
+        }
+
+        // Combine shapes submenu and other actions
+        return [shapesMenu] + otherActions
     }
     
     private func createLineWidthActions() -> [UIAction] {

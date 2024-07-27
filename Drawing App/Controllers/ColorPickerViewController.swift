@@ -91,7 +91,7 @@ class ColorPickerViewController: UIViewController {
         let picker = UIColorPickerViewController()
         picker.selectedColor = .white
         picker.delegate = self
-        picker.modalPresentationStyle = .popover
+        picker.modalPresentationStyle = .fullScreen
         
         cancellable = picker.publisher(for: \.selectedColor)
             .receive(on: DispatchQueue.main)
@@ -232,12 +232,12 @@ extension ColorPickerViewController: UIColorPickerViewControllerDelegate {
         generateHapticFeedback(.selection)
         
         // Add a slight delay before dismissing to ensure a smoother animation
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            self?.dismiss(animated: true, completion: {
-                self?.cancellable?.cancel()
-                print(self?.cancellable == nil)
-            })
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+//            self?.dismiss(animated: true, completion: {
+//                self?.cancellable?.cancel()
+//                print(self?.cancellable == nil)
+//            })
+//        }
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
@@ -245,11 +245,11 @@ extension ColorPickerViewController: UIColorPickerViewControllerDelegate {
         generateHapticFeedback(.selection)
         
         // Add a slight delay before dismissing to ensure a smoother animation
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            self?.dismiss(animated: true, completion: {
-                self?.cancellable?.cancel()
-                print(self?.cancellable == nil)
-            })
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+//            self?.dismiss(animated: true, completion: {
+//                self?.cancellable?.cancel()
+//                print(self?.cancellable == nil)
+//            })
+//        }
     }
 }
