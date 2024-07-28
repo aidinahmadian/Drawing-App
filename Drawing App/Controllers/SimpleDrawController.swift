@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SimpleDrawController: BaseDrawController {
+class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     
     // Properties
     private let canvas = SimpleDrawCanvas()
@@ -160,8 +160,13 @@ class SimpleDrawController: BaseDrawController {
             }
         }
 
-        // Combine shapes submenu and other actions
-        return [shapesMenu] + otherActions
+        // Create action for "Custom Brushes"
+        let customBrushAction = UIAction(title: "Custom Brushes", image: UIImage(systemName: "list.dash")) { _ in
+            self.openTableViewController()
+        }
+
+        // Combine shapes submenu, other actions, and custom brushes action
+        return [shapesMenu] + otherActions + [customBrushAction]
     }
     
     private func createLineWidthActions() -> [UIAction] {
@@ -271,6 +276,21 @@ class SimpleDrawController: BaseDrawController {
         presentColorPicker(sender: sender)
         generateHapticFeedback(.selection)
     }
+    
+    // MARK: - New Action Method
+    @objc func openTableViewController(_ sender: UIBarButtonItem? = nil) {
+        let tableViewController = TableViewController()
+        tableViewController.canvas = self.canvas // Pass the canvas instance
+        tableViewController.delegate = self // Set the delegate
+        let navController = UINavigationController(rootViewController: tableViewController)
+        present(navController, animated: true, completion: nil)
+    }
+    
+    // MARK: - BrushSelectionDelegate Method
+    func didSelectBrush(_ brush: Brush) {
+            canvas.setBrush(brush)
+            print("Selected brush: \(brush)")
+        }
     
     // MARK: - Helper Methods
     private func presentColorPicker(sender: UIBarButtonItem) {

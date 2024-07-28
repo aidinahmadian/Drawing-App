@@ -17,6 +17,9 @@ class SimpleDrawCanvas: UIView {
     static let viewWasTouched = "viewWasTouched"
     var lastPoint = CGPoint.zero
     
+    // Cached image to store the drawn content
+    private var cachedImage: UIImage?
+    
     // MARK: - Setup Functions
     
     func setStrokeWidth(width: Float) {
@@ -34,6 +37,7 @@ class SimpleDrawCanvas: UIView {
     func undo() {
         if let lastLine = lines.popLast() {
             redoLines.append(lastLine)
+            updateCachedImage()
             setNeedsDisplay()
         }
     }
@@ -41,6 +45,7 @@ class SimpleDrawCanvas: UIView {
     func redo() {
         if let lastRedoLine = redoLines.popLast() {
             lines.append(lastRedoLine)
+            updateCachedImage()
             setNeedsDisplay()
         }
     }
@@ -48,11 +53,12 @@ class SimpleDrawCanvas: UIView {
     func clear() {
         lines.removeAll()
         redoLines.removeAll()
+        cachedImage = nil
         setNeedsDisplay()
     }
     
     fileprivate var lines = [Line]()
-    fileprivate var redoLines = [Line]() // Add this line
+    fileprivate var redoLines = [Line]()
     
     // MARK: - Setup Draw Rect
     
@@ -66,8 +72,12 @@ class SimpleDrawCanvas: UIView {
             drawGrid(in: context, rect: rect)
         }
         
-        lines.forEach { (line) in
-            line.brush.draw(in: context, with: line.points, strokeWidth: line.strokeWidth, strokeColor: line.color)
+        // Draw cached image
+        cachedImage?.draw(in: rect)
+        
+        // Draw the new lines on top
+        if let lastLine = lines.last {
+            lastLine.brush.draw(in: context, with: lastLine.points, strokeWidth: strokeWidth, strokeColor: strokeColor)
         }
     }
     
@@ -110,7 +120,9 @@ class SimpleDrawCanvas: UIView {
         
         lastLine.points.append(point)
         lines.append(lastLine)
-        setNeedsDisplay()
+        
+        // Redraw only the new line segment
+        setNeedsDisplay(calculateBounds(for: lastLine))
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -119,6 +131,39 @@ class SimpleDrawCanvas: UIView {
         
         lastLine.points.append(point)
         lines.append(lastLine)
+        updateCachedImage()
         setNeedsDisplay()
+    }
+    
+    private func updateCachedImage() {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0.0)
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        
+        // Draw the existing lines into the cached image
+        lines.forEach { (line) in
+            line.brush.draw(in: context, with: line.points, strokeWidth: line.strokeWidth, strokeColor: line.color)
+        }
+        
+        cachedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+    }
+    
+    private func calculateBounds(for line: Line) -> CGRect {
+        guard let firstPoint = line.points.first else { return .zero }
+        var minX = firstPoint.x
+        var minY = firstPoint.y
+        var maxX = firstPoint.x
+        var maxY = firstPoint.y
+        
+        for point in line.points {
+            minX = min(minX, point.x)
+            minY = min(minY, point.y)
+            maxX = max(maxX, point.x)
+            maxY = max(maxY, point.y)
+        }
+        
+        // Adding a padding to avoid cutting off the strokes
+        let padding: CGFloat = CGFloat(strokeWidth)
+        return CGRect(x: minX - padding, y: minY - padding, width: maxX - minX + 2 * padding, height: maxY - minY + 2 * padding)
     }
 }

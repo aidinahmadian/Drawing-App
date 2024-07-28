@@ -34,13 +34,28 @@ class TableViewController: UIViewController {
         return tableView
     }()
     
-    fileprivate let lineWidthOptions: [LineWidthOption] = (1...14).map { width in
-        LineWidthOption(width: Float(width), label: "\(width).0 Points")
-    }
-
-    fileprivate let brushData: [[BrushItem]] = {
-        let data = Array(repeating: (0...5).map { BrushItem(name: "\($0)") }, count: 1).flatMap { $0 }
-        return Array(repeating: data, count: 14)
+    fileprivate let lineWidthOptions: [LineWidthOption] = [
+        LineWidthOption(width: 1.0, label: "Pencil"),
+        LineWidthOption(width: 2.0, label: "Brushes"),
+        LineWidthOption(width: 3.0, label: "Watercolors")
+    ]
+    
+    fileprivate lazy var brushData: [[Line]] = {
+        let brushNames: [[String]] = [
+            ["testBrush1", "brush2"],  // Brushes for 1.0 Points
+            ["testBrush1", "brush3", "brush2"],  // Brushes for 2.0 Points
+            ["testBrush1"]  // Brushes for 3.0 Points
+        ]
+        
+        return zip(lineWidthOptions, brushNames).map { (option, names) in
+            names.compactMap { name in
+                if let image = UIImage(named: name) {
+                    let brush = TextureDrawableBrush(texture: image)
+                    return Line(strokeWidth: option.width, color: .clear, points: [], brush: brush)
+                }
+                return nil
+            }
+        }
     }()
     
     fileprivate var selectIndex = 0
@@ -49,6 +64,8 @@ class TableViewController: UIViewController {
     fileprivate var isManualScrolling = false
     fileprivate var isAutoScrolling = false
     fileprivate var isUserInteraction = false
+    var canvas: SimpleDrawCanvas!
+    weak var delegate: BrushSelectionDelegate?
     
     // MARK: - Lifecycle
     
@@ -61,20 +78,19 @@ class TableViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-            let rightBarButtonItem = UIBarButtonItem(
-                image: UIImage(systemName: "info.circle"),
-                style: .plain,
-                target: self,
-                action: #selector(rightBarButtonTapped)
-            )
-            navigationItem.rightBarButtonItem = rightBarButtonItem
-        }
+        let rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "info.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(rightBarButtonTapped)
+        )
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
     
     // MARK: - UI Setup
     
     private func setupUI() {
         view.backgroundColor = .white
-        //navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Brush Library"
         navigationItem.largeTitleDisplayMode = .never
         
@@ -108,7 +124,6 @@ class TableViewController: UIViewController {
     @objc private func rightBarButtonTapped() {
         let moreInfoVC = MoreInfoVC()
         present(moreInfoVC, animated: true, completion: nil)
-        //navigationController?.pushViewController(moreInfoVC, animated: true)
         print("Right bar button tapped")
     }
 }
@@ -133,7 +148,10 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RightTableViewCell", for: indexPath) as! RightTableViewCell
-            //cell.nameLabel.text = brushData[indexPath.section][indexPath.row].name
+            let brush = brushData[indexPath.section][indexPath.row]
+            // Configure cell with brush data, e.g., brush name if available
+            cell.secondLabel.text = "Test Brush"  // Adjust this line if you have a name property
+            //cell.imageView?.image = UIImage(named: brush.texture.accessibilityIdentifier ?? "")
             return cell
         }
     }
@@ -145,9 +163,8 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard tableView != leftTableView else { return nil }
         let headerView = TableViewHeaderView()
-            headerView.nameLabel.text = "Brushes \(section)"
-            //
-            return headerView
+        headerView.nameLabel.text = "Brushes \(section)"
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -169,24 +186,11 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == leftTableView {
-            selectIndex = indexPath.row
-            isManualScrolling = true
-            rightTableView.scrollToRow(at: IndexPath(row: 0, section: selectIndex), at: .top, animated: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                self.isManualScrolling = false
-            }
-            let selectedOption = lineWidthOptions[indexPath.row]
-            guard let view = self.view as? SimpleDrawCanvas else { return }
-            view.strokeWidth = selectedOption.width
+            rightTableView.scrollToRow(at: IndexPath(row: 0, section: indexPath.row), at: .top, animated: true)
         } else {
-            let selectedBrushItem = brushData[indexPath.section][indexPath.row]
-            let vc = BrushDetailsViewController()
-            vc.brushItem = selectedBrushItem
-            vc.navigationItem.largeTitleDisplayMode = .never
-            vc.modalTransitionStyle = .coverVertical
-            vc.sheetPresentationController?.prefersGrabberVisible = true
-            //navigationController?.pushViewController(vc, animated: true)
-            present(vc, animated: true, completion: nil)
+            let selectedLine = brushData[indexPath.section][indexPath.row]
+            delegate?.didSelectBrush(selectedLine.brush)
+            dismiss(animated: true, completion: nil)
         }
     }
 }

@@ -10,3 +10,7 @@ import UIKit
 protocol Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor)
 }
+
+protocol BrushSelectionDelegate: AnyObject {
+    func didSelectBrush(_ brush: Brush)
+}

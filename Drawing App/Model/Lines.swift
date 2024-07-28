@@ -22,5 +22,5 @@ struct LineWidthOption {
 
 struct BrushItem {
     let name: String
-//    let brush: Brush
+    let brush: Brush
 }

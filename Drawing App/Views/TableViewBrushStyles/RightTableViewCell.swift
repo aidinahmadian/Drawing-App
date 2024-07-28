@@ -28,7 +28,7 @@ class RightTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    private lazy var secondLabel: UILabel = {
+    lazy var secondLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = "Test Brush"
