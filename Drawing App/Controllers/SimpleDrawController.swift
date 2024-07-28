@@ -20,6 +20,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     
     private var selectedBrushTitle: String?
     private var selectedLineWidth: Float?
+    private var isMoveMode = false
     
     // MARK: - Lifecycle Methods
     override func loadView() {
@@ -86,19 +87,29 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
         let lineWidthButton = UIBarButtonItem(image: UIImage(systemName: "pencil.tip"), menu: lineWidthMenu)
         
-        // Define other bar button items
+        // Define grid and mode toggle buttons
         gridButton = UIBarButtonItem(image: UIImage(systemName: "grid.circle"), style: .plain, target: self, action: #selector(toggleGrid))
+        let modeToggleButton = UIBarButtonItem(image: UIImage(systemName: "hand.raised.circle"), style: .plain, target: self, action: #selector(toggleMode))
         
         let buttonItems = [
             cancelButton,
             lineWidthButton,
             UIBarButtonItem(image: UIImage(systemName: "paintbrush.fill"), style: .plain, target: self, action: #selector(colorButtonTapped)),
             brushButton,
-            gridButton!
+            gridButton!,
+            modeToggleButton
         ]
         
         return buttonItems
     }
+    
+    @objc private func toggleMode(_ sender: UIBarButtonItem) {
+        isMoveMode.toggle()
+        sender.image = isMoveMode ? UIImage(systemName: "hand.raised.circle.fill") : UIImage(systemName: "hand.raised.circle")
+        canvas.isMoveMode = isMoveMode
+    }
+
+
     
     private func createBrushActions() -> [UIMenuElement] {
         let brushes: [(String, Brush)] = [
@@ -288,9 +299,9 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     
     // MARK: - BrushSelectionDelegate Method
     func didSelectBrush(_ brush: Brush) {
-            canvas.setBrush(brush)
-            print("Selected brush: \(brush)")
-        }
+        canvas.setBrush(brush)
+        print("Selected brush: \(brush)")
+    }
     
     // MARK: - Helper Methods
     private func presentColorPicker(sender: UIBarButtonItem) {
