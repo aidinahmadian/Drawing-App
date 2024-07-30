@@ -48,7 +48,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     }
     
     override func setupNavBarButtons() {
-        let expandButton = UIBarButtonItem(image: UIImage(systemName: "rectangle.stack.badge.plus"), style: .plain, target: self, action: #selector(toggleNavBarButtons))
+        let expandButton = UIBarButtonItem(image: UIImage(systemName: "shippingbox.and.arrow.backward.fill"), style: .plain, target: self, action: #selector(toggleNavBarButtons))
         navigationItem.rightBarButtonItems = [expandButton]
         navBarButtonItems = createNavBarButtonItems()
     }
@@ -65,10 +65,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         
         let redoAction = UIAction(title: "Redo", image: UIImage(systemName: "arrow.uturn.forward.circle")) { _ in
             self.handleRedo()
-        }
-        
-        let gridAction = UIAction(title: "Toggle Grid", image: UIImage(systemName: "grid")) { _ in
-            self.toggleGrid()
         }
         
         // Create a menu with the actions

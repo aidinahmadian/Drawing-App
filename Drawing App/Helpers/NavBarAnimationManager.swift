@@ -11,7 +11,7 @@ class NavBarAnimationManager {
     
     static func toggleNavBarButtons(for controller: UIViewController, navBarButtonItems: [UIBarButtonItem], areNavBarButtonsExpanded: Bool, titleView: UIView?, completion: @escaping (Bool) -> Void) {
         let expanded = !areNavBarButtonsExpanded
-        let expandButtonIcon = expanded ? UIImage(systemName: "arrow.up.right.circle.fill") : UIImage(systemName: "rectangle.stack.badge.plus")
+        let expandButtonIcon = expanded ? UIImage(systemName: "arrow.up.right.circle.fill") : UIImage(systemName: "shippingbox.and.arrow.backward.fill")
         
         guard let navigationBar = controller.navigationController?.navigationBar else {
             completion(false)

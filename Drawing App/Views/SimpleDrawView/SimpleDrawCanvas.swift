@@ -103,7 +103,7 @@ class SimpleDrawCanvas: UIView {
         
         // Draw the new lines on top
         if let lastLine = lines.last {
-            lastLine.brush.draw(in: context, with: lastLine.points, strokeWidth: strokeWidth, strokeColor: strokeColor)
+            lastLine.brush.draw(in: context, with: lastLine.points, strokeWidth: lastLine.strokeWidth, strokeColor: lastLine.color)
         }
     }
     
@@ -220,7 +220,7 @@ class SimpleDrawCanvas: UIView {
         }
         
         // Adding a padding to avoid cutting off the strokes
-        let padding: CGFloat = CGFloat(strokeWidth)
+        let padding: CGFloat = CGFloat(line.strokeWidth)
         return CGRect(x: minX - padding, y: minY - padding, width: maxX - minX + 2 * padding, height: maxY - minY + 2 * padding)
     }
     

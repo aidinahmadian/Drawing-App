@@ -13,6 +13,14 @@ struct Line {
     var color: UIColor
     var points: [CGPoint]
     var brush: Brush
+    
+    init(strokeWidth: Float, color: UIColor, points: [CGPoint], brush: Brush) {
+        self.strokeWidth = strokeWidth
+        self.color = color
+        self.points = points
+        self.brush = brush
+    }
+    
 }
 
 struct LineWidthOption {

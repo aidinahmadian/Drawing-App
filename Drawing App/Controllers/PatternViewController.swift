@@ -34,7 +34,7 @@ class PatternViewController: BaseDrawController {
     
     // Setup Methods
     override func setupNavBarButtons() {
-        let expandButton = UIBarButtonItem(image: UIImage(systemName: "rectangle.stack.badge.plus"), style: .plain, target: self, action: #selector(toggleNavBarButtons))
+        let expandButton = UIBarButtonItem(image: UIImage(systemName: "shippingbox.and.arrow.backward.fill"), style: .plain, target: self, action: #selector(toggleNavBarButtons))
         
         navigationItem.rightBarButtonItems = [expandButton]
         navBarButtonItems = createNavBarButtonItems()
