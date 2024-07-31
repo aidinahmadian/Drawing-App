@@ -17,6 +17,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     private var navBarButtonItems: [UIBarButtonItem] = []
     private var titleView: UIView?
     private var gridButton: UIBarButtonItem?
+    private var toggleLabel: UILabel!
     
     private var selectedBrushTitle: String?
     private var selectedLineWidth: Float?
@@ -45,6 +46,27 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     // MARK: - Setup Methods
     private func setupView() {
         canvas.backgroundColor = .white
+        
+        // Initialize and configure the label
+        toggleLabel = UILabel()
+        toggleLabel.translatesAutoresizingMaskIntoConstraints = false
+        toggleLabel.text = "Move Mode Enabled"
+        toggleLabel.textAlignment = .center
+        toggleLabel.textColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        toggleLabel.layer.cornerRadius = 12
+        toggleLabel.layer.masksToBounds = true
+        toggleLabel.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 0.5)
+        toggleLabel.alpha = 0.0 // Set initial alpha to 0
+        
+        // Add the label to the view hierarchy
+        view.addSubview(toggleLabel)
+        
+        // Set up Auto Layout constraints
+        NSLayoutConstraint.activate([
+            toggleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            toggleLabel.widthAnchor.constraint(equalToConstant: 200),
+            toggleLabel.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
     
     override func setupNavBarButtons() {
@@ -101,11 +123,32 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     
     @objc private func toggleMode(_ sender: UIBarButtonItem) {
         isMoveMode.toggle()
+        generateHapticFeedback(.selection)
         sender.image = isMoveMode ? UIImage(systemName: "hand.raised.circle.fill") : UIImage(systemName: "hand.raised.circle")
         canvas.isMoveMode = isMoveMode
+        
+        let offscreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y - toggleLabel.bounds.height
+        let onScreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y + 10
+
+        if isMoveMode {
+            toggleLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            toggleLabel.center.y = offscreenYPosition
+            toggleLabel.isHidden = false
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [], animations: {
+                self.toggleLabel.alpha = 1.0
+                self.toggleLabel.transform = CGAffineTransform.identity
+                self.toggleLabel.frame.origin.y = onScreenYPosition
+            })
+        } else {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.toggleLabel.alpha = 0.0
+                self.toggleLabel.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+                self.toggleLabel.frame.origin.y = offscreenYPosition
+            }, completion: { _ in
+                self.toggleLabel.isHidden = true
+            })
+        }
     }
-
-
     
     private func createBrushActions() -> [UIMenuElement] {
         let brushes: [(String, Brush)] = [
