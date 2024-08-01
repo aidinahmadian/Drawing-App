@@ -18,7 +18,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     private var titleView: UIView?
     private var gridButton: UIBarButtonItem?
     private var toggleLabel: UILabel!
-    
+    private var blurEffectView: UIVisualEffectView!
     private var selectedBrushTitle: String?
     private var selectedLineWidth: Float?
     private var isMoveMode = false
@@ -44,30 +44,59 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     }
     
     // MARK: - Setup Methods
+    
     private func setupView() {
-        canvas.backgroundColor = .white
-        
-        // Initialize and configure the label
-        toggleLabel = UILabel()
-        toggleLabel.translatesAutoresizingMaskIntoConstraints = false
-        toggleLabel.text = "Move Mode Enabled"
-        toggleLabel.textAlignment = .center
-        toggleLabel.textColor = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
-        toggleLabel.layer.cornerRadius = 12
-        toggleLabel.layer.masksToBounds = true
-        toggleLabel.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 0.5)
-        toggleLabel.alpha = 0.0 // Set initial alpha to 0
-        
-        // Add the label to the view hierarchy
-        view.addSubview(toggleLabel)
-        
-        // Set up Auto Layout constraints
-        NSLayoutConstraint.activate([
-            toggleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            toggleLabel.widthAnchor.constraint(equalToConstant: 200),
-            toggleLabel.heightAnchor.constraint(equalToConstant: 40)
-        ])
-    }
+            canvas.backgroundColor = .white
+            configureToggleLabel()
+            configureBlurEffectView()
+        }
+
+        private func configureToggleLabel() {
+            toggleLabel = UILabel()
+            toggleLabel.translatesAutoresizingMaskIntoConstraints = false
+            toggleLabel.text = "Move Mode Enabled"
+            toggleLabel.textAlignment = .center
+            toggleLabel.textColor = UIColor.black
+
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(systemName: "arrow.up.and.down.and.arrow.left.and.right")
+            let imageOffsetY: CGFloat = -3.0
+            imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: 20, height: 20)
+            let attachmentString = NSAttributedString(attachment: imageAttachment)
+            let completeText = NSMutableAttributedString(string: "")
+            completeText.append(attachmentString)
+            let textAfterIcon = NSAttributedString(string: " Move Mode Enabled")
+            completeText.append(textAfterIcon)
+            
+            toggleLabel.attributedText = completeText
+        }
+
+        private func configureBlurEffectView() {
+            let blurEffect = UIBlurEffect(style: .light)
+            blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+            blurEffectView.layer.borderWidth = 0.7
+            blurEffectView.layer.borderColor = UIColor.gray.cgColor
+            blurEffectView.layer.cornerRadius = 12
+            blurEffectView.layer.masksToBounds = true
+            view.addSubview(blurEffectView)
+            blurEffectView.contentView.addSubview(toggleLabel)
+            
+            blurEffectView.alpha = 0.0
+            setupBlurEffectViewConstraints()
+        }
+
+        private func setupBlurEffectViewConstraints() {
+            NSLayoutConstraint.activate([
+                blurEffectView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                blurEffectView.widthAnchor.constraint(equalToConstant: 220),
+                blurEffectView.heightAnchor.constraint(equalToConstant: 40),
+                toggleLabel.leadingAnchor.constraint(equalTo: blurEffectView.leadingAnchor),
+                toggleLabel.trailingAnchor.constraint(equalTo: blurEffectView.trailingAnchor),
+                toggleLabel.topAnchor.constraint(equalTo: blurEffectView.topAnchor),
+                toggleLabel.bottomAnchor.constraint(equalTo: blurEffectView.bottomAnchor)
+            ])
+        }
     
     override func setupNavBarButtons() {
         let expandButton = UIBarButtonItem(image: UIImage(systemName: "shippingbox.and.arrow.backward.fill"), style: .plain, target: self, action: #selector(toggleNavBarButtons))
@@ -103,51 +132,22 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         // Define line width picker menu
         let lineWidthActions = createLineWidthActions()
         let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
-        let lineWidthButton = UIBarButtonItem(image: UIImage(systemName: "pencil.tip"), menu: lineWidthMenu)
+        let lineWidthButton = UIBarButtonItem(image: UIImage(systemName: "lineweight"), menu: lineWidthMenu)
         
         // Define grid and mode toggle buttons
         gridButton = UIBarButtonItem(image: UIImage(systemName: "grid.circle"), style: .plain, target: self, action: #selector(toggleGrid))
-        let modeToggleButton = UIBarButtonItem(image: UIImage(systemName: "hand.raised.circle"), style: .plain, target: self, action: #selector(toggleMode))
+        let modeToggleButton = UIBarButtonItem(image: UIImage(systemName: "move.3d"), style: .plain, target: self, action: #selector(toggleMode))
         
         let buttonItems = [
-            cancelButton,
-            lineWidthButton,
-            UIBarButtonItem(image: UIImage(systemName: "paintbrush.fill"), style: .plain, target: self, action: #selector(colorButtonTapped)),
             brushButton,
+            lineWidthButton,
+            UIBarButtonItem(image: UIImage(systemName: "paintpalette"), style: .plain, target: self, action: #selector(colorButtonTapped)),
             gridButton!,
-            modeToggleButton
+            modeToggleButton,
+            cancelButton,
         ]
         
         return buttonItems
-    }
-    
-    @objc private func toggleMode(_ sender: UIBarButtonItem) {
-        isMoveMode.toggle()
-        generateHapticFeedback(.selection)
-        sender.image = isMoveMode ? UIImage(systemName: "hand.raised.circle.fill") : UIImage(systemName: "hand.raised.circle")
-        canvas.isMoveMode = isMoveMode
-        
-        let offscreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y - toggleLabel.bounds.height
-        let onScreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y + 10
-
-        if isMoveMode {
-            toggleLabel.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-            toggleLabel.center.y = offscreenYPosition
-            toggleLabel.isHidden = false
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [], animations: {
-                self.toggleLabel.alpha = 1.0
-                self.toggleLabel.transform = CGAffineTransform.identity
-                self.toggleLabel.frame.origin.y = onScreenYPosition
-            })
-        } else {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.toggleLabel.alpha = 0.0
-                self.toggleLabel.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-                self.toggleLabel.frame.origin.y = offscreenYPosition
-            }, completion: { _ in
-                self.toggleLabel.isHidden = true
-            })
-        }
     }
     
     private func createBrushActions() -> [UIMenuElement] {
@@ -320,6 +320,35 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         // Update grid button image
         let gridImageName = isGridVisible ? "grid.circle.fill" : "grid.circle"
         gridButton?.image = UIImage(systemName: gridImageName)
+    }
+    
+    @objc private func toggleMode(_ sender: UIBarButtonItem) {
+        isMoveMode.toggle()
+        generateHapticFeedback(.selection)
+        sender.image = isMoveMode ? UIImage(systemName: "hand.draw") : UIImage(systemName: "move.3d")
+        canvas.isMoveMode = isMoveMode
+
+        let offscreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y - blurEffectView.bounds.height
+        let onScreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y + 10
+
+        if isMoveMode {
+            blurEffectView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+            blurEffectView.center.y = offscreenYPosition
+            blurEffectView.isHidden = false
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [], animations: {
+                self.blurEffectView.alpha = 1.0
+                self.blurEffectView.transform = CGAffineTransform.identity
+                self.blurEffectView.frame.origin.y = onScreenYPosition
+            })
+        } else {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.blurEffectView.alpha = 0.0
+                self.blurEffectView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+                self.blurEffectView.frame.origin.y = offscreenYPosition
+            }, completion: { _ in
+                self.blurEffectView.isHidden = true
+            })
+        }
     }
     
     @objc private func colorButtonTapped(_ sender: UIBarButtonItem) {

@@ -63,20 +63,20 @@ class PatternViewController: BaseDrawController {
         // Define line width picker menu
         let lineWidthActions = createLineWidthActions()
         let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
-        let lineWidthButton = UIBarButtonItem(image: UIImage(systemName: "pencil.tip"), menu: lineWidthMenu)
+        let lineWidthButton = UIBarButtonItem(image: UIImage(systemName: "lineweight"), menu: lineWidthMenu)
         
         // Define turn picker menu
         let turnActions = createTurnActions()
         let turnMenu = UIMenu(title: "Number of Lines", children: turnActions)
-        let turnButton = UIBarButtonItem(image: UIImage(systemName: "light.max"), menu: turnMenu)
+        let turnButton = UIBarButtonItem(image: UIImage(systemName: "line.3.crossed.swirl.circle.fill"), menu: turnMenu)
         
         // Define other bar button items
         let buttonItems = [
-            cancelButton,
-            lineWidthButton,
-            UIBarButtonItem(image: UIImage(systemName: "paintbrush.fill"), style: .plain, target: self, action: #selector(handleColor)),
             turnButton,
-            UIBarButtonItem(image: UIImage(systemName: "arrow.down.circle.fill"), style: .plain, target: self, action: #selector(handleSave))
+            lineWidthButton,
+            UIBarButtonItem(image: UIImage(systemName: "paintpalette"), style: .plain, target: self, action: #selector(handleColor)),
+            UIBarButtonItem(image: UIImage(systemName: "arrow.down.circle.fill"), style: .plain, target: self, action: #selector(handleSave)),
+            cancelButton,
         ]
         
         return buttonItems

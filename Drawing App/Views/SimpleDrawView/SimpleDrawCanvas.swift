@@ -102,8 +102,8 @@ class SimpleDrawCanvas: UIView {
         cachedImage?.draw(in: rect)
         
         // Draw the new lines on top
-        if let lastLine = lines.last {
-            lastLine.brush.draw(in: context, with: lastLine.points, strokeWidth: lastLine.strokeWidth, strokeColor: lastLine.color)
+        lines.forEach { line in
+            line.brush.draw(in: context, with: line.points, strokeWidth: line.strokeWidth, strokeColor: line.color)
         }
     }
     
@@ -146,7 +146,6 @@ class SimpleDrawCanvas: UIView {
             newLine.points.append(point) // Add the initial point to handle the dot case
             lines.append(newLine)
             redoLines.removeAll() // Clear redo stack when new line is drawn
-            setNeedsDisplay()
             NotificationCenter.default.post(name: Notification.Name(SimpleDrawCanvas.viewWasTouched), object: nil)
             
             lastPoint = point
@@ -170,8 +169,10 @@ class SimpleDrawCanvas: UIView {
             lastLine.points.append(point)
             lines.append(lastLine)
             
-            // Redraw only the new line segment
-            setNeedsDisplay(calculateBounds(for: lastLine))
+            // Only update the view if there are at least two points
+            if lastLine.points.count > 1 {
+                setNeedsDisplay()
+            }
         }
     }
     
