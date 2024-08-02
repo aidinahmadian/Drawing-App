@@ -28,44 +28,40 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         button.setTitle("PREV", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.setTitleColor(.gray, for: .normal)
+        button.setTitleColor(UIColor.black, for: .normal)
         button.addTarget(self, action: #selector(handlePrev), for: .touchUpInside)
+        button.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
         return button
     }()
     
-        private let nextButton: UIButton = {
-            let button = UIButton(type: .system)
-            button.setTitle("NEXT", for: .normal)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-            button.setTitleColor(UIColor.black, for: .normal)
-            button.addTarget(self, action: #selector(handleNextOrSkip), for: .touchUpInside)
-            return button
-        }()
+    private let nextButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("NEXT", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
+        button.addTarget(self, action: #selector(handleNextOrSkip), for: .touchUpInside)
+        return button
+    }()
     
-        private let skipButton: UIButton = {
-            let button = UIButton(type: .system)
-            button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-            button.tintColor = .gray
-            button.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.layer.cornerRadius = 25
-            button.layer.opacity = 0.9
-            button.layer.shadowColor = UIColor.black.cgColor
-            button.layer.shadowOffset = CGSize(width: 5, height: 5)
-            button.layer.shadowRadius = 10
-            button.layer.shadowOpacity = 0.3
-            button.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
-            return button
-        }()
+    private let skipButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        button.tintColor = .black
+        button.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
+        return button
+    }()
     
     lazy var pageControl: UIPageControl = {
         let pc = UIPageControl()
+        pc.translatesAutoresizingMaskIntoConstraints = false
         pc.currentPage = 0
         pc.numberOfPages = pages.count
         pc.currentPageIndicatorTintColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
-        //pc.pageIndicatorTintColor = UIColor(red: 249/255, green: 207/255, blue: 224/255, alpha: 1)
-        pc.pageIndicatorTintColor = #colorLiteral(red: 0.8352941176, green: 0.7254901961, blue: 0.5254901961, alpha: 1)
+        pc.pageIndicatorTintColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         pc.addTarget(self, action: #selector(handlePageControlChange), for: .valueChanged)
         return pc
     }()
@@ -95,7 +91,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         setupConstraints()
         
         collectionView?.showsHorizontalScrollIndicator = false
-        collectionView?.backgroundColor = .systemBackground
+        collectionView?.backgroundColor = .white
         collectionView?.register(PageCell.self, forCellWithReuseIdentifier: "cellId")
         collectionView?.isPagingEnabled = true
         
@@ -106,7 +102,9 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        applyCornerRadiusToNextButton()
+        applyCornerRadius(to: nextButton, roundingCorners: [.topLeft, .bottomLeft, .bottomRight], radius: 20)
+        applyCornerRadius(to: previousButton, roundingCorners: [.topRight, .bottomRight, .topLeft], radius: 20)
+        applyCornerRadius(to: skipButton, roundingCorners: [.bottomLeft, .topLeft], radius: 20)
     }
     
     // MARK: - Setup Functions
@@ -114,28 +112,38 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     fileprivate func setupBottomControls() {
         let bottomControlsStackView = UIStackView(arrangedSubviews: [previousButton, pageControl, nextButton])
         bottomControlsStackView.translatesAutoresizingMaskIntoConstraints = false
-        bottomControlsStackView.distribution = .fillEqually
-        bottomControlsStackView.backgroundColor = .systemBackground
-        
+        bottomControlsStackView.axis = .horizontal
+        bottomControlsStackView.alignment = .center
+        bottomControlsStackView.distribution = .equalCentering
+        bottomControlsStackView.spacing = 20
+
         view.addSubview(bottomControlsStackView)
         
         NSLayoutConstraint.activate([
-            bottomControlsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            bottomControlsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            bottomControlsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            bottomControlsStackView.heightAnchor.constraint(equalToConstant: 50)
+            bottomControlsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            bottomControlsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            bottomControlsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            bottomControlsStackView.heightAnchor.constraint(equalToConstant: 50),
+            
+            pageControl.heightAnchor.constraint(equalToConstant: 50),
+            
+            previousButton.heightAnchor.constraint(equalToConstant: 50),
+            previousButton.widthAnchor.constraint(equalToConstant: 100),
+            
+            nextButton.heightAnchor.constraint(equalToConstant: 50),
+            nextButton.widthAnchor.constraint(equalToConstant: 100),
         ])
     }
-    
+
     func setupViews() {
         view.addSubview(skipButton)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            skipButton.widthAnchor.constraint(equalToConstant: 50),
+            skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            skipButton.widthAnchor.constraint(equalToConstant: 60),
             skipButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
@@ -194,7 +202,9 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
                 UIView.transition(with: nextButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
                     self.nextButton.setTitle("SKIP", for: .normal)
                     self.nextButton.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+                    //self.previousButton.backgroundColor = #colorLiteral(red: 0.8720760747, green: 1, blue: 0.8688191583, alpha: 1)
                     self.nextButton.setTitleColor(.white, for: .normal)
+                    //self.previousButton.setTitleColor(.black, for: .normal)
                 })
             } else {
                 nextButton.setTitle("SKIP", for: .normal)
@@ -205,25 +215,27 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
             if animated {
                 UIView.transition(with: nextButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
                     self.nextButton.setTitle("NEXT", for: .normal)
-                    self.nextButton.backgroundColor = .clear
+                    self.nextButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
+                    //self.previousButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
                     self.nextButton.setTitleColor(UIColor.black, for: .normal)
+                    //self.previousButton.setTitleColor(UIColor.white, for: .normal)
                 })
             } else {
                 nextButton.setTitle("NEXT", for: .normal)
-                nextButton.backgroundColor = .clear
+                nextButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
                 nextButton.setTitleColor(UIColor.black, for: .normal)
             }
         }
-        applyCornerRadiusToNextButton()
+        applyCornerRadius(to: nextButton, roundingCorners: [.topLeft, .bottomLeft, .bottomRight], radius: 20)
     }
     
-    private func applyCornerRadiusToNextButton() {
-        let path = UIBezierPath(roundedRect: nextButton.bounds,
-                                byRoundingCorners: [.topLeft, .bottomLeft],
-                                cornerRadii: CGSize(width: 20, height: 20))
+    private func applyCornerRadius(to button: UIButton, roundingCorners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: button.bounds,
+                                byRoundingCorners: roundingCorners,
+                                cornerRadii: CGSize(width: radius, height: radius))
         let mask = CAShapeLayer()
         mask.path = path.cgPath
-        nextButton.layer.mask = mask
+        button.layer.mask = mask
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout

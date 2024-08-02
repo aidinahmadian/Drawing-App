@@ -39,6 +39,7 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
         navigationController?.navigationBar.isTranslucent = false
         //navigationController?.navigationBar.tintColor = UIColor(red: 0.571, green: 0.274, blue: 0.999, alpha: 1)
         navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        //navigationController?.navigationBar.tintColor = #colorLiteral(red: 0, green: 0.1607843137, blue: 0.3568627451, alpha: 1)
         
         NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name(rawValue: "viewWasTouched"), object: nil)
     }

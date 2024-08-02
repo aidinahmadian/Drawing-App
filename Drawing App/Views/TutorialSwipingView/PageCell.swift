@@ -34,6 +34,7 @@ class PageCell: UICollectionViewCell {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .center
         textView.isEditable = false
+        textView.isSelectable = false
         textView.isScrollEnabled = false
         return textView
     }()

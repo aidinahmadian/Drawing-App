@@ -153,8 +153,8 @@ class ColorPickerViewController: UIViewController {
         buttonGradientLayer = CAGradientLayer()
         buttonGradientLayer.frame = colorPickerButton.bounds
         buttonGradientLayer.colors = [
-            UIColor.white.cgColor,
-            #colorLiteral(red: 0.8039215686, green: 0.9098039216, blue: 0.7098039216, alpha: 1).cgColor
+            #colorLiteral(red: 0.7275679111, green: 0.9335718155, blue: 0.9355692267, alpha: 1).cgColor,
+            #colorLiteral(red: 0.9540683627, green: 0.8185382485, blue: 0.9542558789, alpha: 1).cgColor
         ]
         buttonGradientLayer.startPoint = CGPoint(x: 0, y: 0)
         buttonGradientLayer.endPoint = CGPoint(x: 1, y: 1)
@@ -163,8 +163,8 @@ class ColorPickerViewController: UIViewController {
     }
     
     private func startGradientAnimation() {
-        let color1 = #colorLiteral(red: 0.4756349325, green: 0.4756467342, blue: 0.4756404161, alpha: 1).cgColor
-        let color2 = #colorLiteral(red: 0.8039215686, green: 0.9098039216, blue: 0.7098039216, alpha: 1).cgColor
+        let color1 = #colorLiteral(red: 0.9485061765, green: 0.8026962876, blue: 0.7942721248, alpha: 1).cgColor
+        let color2 = #colorLiteral(red: 0.9406943321, green: 0.9392179847, blue: 0.7521005869, alpha: 1).cgColor
         
         let gradientAnimation = CABasicAnimation(keyPath: "colors")
         gradientAnimation.duration = 3.5
@@ -210,7 +210,6 @@ class ColorPickerViewController: UIViewController {
         generateHapticFeedback(.success)
         guard let labelText = colorPickerlabel.text else { return }
         
-        // Remove the # sign from the labelText
         let hexValue = labelText.replacingOccurrences(of: "#", with: "")
         
         UIPasteboard.general.string = hexValue
