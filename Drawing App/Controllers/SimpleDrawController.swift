@@ -146,7 +146,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
             modeToggleButton,
             cancelButton,
         ]
-        
         return buttonItems
     }
     
@@ -260,9 +259,14 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.text = title
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        titleLabel.font = UIFont.customFont(name: "Milanello", size: 24)
         titleLabel.textAlignment = .left
-        titleLabel.textColor = .black
+        titleLabel.textColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        
+        titleLabel.attributedText = NSAttributedString(
+            string: "Scribble",
+            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
+        )
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false

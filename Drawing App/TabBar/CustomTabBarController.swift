@@ -12,15 +12,14 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     // MARK: - Main ViewControlle --> Setup TabBar Items
     
-    let brushesTVC: TableViewController = {
-        let vc = TableViewController()
-        let icon = UIImage(systemName: "theatermask.and.paintbrush")?.withRenderingMode(.alwaysOriginal)
-        let iconSelected = UIImage(systemName: "theatermask.and.paintbrush.fill")?.withRenderingMode(.alwaysTemplate)
-        let tabBarItem = UITabBarItem(title: "VC1", image: icon, selectedImage: iconSelected)
-        //tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+    let scribbleVC: SimpleDrawController = {
+        let vc = SimpleDrawController()
+        let icon = UIImage(systemName: "pencil.and.scribble")?.withRenderingMode(.alwaysOriginal)
+        let iconSelected = UIImage(systemName: "pencil.and.scribble")?.withRenderingMode(.alwaysTemplate)
+        let tabBarItem = UITabBarItem(title: "Draw", image: icon, selectedImage: iconSelected)
         tabBarItem.tag = 1
-        vc.tabBarItem = tabBarItem
         vc.tabBarItem.selectedImage = iconSelected
+        vc.tabBarItem = tabBarItem
         return vc
     }()
     
@@ -35,23 +34,12 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         return vc
     }()
     
-    let scribbleVC: SimpleDrawController = {
-        let vc = SimpleDrawController()
-        let icon = UIImage(systemName: "pencil.and.scribble")?.withRenderingMode(.alwaysOriginal)
-        let iconSelected = UIImage(systemName: "pencil.and.scribble")?.withRenderingMode(.alwaysTemplate)
-        let tabBarItem = UITabBarItem(title: "Draw", image: icon, selectedImage: iconSelected)
-        tabBarItem.tag = 3
-        vc.tabBarItem.selectedImage = iconSelected
-        vc.tabBarItem = tabBarItem
-        return vc
-    }()
-    
     let colorPaletteVC: ColorPickerViewController = {
         let vc = ColorPickerViewController()
         let icon = UIImage(systemName: "paintpalette")?.withRenderingMode(.alwaysTemplate)
         let iconSelected = UIImage(systemName: "paintpalette.fill")?.withRenderingMode(.alwaysTemplate)
         let tabBarItem = UITabBarItem(title: "Playground", image: icon, selectedImage: iconSelected)
-        tabBarItem.tag = 4
+        tabBarItem.tag = 3
         vc.tabBarItem.selectedImage = iconSelected
         vc.tabBarItem = tabBarItem
         return vc
@@ -66,7 +54,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.tintColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
         self.tabBarItem.title = nil
         
-        let controllers = [brushesTVC, patternVC, scribbleVC, colorPaletteVC]
+        let controllers = [scribbleVC, patternVC, colorPaletteVC]
         self.viewControllers = controllers.map {UINavigationController(rootViewController: $0)}
     }
 }

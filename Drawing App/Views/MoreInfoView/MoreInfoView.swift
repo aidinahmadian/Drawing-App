@@ -55,7 +55,7 @@ class MoreInfoView: UIView {
         
         label.attributedText = attributedText
         label.numberOfLines = 0
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -83,6 +83,17 @@ class MoreInfoView: UIView {
         return button
     }()
     
+    let backToTutorialVC: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Back To Introduction VC ✨", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.systemPurple
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let gradientLayer = CAGradientLayer()
     
     override init(frame: CGRect) {
@@ -103,6 +114,7 @@ class MoreInfoView: UIView {
         contentView.addSubview(messageLabel)
         contentView.addSubview(wallpaperButton)
         contentView.addSubview(pixelPalsButton)
+        contentView.addSubview(backToTutorialVC)
         setupConstraints()
     }
     
@@ -156,7 +168,13 @@ class MoreInfoView: UIView {
             pixelPalsButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             pixelPalsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             pixelPalsButton.heightAnchor.constraint(equalToConstant: 50),
-            pixelPalsButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            //pixelPalsButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            
+            backToTutorialVC.topAnchor.constraint(equalTo: pixelPalsButton.bottomAnchor, constant: 10),
+            backToTutorialVC.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            backToTutorialVC.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            backToTutorialVC.heightAnchor.constraint(equalToConstant: 50),
+            backToTutorialVC.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
         ])
     }
 }

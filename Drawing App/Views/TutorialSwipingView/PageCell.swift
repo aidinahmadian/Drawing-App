@@ -7,22 +7,23 @@
 //
 
 import UIKit
+import AVKit
 
 class PageCell: UICollectionViewCell {
-
+    
     // MARK: - Properties
-
+    
     var page: Page? {
         didSet {
-            guard let unwrappedPage = page else { return }
-            configurePage(unwrappedPage)
+            guard let page = page else { return }
+            configurePage(page)
         }
     }
-
+    
     // MARK: - UI Components
-
+    
     private let mainImageView: UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "picone"))
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView
@@ -30,7 +31,6 @@ class PageCell: UICollectionViewCell {
     
     private let descriptionTextView: UITextView = {
         let textView = UITextView()
-        textView.attributedText = defaultAttributedText()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .center
         textView.isEditable = false
@@ -38,41 +38,82 @@ class PageCell: UICollectionViewCell {
         textView.isScrollEnabled = false
         return textView
     }()
-
+    
+    private let videoPlayerController: AVPlayerViewController = {
+        let vc = AVPlayerViewController()
+        vc.showsPlaybackControls = false
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        vc.videoGravity = .resizeAspectFill
+        return vc
+    }()
+    
     // MARK: - Initializers
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
+        setupDefaultText()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Configuration
-
+    
     private func configurePage(_ page: Page) {
-        mainImageView.image = UIImage(named: page.imageName)
+        configureImageView(with: page.imageName)
+        configureVideoPlayer(with: page.videoName)
+        configureDescriptionText(header: page.headerText, body: page.bodyText)
+    }
+    
+    private func configureImageView(with imageName: String?) {
+        if let imageName = imageName {
+            mainImageView.image = UIImage(named: imageName)
+            mainImageView.isHidden = false
+            videoPlayerController.view.isHidden = true
+        }
+    }
+    
+    private func configureVideoPlayer(with videoName: String?) {
+        guard let videoName = videoName, let videoURL = Bundle.main.url(forResource: videoName, withExtension: nil) else {
+            return
+        }
         
+        let player = AVPlayer(url: videoURL)
+        player.actionAtItemEnd = .none
+        NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
+        
+        videoPlayerController.player = player
+        videoPlayerController.view.isHidden = false
+        mainImageView.isHidden = true
+        player.play()
+    }
+    
+    private func configureDescriptionText(header: String, body: String) {
         let attributedText = NSMutableAttributedString(
-            string: page.headerText,
+            string: header,
             attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18)]
         )
         attributedText.append(NSAttributedString(
-            string: "\n\n\n\(page.bodyText)",
+            string: "\n\n\n\(body)",
             attributes: [
                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13),
                 NSAttributedString.Key.foregroundColor: UIColor.gray
             ]
         ))
-        
         descriptionTextView.attributedText = attributedText
-        descriptionTextView.textAlignment = .center
+        //descriptionTextView.textAlignment = .center
     }
-
+    
+    @objc private func playerItemDidReachEnd(notification: Notification) {
+        if let playerItem = notification.object as? AVPlayerItem {
+            playerItem.seek(to: .zero, completionHandler: nil)
+        }
+    }
+    
     // MARK: - Layout Setup
-
+    
     private func setupLayout() {
         let topImageContainerView = UIView()
         addSubview(topImageContainerView)
@@ -88,9 +129,16 @@ class PageCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             mainImageView.centerXAnchor.constraint(equalTo: topImageContainerView.centerXAnchor),
             mainImageView.centerYAnchor.constraint(equalTo: topImageContainerView.centerYAnchor),
-            //mainImageView.heightAnchor.constraint(equalTo: topImageContainerView.heightAnchor)
             mainImageView.heightAnchor.constraint(equalToConstant: 350),
-            mainImageView.widthAnchor.constraint(equalToConstant: 350),
+            mainImageView.widthAnchor.constraint(equalToConstant: 350)
+        ])
+        
+        topImageContainerView.addSubview(videoPlayerController.view)
+        NSLayoutConstraint.activate([
+            videoPlayerController.view.topAnchor.constraint(equalTo: topImageContainerView.topAnchor),
+            videoPlayerController.view.leadingAnchor.constraint(equalTo: topImageContainerView.leadingAnchor),
+            videoPlayerController.view.trailingAnchor.constraint(equalTo: topImageContainerView.trailingAnchor),
+            videoPlayerController.view.bottomAnchor.constraint(equalTo: topImageContainerView.bottomAnchor)
         ])
         
         addSubview(descriptionTextView)
@@ -101,9 +149,13 @@ class PageCell: UICollectionViewCell {
             descriptionTextView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
+    
     // MARK: - Helper Methods
-
+    
+    private func setupDefaultText() {
+        descriptionTextView.attributedText = PageCell.defaultAttributedText()
+    }
+    
     private static func defaultAttributedText() -> NSAttributedString {
         let attributedText = NSMutableAttributedString(
             string: "TEST",

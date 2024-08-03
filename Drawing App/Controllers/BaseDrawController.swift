@@ -13,6 +13,7 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
     let drawSomethingLabel: UILabel = {
         let label = UILabel()
         label.text = "Draw Something!"
+        label.font = UIFont.customFont(name: "HelveticaNeue", size: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         return label

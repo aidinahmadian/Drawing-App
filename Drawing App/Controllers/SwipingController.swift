@@ -7,40 +7,31 @@
 //
 
 import UIKit
+import AVKit
 
 class SwipingController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    // MARK: - Properties
+    
     var onFinish: (() -> Void)?
     
-    // MARK: - Data
-    
-    let pages = [
-        Page(imageName: "11", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
-        Page(imageName: "12", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
-        Page(imageName: "13", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
-        Page(imageName: "11", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
+    private let pages = [
+        Page(videoName: "Video1.mp4", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
+        Page(videoName: "Video2.mp4", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
+        Page(videoName: "Video6.mp4", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
+        Page(videoName: "Video7.mp4", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process.")
     ]
     
     // MARK: - UI Components
     
     private let previousButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("PREV", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.setTitleColor(UIColor.black, for: .normal)
+        let button = createButton(title: "PREV")
         button.addTarget(self, action: #selector(handlePrev), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
         return button
     }()
     
     private let nextButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("NEXT", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.setTitleColor(UIColor.black, for: .normal)
-        button.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
+        let button = createButton(title: "NEXT")
         button.addTarget(self, action: #selector(handleNextOrSkip), for: .touchUpInside)
         return button
     }()
@@ -55,7 +46,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         return button
     }()
     
-    lazy var pageControl: UIPageControl = {
+    private lazy var pageControl: UIPageControl = {
         let pc = UIPageControl()
         pc.translatesAutoresizingMaskIntoConstraints = false
         pc.currentPage = 0
@@ -81,42 +72,55 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "reuseIdentifier")
-        if let layout: UICollectionViewFlowLayout = self.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
-        }
-        
-        setupBottomControls()
+        configureCollectionView()
         setupViews()
         setupConstraints()
-        
-        collectionView?.showsHorizontalScrollIndicator = false
-        collectionView?.backgroundColor = .white
-        collectionView?.register(PageCell.self, forCellWithReuseIdentifier: "cellId")
-        collectionView?.isPagingEnabled = true
-        
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        navigationController?.navigationBar.isHidden = true
-        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        applyCornerRadius(to: nextButton, roundingCorners: [.topLeft, .bottomLeft, .bottomRight], radius: 20)
-        applyCornerRadius(to: previousButton, roundingCorners: [.topRight, .bottomRight, .topLeft], radius: 20)
-        applyCornerRadius(to: skipButton, roundingCorners: [.bottomLeft, .topLeft], radius: 20)
+        applyCornerRadius()
     }
     
     // MARK: - Setup Functions
     
-    fileprivate func setupBottomControls() {
+    private func configureCollectionView() {
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .white
+        collectionView.register(PageCell.self, forCellWithReuseIdentifier: "cellId")
+        collectionView.isPagingEnabled = true
+        
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = .horizontal
+            layout.minimumLineSpacing = 0
+        }
+        
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    private func setupViews() {
+        view.addSubview(skipButton)
+        setupBottomControls()
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            skipButton.widthAnchor.constraint(equalToConstant: 60),
+            skipButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    private func setupBottomControls() {
         let bottomControlsStackView = UIStackView(arrangedSubviews: [previousButton, pageControl, nextButton])
         bottomControlsStackView.translatesAutoresizingMaskIntoConstraints = false
         bottomControlsStackView.axis = .horizontal
         bottomControlsStackView.alignment = .center
         bottomControlsStackView.distribution = .equalCentering
         bottomControlsStackView.spacing = 20
-
+        
         view.addSubview(bottomControlsStackView)
         
         NSLayoutConstraint.activate([
@@ -126,25 +130,10 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
             bottomControlsStackView.heightAnchor.constraint(equalToConstant: 50),
             
             pageControl.heightAnchor.constraint(equalToConstant: 50),
-            
             previousButton.heightAnchor.constraint(equalToConstant: 50),
             previousButton.widthAnchor.constraint(equalToConstant: 100),
-            
             nextButton.heightAnchor.constraint(equalToConstant: 50),
-            nextButton.widthAnchor.constraint(equalToConstant: 100),
-        ])
-    }
-
-    func setupViews() {
-        view.addSubview(skipButton)
-    }
-    
-    func setupConstraints() {
-        NSLayoutConstraint.activate([
-            skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            skipButton.widthAnchor.constraint(equalToConstant: 60),
-            skipButton.heightAnchor.constraint(equalToConstant: 50)
+            nextButton.widthAnchor.constraint(equalToConstant: 100)
         ])
     }
     
@@ -153,10 +142,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     @objc private func handlePrev() {
         generateHapticFeedback(.light)
         let nextIndex = max(pageControl.currentPage - 1, 0)
-        let indexPath = IndexPath(item: nextIndex, section: 0)
-        pageControl.currentPage = nextIndex
-        collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        updateNextButtonTitle(animated: true)
+        scrollToPage(at: nextIndex)
     }
     
     @objc private func handleNextOrSkip() {
@@ -165,14 +151,11 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
             handleSkip()
         } else {
             let nextIndex = min(pageControl.currentPage + 1, pages.count - 1)
-            let indexPath = IndexPath(item: nextIndex, section: 0)
-            pageControl.currentPage = nextIndex
-            collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            updateNextButtonTitle(animated: true)
+            scrollToPage(at: nextIndex)
         }
     }
     
-    @objc func handleSkip() {
+    @objc private func handleSkip() {
         let homeViewController = CustomTabBarController()
         generateHapticFeedback(.medium)
         
@@ -186,47 +169,55 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     
-    @objc func handlePageControlChange() {
+    @objc private func handlePageControlChange() {
         let currentPage = pageControl.currentPage
-        let indexPath = IndexPath(item: currentPage, section: 0)
-        collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        updateNextButtonTitle(animated: true)
+        scrollToPage(at: currentPage)
         generateHapticFeedback(.soft)
     }
     
     // MARK: - Helper Functions
     
+    private func scrollToPage(at index: Int) {
+        let indexPath = IndexPath(item: index, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        pageControl.currentPage = index
+        updateNextButtonTitle(animated: true)
+    }
+    
     private func updateNextButtonTitle(animated: Bool) {
-        if pageControl.currentPage == pages.count - 1 {
-            if animated {
-                UIView.transition(with: nextButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
-                    self.nextButton.setTitle("SKIP", for: .normal)
-                    self.nextButton.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
-                    //self.previousButton.backgroundColor = #colorLiteral(red: 0.8720760747, green: 1, blue: 0.8688191583, alpha: 1)
-                    self.nextButton.setTitleColor(.white, for: .normal)
-                    //self.previousButton.setTitleColor(.black, for: .normal)
-                })
-            } else {
-                nextButton.setTitle("SKIP", for: .normal)
-                nextButton.backgroundColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
-                nextButton.setTitleColor(.white, for: .normal)
-            }
+        let isLastPage = pageControl.currentPage == pages.count - 1
+        let title = isLastPage ? "SKIP" : "NEXT"
+        let backgroundColor = isLastPage ? #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1) : #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
+        let titleColor: UIColor = isLastPage ? .white : .black
+        
+        if animated {
+            UIView.transition(with: nextButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
+                self.nextButton.setTitle(title, for: .normal)
+                self.nextButton.backgroundColor = backgroundColor
+                self.nextButton.setTitleColor(titleColor, for: .normal)
+            })
         } else {
-            if animated {
-                UIView.transition(with: nextButton, duration: 0.4, options: .transitionCrossDissolve, animations: {
-                    self.nextButton.setTitle("NEXT", for: .normal)
-                    self.nextButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
-                    //self.previousButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
-                    self.nextButton.setTitleColor(UIColor.black, for: .normal)
-                    //self.previousButton.setTitleColor(UIColor.white, for: .normal)
-                })
-            } else {
-                nextButton.setTitle("NEXT", for: .normal)
-                nextButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
-                nextButton.setTitleColor(UIColor.black, for: .normal)
-            }
+            nextButton.setTitle(title, for: .normal)
+            nextButton.backgroundColor = backgroundColor
+            nextButton.setTitleColor(titleColor, for: .normal)
         }
+        applyCornerRadius()
+    }
+    
+    private func applyCornerRadius() {
         applyCornerRadius(to: nextButton, roundingCorners: [.topLeft, .bottomLeft, .bottomRight], radius: 20)
+        applyCornerRadius(to: previousButton, roundingCorners: [.topRight, .bottomRight, .topLeft], radius: 20)
+        applyCornerRadius(to: skipButton, roundingCorners: [.bottomLeft, .topLeft], radius: 20)
+    }
+    
+    private static func createButton(title: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.6950279387)
+        return button
     }
     
     private func applyCornerRadius(to button: UIButton, roundingCorners: UIRectCorner, radius: CGFloat) {
@@ -240,8 +231,11 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let safeAreaInsets = view.safeAreaInsets
+        let width = view.frame.width - safeAreaInsets.left - safeAreaInsets.right
+        let height = view.frame.height - safeAreaInsets.top - safeAreaInsets.bottom
+        return CGSize(width: width, height: height)
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -254,13 +248,6 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         cell.page = page
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let safeAreaInsets = view.safeAreaInsets
-        let width = view.frame.width - safeAreaInsets.left - safeAreaInsets.right
-        let height = view.frame.height - safeAreaInsets.top - safeAreaInsets.bottom
-        return CGSize(width: width, height: height)
-    }
 
     // MARK: - UIScrollViewDelegate
     
@@ -268,7 +255,7 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
         let x = targetContentOffset.pointee.x
         pageControl.currentPage = Int(x / view.frame.width)
         updateNextButtonTitle(animated: true)
-        generateHapticFeedback(.soft)
+        generateHapticFeedback(.selection)
     }
     
     // MARK: - View Transition
@@ -276,13 +263,13 @@ class SwipingController: UICollectionViewController, UICollectionViewDelegateFlo
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { (_) in
             self.collectionViewLayout.invalidateLayout()
-            
-            if self.pageControl.currentPage == 0 {
+            let currentPageIndex = self.pageControl.currentPage
+            if currentPageIndex == 0 {
                 self.collectionView?.contentOffset = .zero
             } else {
-                let indexPath = IndexPath(item: self.pageControl.currentPage, section: 0)
+                let indexPath = IndexPath(item: currentPageIndex, section: 0)
                 self.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             }
-        }) { (_) in }
+        })
     }
 }
