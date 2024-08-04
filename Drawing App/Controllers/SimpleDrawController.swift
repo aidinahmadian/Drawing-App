@@ -50,33 +50,40 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         configureToggleLabel()
         configureBlurEffectView()
     }
-
+    
     private func configureToggleLabel() {
         toggleLabel = UILabel()
         toggleLabel.translatesAutoresizingMaskIntoConstraints = false
-        toggleLabel.text = "Move Mode Enabled"
         toggleLabel.textAlignment = .center
         toggleLabel.textColor = UIColor.black
 
         let imageAttachment = NSTextAttachment()
-        imageAttachment.image = UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left")
-        let imageOffsetY: CGFloat = -3.0
-        imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: 20, height: 20)
+        if let image = UIImage(systemName: "arrow.up.and.down.and.arrow.left.and.right") {
+            imageAttachment.image = image
+
+            let imageAspectRatio = image.size.width / image.size.height
+            let imageHeight: CGFloat = 16.0
+            let imageWidth = imageHeight * imageAspectRatio
+            
+            imageAttachment.bounds = CGRect(x: 0, y: -2.0, width: imageWidth, height: imageHeight)
+        }
+
         let attachmentString = NSAttributedString(attachment: imageAttachment)
         let completeText = NSMutableAttributedString(string: "")
         completeText.append(attachmentString)
         let textAfterIcon = NSAttributedString(string: " Move Mode Enabled")
         completeText.append(textAfterIcon)
-        
+
         toggleLabel.attributedText = completeText
     }
+
 
     private func configureBlurEffectView() {
         let blurEffect = UIBlurEffect(style: .light)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        blurEffectView.layer.borderWidth = 0.7
-        blurEffectView.layer.borderColor = UIColor.gray.cgColor
+        blurEffectView.layer.borderWidth = 0.8
+        blurEffectView.layer.borderColor = UIColor.orange.cgColor
         blurEffectView.layer.cornerRadius = 12
         blurEffectView.layer.masksToBounds = true
         view.addSubview(blurEffectView)
@@ -296,19 +303,49 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     }
     
     private func createTitleMenu() -> UIMenu {
-        
-        let item1 = UIAction(title: "Option 1") { _ in
-            // Handle option 2
+        let item1 = UIAction(title: "Playground", image: UIImage(systemName: "bubbles.and.sparkles")) { [weak self] _ in
+            guard let self = self else { return }
+            let cpvc = ColorPickerViewController()
+            generateHapticFeedback(.selection)
+            self.present(cpvc, animated: true, completion: nil)
         }
 
-        let item2 = UIAction(title: "Option 2") { _ in
-            // Handle option 2
+        let item2 = UIAction(title: "Support Me", image: UIImage(systemName: "heart")) { [weak self] _ in
+            guard let self = self else { return }
+            let moreInfoVC = MoreInfoVC()
+            generateHapticFeedback(.selection)
+            self.present(moreInfoVC, animated: true, completion: nil)
         }
-        let item3 = UIAction(title: "Option 3") { _ in
-            // Handle option 3
+
+        let item3 = UIAction(title: "Introduction Page", image: UIImage(systemName: "lightbulb.min")) { [weak self] _ in
+            guard let self = self else { return }
+
+            let alert = UIAlertController(title: "Go Back to Tutorial Page?", message: "If you go back to the tutorial, any unsaved progress will be lost. Are you sure you want to continue?", preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+            alert.addAction(UIAlertAction(title: "Continue", style: .destructive, handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.presentIntroductionController()
+            }))
+
+            generateHapticFeedback(.selection)
+            self.present(alert, animated: true, completion: nil)
         }
-        
+
         return UIMenu(title: "", children: [item1, item2, item3])
+    }
+
+    private func presentIntroductionController() {
+        let introductionController = SwipingController()
+
+        introductionController.onFinish = {
+            introductionController.dismiss(animated: true, completion: nil)
+        }
+
+        introductionController.modalTransitionStyle = .crossDissolve
+        introductionController.modalPresentationStyle = .fullScreen
+        present(introductionController, animated: true, completion: nil)
     }
     
     // MARK: - Action Methods
@@ -363,19 +400,17 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         let onScreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y + 10
 
         if isMoveMode {
-            blurEffectView.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-            blurEffectView.center.y = offscreenYPosition
+            blurEffectView.transform = CGAffineTransform(translationX: 0, y: offscreenYPosition)
             blurEffectView.isHidden = false
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.5, options: [], animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: [.curveEaseInOut], animations: {
                 self.blurEffectView.alpha = 1.0
                 self.blurEffectView.transform = CGAffineTransform.identity
                 self.blurEffectView.frame.origin.y = onScreenYPosition
             })
         } else {
-            UIView.animate(withDuration: 0.5, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.3, options: [.curveEaseInOut], animations: {
                 self.blurEffectView.alpha = 0.0
-                self.blurEffectView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-                self.blurEffectView.frame.origin.y = offscreenYPosition
+                self.blurEffectView.transform = CGAffineTransform(translationX: 0, y: offscreenYPosition).scaledBy(x: 0.5, y: 0.5)
             }, completion: { _ in
                 self.blurEffectView.isHidden = true
             })

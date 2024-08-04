@@ -7,14 +7,12 @@
 //
 
 import UIKit
-import Combine
 
 class ColorPickerViewController: UIViewController {
     
     let filterLaucher = FilterLauncher()
     
     private var gradientView: GradientView!
-    private var cancellable: AnyCancellable?
     private var buttonGradientLayer: CAGradientLayer!
     
     private let colorPickerlabel: UILabel = {
@@ -53,7 +51,6 @@ class ColorPickerViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(handleCP), for: .touchUpInside)
-        //button.addTarget(self, action: #selector(didFilterBtnTapped), for: .touchUpInside)
         button.layer.cornerRadius = 10
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 5, height: 5)
@@ -66,7 +63,6 @@ class ColorPickerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //tapToCopylabel.startBlink()
         gradientView = GradientView(frame: self.view.bounds)
         gradientView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(gradientView)
@@ -91,13 +87,6 @@ class ColorPickerViewController: UIViewController {
         let picker = UIColorPickerViewController()
         picker.selectedColor = .white
         picker.delegate = self
-        picker.modalPresentationStyle = .fullScreen
-        
-        cancellable = picker.publisher(for: \.selectedColor)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] color in
-                // Do nothing here, handle in delegate methods
-            }
         present(picker, animated: true, completion: nil)
     }
     
@@ -214,14 +203,13 @@ class ColorPickerViewController: UIViewController {
         
         UIPasteboard.general.string = hexValue
         let alert = UIAlertController(
-            title: "Copied",
+            title: "Copied 📋",
             message: "HEX value copied to clipboard \n(\(hexValue))",
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    
 }
 
 extension ColorPickerViewController: UIColorPickerViewControllerDelegate {
@@ -229,26 +217,17 @@ extension ColorPickerViewController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         updateGradientColor(to: viewController.selectedColor)
         generateHapticFeedback(.selection)
-        
-        // Add a slight delay before dismissing to ensure a smoother animation
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-//            self?.dismiss(animated: true, completion: {
-//                self?.cancellable?.cancel()
-//                print(self?.cancellable == nil)
-//            })
-//        }
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         updateGradientColor(to: viewController.selectedColor)
         generateHapticFeedback(.selection)
         
-        // Add a slight delay before dismissing to ensure a smoother animation
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-//            self?.dismiss(animated: true, completion: {
-//                self?.cancellable?.cancel()
-//                print(self?.cancellable == nil)
-//            })
-//        }
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+        //            self?.dismiss(animated: true, completion: {
+        //                self?.cancellable?.cancel()
+        //                print(self?.cancellable == nil)
+        //            })
+        //        }
     }
 }

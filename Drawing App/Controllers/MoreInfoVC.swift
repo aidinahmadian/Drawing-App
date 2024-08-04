@@ -19,34 +19,8 @@ class MoreInfoVC: UIViewController {
         super.viewDidLoad()
         
         moreInfoView.wallpaperButton.addTarget(self, action: #selector(startRainingEmojis), for: .touchUpInside)
-        moreInfoView.pixelPalsButton.addTarget(self, action: #selector(startRainingEmojis), for: .touchUpInside)
-        moreInfoView.backToTutorialVC.addTarget(self, action: #selector(backToTutorialVCButtonTapped), for: .touchUpInside)
-        
+        moreInfoView.pixelPalsButton.addTarget(self, action: #selector(startRainingEmojis), for: .touchUpInside)        
     }
-    
-    @objc private func backToTutorialVCButtonTapped() {
-            let alert = UIAlertController(title: "Go Back to Tutorial Page?", message: "If you go back to the tutorial, any unsaved progress will be lost. Are you sure you want to continue?", preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            
-        alert.addAction(UIAlertAction(title: "Continue", style: .destructive, handler: { _ in
-                self.presentSwipingController()
-            }))
-            
-            present(alert, animated: true, completion: nil)
-        }
-        
-        private func presentSwipingController() {
-            let swipingController = SwipingController()
-            
-            swipingController.onFinish = {
-                swipingController.dismiss(animated: true, completion: nil)
-            }
-            
-            swipingController.modalTransitionStyle = .crossDissolve
-            swipingController.modalPresentationStyle = .fullScreen
-            present(swipingController, animated: true, completion: nil)
-        }
     
     @objc private func startRainingEmojis() {
         generateHapticFeedback(.success)

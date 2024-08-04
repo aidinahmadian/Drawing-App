@@ -36,9 +36,10 @@ class MoreInfoView: UIView {
         
         let text = """
         
-        Your support means the world to me, and if you would like to contribute to the continued growth and improvement of DrawingApp, here are a few ways you can do so:
-        - Provide Feedback: Your insights are invaluable. Please share your thoughts, suggestions, and any issues you encounter. This helps us make DrawingApp better for everyone.
-        - Make a Donation: If you’re able to, consider making a financial contribution. Every bit helps us maintain and enhance the app, bringing you more features and a better experience.
+        Your support means the world to me. If you’d like to help with the growth and improvement of DrawingApp, here are a few ways you can contribute:
+        
+        - Provide Feedback: Your insights are invaluable. Please share your thoughts, suggestions, and any issues you encounter. This helps me make DrawingApp better for everyone.
+        - Make a Donation: If you’re able to, consider making a financial contribution. Every bit helps me maintain and enhance the app, bringing you more features and a better experience.
         
         If you’d like to support me, there’s some options below!
         - Aidin (u/Aidin)
@@ -63,7 +64,7 @@ class MoreInfoView: UIView {
     
     let wallpaperButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Thanks For Your Support 🩵", for: .normal)
+        button.setTitle("Celebration Button 🎉", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.systemBlue
         button.layer.cornerRadius = 10
@@ -77,17 +78,6 @@ class MoreInfoView: UIView {
         button.setTitle("Check Out My Other Projects ✨", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.systemPink
-        button.layer.cornerRadius = 10
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    let backToTutorialVC: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Back To Introduction VC ✨", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.systemPurple
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -114,7 +104,6 @@ class MoreInfoView: UIView {
         contentView.addSubview(messageLabel)
         contentView.addSubview(wallpaperButton)
         contentView.addSubview(pixelPalsButton)
-        contentView.addSubview(backToTutorialVC)
         setupConstraints()
     }
     
@@ -168,13 +157,7 @@ class MoreInfoView: UIView {
             pixelPalsButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             pixelPalsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             pixelPalsButton.heightAnchor.constraint(equalToConstant: 50),
-            //pixelPalsButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            
-            backToTutorialVC.topAnchor.constraint(equalTo: pixelPalsButton.bottomAnchor, constant: 10),
-            backToTutorialVC.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            backToTutorialVC.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            backToTutorialVC.heightAnchor.constraint(equalToConstant: 50),
-            backToTutorialVC.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            pixelPalsButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
         ])
     }
 }
