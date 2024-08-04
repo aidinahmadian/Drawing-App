@@ -75,7 +75,7 @@ class PatternViewController: BaseDrawController {
             turnButton,
             lineWidthButton,
             UIBarButtonItem(image: UIImage(systemName: "paintpalette"), style: .plain, target: self, action: #selector(handleColor)),
-            UIBarButtonItem(image: UIImage(systemName: "arrow.down.circle.fill"), style: .plain, target: self, action: #selector(handleSave)),
+            UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.down"), style: .plain, target: self, action: #selector(handleSave)),
             cancelButton,
         ]
         
@@ -140,35 +140,58 @@ class PatternViewController: BaseDrawController {
         }
     }
     
-    // Override the setupNavigationBarTitle method to keep a reference to the title view
     override func setupNavigationBarTitle(title: String) {
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = title
-        titleLabel.font = UIFont.customFont(name: "Milanello", size: 24)
-        //titleLabel.font = UIFont.customFont(name: "SankofaDisplay-Regular", size: 25)
-        titleLabel.textAlignment = .left
-        titleLabel.textColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
-        
-        titleLabel.attributedText = NSAttributedString(
-            string: "Pattern",
-            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
+        let titleButton = UIButton(type: .system)
+        titleButton.translatesAutoresizingMaskIntoConstraints = false
+
+        // Create an attributed string with underline
+        let attributedTitle = NSAttributedString(
+            string: title,
+            attributes: [
+                .font: UIFont.customFont(name: "Milanello", size: 24),
+                .foregroundColor: UIColor(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1),
+                .underlineStyle: NSUnderlineStyle.single.rawValue
+            ]
         )
+        titleButton.setAttributedTitle(attributedTitle, for: .normal)
         
+        // Create the menu
+        let titleMenu = createTitleMenu()
+        titleButton.menu = titleMenu
+        titleButton.showsMenuAsPrimaryAction = true
+        
+        // Container view for the button
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(titleLabel)
+        containerView.addSubview(titleButton)
         
+        // Constraints
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+            titleButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            titleButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            titleButton.topAnchor.constraint(equalTo: containerView.topAnchor),
+            titleButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
         
+        // Add container view to the navigation bar
         let leftItem = UIBarButtonItem(customView: containerView)
         navigationItem.leftBarButtonItem = leftItem
         
         titleView = containerView // Keep a reference to the title view
+    }
+    
+    private func createTitleMenu() -> UIMenu {
+        let item1 = UIAction(title: "Option 1") { _ in
+            // Handle option 1
+        }
+        let item2 = UIAction(title: "Option 2") { _ in
+            // Handle option 2
+        }
+        let item3 = UIAction(title: "Option 3") { _ in
+            // Handle option 3
+        }
+        
+        return UIMenu(title: "", children: [item1, item2, item3])
     }
     
     @objc private func handleClear() {

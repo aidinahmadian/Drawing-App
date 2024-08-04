@@ -46,57 +46,57 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     // MARK: - Setup Methods
     
     private func setupView() {
-            canvas.backgroundColor = .white
-            configureToggleLabel()
-            configureBlurEffectView()
-        }
+        canvas.backgroundColor = .white
+        configureToggleLabel()
+        configureBlurEffectView()
+    }
 
-        private func configureToggleLabel() {
-            toggleLabel = UILabel()
-            toggleLabel.translatesAutoresizingMaskIntoConstraints = false
-            toggleLabel.text = "Move Mode Enabled"
-            toggleLabel.textAlignment = .center
-            toggleLabel.textColor = UIColor.black
+    private func configureToggleLabel() {
+        toggleLabel = UILabel()
+        toggleLabel.translatesAutoresizingMaskIntoConstraints = false
+        toggleLabel.text = "Move Mode Enabled"
+        toggleLabel.textAlignment = .center
+        toggleLabel.textColor = UIColor.black
 
-            let imageAttachment = NSTextAttachment()
-            imageAttachment.image = UIImage(systemName: "arrow.up.and.down.and.arrow.left.and.right")
-            let imageOffsetY: CGFloat = -3.0
-            imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: 20, height: 20)
-            let attachmentString = NSAttributedString(attachment: imageAttachment)
-            let completeText = NSMutableAttributedString(string: "")
-            completeText.append(attachmentString)
-            let textAfterIcon = NSAttributedString(string: " Move Mode Enabled")
-            completeText.append(textAfterIcon)
-            
-            toggleLabel.attributedText = completeText
-        }
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(systemName: "arrow.up.left.and.down.right.and.arrow.up.right.and.down.left")
+        let imageOffsetY: CGFloat = -3.0
+        imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: 20, height: 20)
+        let attachmentString = NSAttributedString(attachment: imageAttachment)
+        let completeText = NSMutableAttributedString(string: "")
+        completeText.append(attachmentString)
+        let textAfterIcon = NSAttributedString(string: " Move Mode Enabled")
+        completeText.append(textAfterIcon)
+        
+        toggleLabel.attributedText = completeText
+    }
 
-        private func configureBlurEffectView() {
-            let blurEffect = UIBlurEffect(style: .light)
-            blurEffectView = UIVisualEffectView(effect: blurEffect)
-            blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-            blurEffectView.layer.borderWidth = 0.7
-            blurEffectView.layer.borderColor = UIColor.gray.cgColor
-            blurEffectView.layer.cornerRadius = 12
-            blurEffectView.layer.masksToBounds = true
-            view.addSubview(blurEffectView)
-            blurEffectView.contentView.addSubview(toggleLabel)
-            
-            blurEffectView.alpha = 0.0
-            setupBlurEffectViewConstraints()
-        }
+    private func configureBlurEffectView() {
+        let blurEffect = UIBlurEffect(style: .light)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        blurEffectView.layer.borderWidth = 0.7
+        blurEffectView.layer.borderColor = UIColor.gray.cgColor
+        blurEffectView.layer.cornerRadius = 12
+        blurEffectView.layer.masksToBounds = true
+        view.addSubview(blurEffectView)
+        blurEffectView.contentView.addSubview(toggleLabel)
+        
+        blurEffectView.alpha = 0.0
+        setupBlurEffectViewConstraints()
+    }
 
-        private func setupBlurEffectViewConstraints() {
-            NSLayoutConstraint.activate([
-                blurEffectView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                blurEffectView.widthAnchor.constraint(equalToConstant: 220),
-                blurEffectView.heightAnchor.constraint(equalToConstant: 40),
-                toggleLabel.leadingAnchor.constraint(equalTo: blurEffectView.leadingAnchor),
-                toggleLabel.trailingAnchor.constraint(equalTo: blurEffectView.trailingAnchor),
-                toggleLabel.topAnchor.constraint(equalTo: blurEffectView.topAnchor),
-                toggleLabel.bottomAnchor.constraint(equalTo: blurEffectView.bottomAnchor)
-            ])
-        }
+    private func setupBlurEffectViewConstraints() {
+        NSLayoutConstraint.activate([
+            blurEffectView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            blurEffectView.widthAnchor.constraint(equalToConstant: 220),
+            blurEffectView.heightAnchor.constraint(equalToConstant: 40),
+            toggleLabel.leadingAnchor.constraint(equalTo: blurEffectView.leadingAnchor),
+            toggleLabel.trailingAnchor.constraint(equalTo: blurEffectView.trailingAnchor),
+            toggleLabel.topAnchor.constraint(equalTo: blurEffectView.topAnchor),
+            toggleLabel.bottomAnchor.constraint(equalTo: blurEffectView.bottomAnchor)
+        ])
+    }
     
     override func setupNavBarButtons() {
         let expandButton = UIBarButtonItem(image: UIImage(systemName: "shippingbox.and.arrow.backward.fill"), style: .plain, target: self, action: #selector(toggleNavBarButtons))
@@ -136,7 +136,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         
         // Define grid and mode toggle buttons
         gridButton = UIBarButtonItem(image: UIImage(systemName: "grid.circle"), style: .plain, target: self, action: #selector(toggleGrid))
-        let modeToggleButton = UIBarButtonItem(image: UIImage(systemName: "move.3d"), style: .plain, target: self, action: #selector(toggleMode))
+        let modeToggleButton = UIBarButtonItem(image: UIImage(systemName: "arrow.down.left.arrow.up.right.circle"), style: .plain, target: self, action: #selector(toggleMode))
         
         let buttonItems = [
             brushButton,
@@ -256,32 +256,59 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     }
     
     override func setupNavigationBarTitle(title: String) {
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = title
-        titleLabel.font = UIFont.customFont(name: "Milanello", size: 24)
-        titleLabel.textAlignment = .left
-        titleLabel.textColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
-        
-        titleLabel.attributedText = NSAttributedString(
-            string: "Scribble",
-            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
+        let titleButton = UIButton(type: .system)
+        titleButton.translatesAutoresizingMaskIntoConstraints = false
+
+        // Create an attributed string with underline
+        let attributedTitle = NSAttributedString(
+            string: title,
+            attributes: [
+                .font: UIFont.customFont(name: "Milanello", size: 24),
+                .foregroundColor: UIColor(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1),
+                .underlineStyle: NSUnderlineStyle.single.rawValue
+            ]
         )
+        titleButton.setAttributedTitle(attributedTitle, for: .normal)
         
+        // Create the menu
+        let titleMenu = createTitleMenu()
+        titleButton.menu = titleMenu
+        titleButton.showsMenuAsPrimaryAction = true
+        
+        // Container view for the button
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(titleLabel)
+        containerView.addSubview(titleButton)
         
+        // Constraints
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.leadingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+            titleButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            titleButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            titleButton.topAnchor.constraint(equalTo: containerView.topAnchor),
+            titleButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
         
+        // Add container view to the navigation bar
         let leftItem = UIBarButtonItem(customView: containerView)
         navigationItem.leftBarButtonItem = leftItem
         
         titleView = containerView // Keep a reference to the title view
+    }
+    
+    private func createTitleMenu() -> UIMenu {
+        
+        let item1 = UIAction(title: "Option 1") { _ in
+            // Handle option 2
+        }
+
+        let item2 = UIAction(title: "Option 2") { _ in
+            // Handle option 2
+        }
+        let item3 = UIAction(title: "Option 3") { _ in
+            // Handle option 3
+        }
+        
+        return UIMenu(title: "", children: [item1, item2, item3])
     }
     
     // MARK: - Action Methods
@@ -329,7 +356,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     @objc private func toggleMode(_ sender: UIBarButtonItem) {
         isMoveMode.toggle()
         generateHapticFeedback(.selection)
-        sender.image = isMoveMode ? UIImage(systemName: "hand.draw") : UIImage(systemName: "move.3d")
+        sender.image = isMoveMode ? UIImage(systemName: "arrow.down.left.arrow.up.right.circle.fill") : UIImage(systemName: "arrow.down.left.arrow.up.right.circle")
         canvas.isMoveMode = isMoveMode
 
         let offscreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y - blurEffectView.bounds.height
