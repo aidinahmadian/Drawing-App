@@ -8,8 +8,14 @@
 
 import UIKit
 
+protocol ColorPickerViewControllerDelegate: AnyObject {
+    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelectColor color: UIColor)
+}
+
+
 class ColorPickerViewController: UIViewController {
     
+    weak var delegate: ColorPickerViewControllerDelegate?
     let filterLaucher = FilterLauncher()
     
     private var gradientView: GradientView!
@@ -212,22 +218,19 @@ class ColorPickerViewController: UIViewController {
     }
 }
 
+// MARK: - UIColorPickerViewControllerDelegate
 extension ColorPickerViewController: UIColorPickerViewControllerDelegate {
-    
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-        updateGradientColor(to: viewController.selectedColor)
+        let selectedColor = viewController.selectedColor
+        updateGradientColor(to: selectedColor)
         generateHapticFeedback(.selection)
+        delegate?.colorPickerViewController(self, didSelectColor: selectedColor)
     }
     
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
-        updateGradientColor(to: viewController.selectedColor)
+        let selectedColor = viewController.selectedColor
+        updateGradientColor(to: selectedColor)
         generateHapticFeedback(.selection)
-        
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-        //            self?.dismiss(animated: true, completion: {
-        //                self?.cancellable?.cancel()
-        //                print(self?.cancellable == nil)
-        //            })
-        //        }
+        delegate?.colorPickerViewController(self, didSelectColor: selectedColor)
     }
 }

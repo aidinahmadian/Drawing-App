@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorPickerViewControllerDelegate {
+class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorPickerViewControllerDelegate, ColorPickerViewControllerDelegate {
     
     // Properties
     private let canvas = SimpleDrawCanvas()
@@ -51,27 +51,27 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
         toggleLabel.translatesAutoresizingMaskIntoConstraints = false
         toggleLabel.textAlignment = .center
         toggleLabel.textColor = UIColor.black
-
+        
         let imageAttachment = NSTextAttachment()
         if let image = UIImage(systemName: "arrow.up.and.down.and.arrow.left.and.right") {
             imageAttachment.image = image
-
+            
             let imageAspectRatio = image.size.width / image.size.height
             let imageHeight: CGFloat = 16.0
             let imageWidth = imageHeight * imageAspectRatio
             
             imageAttachment.bounds = CGRect(x: 0, y: -2.0, width: imageWidth, height: imageHeight)
         }
-
+        
         let attachmentString = NSAttributedString(attachment: imageAttachment)
         let completeText = NSMutableAttributedString(string: "")
         completeText.append(attachmentString)
         let textAfterIcon = NSAttributedString(string: " Move Mode Enabled")
         completeText.append(textAfterIcon)
-
+        
         toggleLabel.attributedText = completeText
     }
-
+    
     private func configureBlurEffectView() {
         let blurEffect = UIBlurEffect(style: .light)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -86,7 +86,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
         blurEffectView.alpha = 0.0
         setupBlurEffectViewConstraints()
     }
-
+    
     private func setupBlurEffectViewConstraints() {
         NSLayoutConstraint.activate([
             blurEffectView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -163,7 +163,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
             ("Splatter", SplatterBrush()),
             ("Ink", InkBrush()),
         ]
-
+        
         let shapeBrushes = brushes.filter { ["Arrow" ,"Circle", "Rectangle", "Triangle", "Star", "Hexagon", "Spiral"].contains($0.0) }
         let otherBrushes = brushes.filter { !["Arrow", "Circle", "Rectangle", "Star", "Hexagon", "Triangle", "Spiral"].contains($0.0) }
         
@@ -180,7 +180,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
                 self.updateBrushMenu()
             }
         }
-
+        
         let shapesMenu = UIMenu(title: "Shapes", children: shapeActions)
         
         let otherActions = otherBrushes.map { brush in
@@ -196,11 +196,11 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
                 self.updateBrushMenu()
             }
         }
-
+        
         let customBrushAction = UIAction(title: "Custom Brushes", image: UIImage(systemName: "list.dash")) { _ in
             self.openTableViewController()
         }
-
+        
         return [customBrushAction] + [shapesMenu] + otherActions
     }
     
@@ -286,10 +286,10 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
         generateHapticFeedback(.selection)
         sender.image = isMoveMode ? UIImage(systemName: "arrow.down.left.arrow.up.right.circle.fill") : UIImage(systemName: "arrow.down.left.arrow.up.right.circle")
         canvas.isMoveMode = isMoveMode
-
+        
         let offscreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y - blurEffectView.bounds.height
         let onScreenYPosition = view.safeAreaLayoutGuide.layoutFrame.origin.y + 10
-
+        
         if isMoveMode {
             blurEffectView.transform = CGAffineTransform(translationX: 0, y: offscreenYPosition)
             blurEffectView.isHidden = false
@@ -347,6 +347,10 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
     func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
         updateCanvasColor(with: viewController.selectedColor)
         generateHapticFeedback(.selection)
+    }
+    
+    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelectColor color: UIColor) {
+        canvas.strokeColor = color
     }
     
     private func updateCanvasColor(with color: UIColor) {

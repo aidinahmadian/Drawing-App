@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PatternViewController: BaseDrawController, UIColorPickerViewControllerDelegate {
+class PatternViewController: BaseDrawController, UIColorPickerViewControllerDelegate, ColorPickerViewControllerDelegate {
     
     // Properties
     private let patternView = PatternView()
@@ -106,7 +106,7 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
         let lineWidthActions = createLineWidthActions()
         let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
         
-        if let lineWidthButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "pencil.tip") }) {
+        if let lineWidthButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "lineweight") }) {
             lineWidthButton.menu = lineWidthMenu
         }
     }
@@ -115,7 +115,7 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
         let turnActions = createTurnActions()
         let turnMenu = UIMenu(title: "Number of Lines", children: turnActions)
         
-        if let turnButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "light.max") }) {
+        if let turnButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "line.3.crossed.swirl.circle.fill") }) {
             turnButton.menu = turnMenu
         }
     }
@@ -187,5 +187,11 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
         guard let view = self.view as? PatternView else { return }
         view.lineColor = viewController.selectedColor
         generateHapticFeedback(.selection)
+    }
+    
+    // MARK: - ColorPickerViewControllerDelegate
+    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelectColor color: UIColor) {
+        guard let view = self.view as? PatternView else { return }
+        view.lineColor = color
     }
 }
