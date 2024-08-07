@@ -8,14 +8,11 @@
 
 import UIKit
 
-class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
+class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorPickerViewControllerDelegate {
     
     // Properties
     private let canvas = SimpleDrawCanvas()
     private var isGridVisible = false
-    private var areNavBarButtonsExpanded = false
-    private var navBarButtonItems: [UIBarButtonItem] = []
-    private var titleView: UIView?
     private var gridButton: UIBarButtonItem?
     private var toggleLabel: UILabel!
     private var blurEffectView: UIVisualEffectView!
@@ -32,7 +29,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         super.viewDidLoad()
         setupView()
         setupNavBarButtons()
-        setupLayout()
         setupNavigationBarTitle(title: "Scribble")
         
         NotificationCenter.default.addObserver(
@@ -44,7 +40,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     }
     
     // MARK: - Setup Methods
-    
     private func setupView() {
         canvas.backgroundColor = .white
         configureToggleLabel()
@@ -76,7 +71,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
 
         toggleLabel.attributedText = completeText
     }
-
 
     private func configureBlurEffectView() {
         let blurEffect = UIBlurEffect(style: .light)
@@ -112,7 +106,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     }
     
     private func createNavBarButtonItems() -> [UIBarButtonItem] {
-        // Define actions for the dropdown menu
         let trashAction = UIAction(title: "Trash", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
             self.handleClear()
         }
@@ -125,23 +118,18 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
             self.handleRedo()
         }
         
-        // Create a menu with the actions
         let menu = UIMenu(title: "", children: [undoAction, redoAction, trashAction])
         
-        // Create a bar button item with the menu
         let cancelButton = UIBarButtonItem(image: UIImage(systemName: "xmark.bin"), menu: menu)
         
-        // Define brush picker menu
         let brushActions = createBrushActions()
         let brushMenu = UIMenu(title: "Select Brush", children: brushActions)
         let brushButton = UIBarButtonItem(image: UIImage(systemName: "scribble.variable"), menu: brushMenu)
         
-        // Define line width picker menu
         let lineWidthActions = createLineWidthActions()
         let lineWidthMenu = UIMenu(title: "Line Width", children: lineWidthActions)
         let lineWidthButton = UIBarButtonItem(image: UIImage(systemName: "lineweight"), menu: lineWidthMenu)
         
-        // Define grid and mode toggle buttons
         gridButton = UIBarButtonItem(image: UIImage(systemName: "grid.circle"), style: .plain, target: self, action: #selector(toggleGrid))
         let modeToggleButton = UIBarButtonItem(image: UIImage(systemName: "arrow.down.left.arrow.up.right.circle"), style: .plain, target: self, action: #selector(toggleMode))
         
@@ -158,32 +146,27 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     
     private func createBrushActions() -> [UIMenuElement] {
         let brushes: [(String, Brush)] = [
+            // Shapes
+            ("Arrow", ArrowBrush()),
+            ("Circle", CircleBrush()),
+            ("Rectangle", RectangleBrush()),
+            ("Triangle", TriangleBrush()),
+            ("Star", StarBrush()),
+            ("Hexagon", HexagonBrush()),
+            ("Spiral", SpiralBrush()),
+            // Other Brushes
             ("Line", LineBrush()),
             ("Straight Line", StraightLineBrush()),
-            ("Oval", OvalBrush()),
             ("Dotted", DottedBrush()),
-            ("Chalk", ChalkBrush()),
             ("Rust", RustBrush()),
-            ("Square Texture", SquareTextureBrush()),
-            ("Pencil", PencilBrush()),
-            ("Charcoal", CharcoalBrush()),
-            ("Pastel", PastelBrush()),
             ("Watercolor", WatercolorBrush()),
             ("Splatter", SplatterBrush()),
             ("Ink", InkBrush()),
-            ("Rectangle", RectangleBrush()),
-            ("Star", StarBrush()),
-            ("Arrow", ArrowBrush()),
-            ("Hexagon", HexagonBrush()),
-            ("Triangle", TriangleBrush()),
-            ("Spiral", SpiralBrush()),
         ]
 
-        // Separate shape brushes
-        let shapeBrushes = brushes.filter { ["Arrow" ,"Oval", "Rectangle", "Star", "Hexagon", "Triangle", "Heart", "Spiral"].contains($0.0) }
-        let otherBrushes = brushes.filter { !["Arrow", "Oval", "Rectangle", "Star", "Hexagon", "Triangle", "Heart", "Spiral"].contains($0.0) }
+        let shapeBrushes = brushes.filter { ["Arrow" ,"Circle", "Rectangle", "Triangle", "Star", "Hexagon", "Spiral"].contains($0.0) }
+        let otherBrushes = brushes.filter { !["Arrow", "Circle", "Rectangle", "Star", "Hexagon", "Triangle", "Spiral"].contains($0.0) }
         
-        // Create actions for shape brushes
         let shapeActions = shapeBrushes.map { brush in
             let isSelected = brush.0 == selectedBrushTitle
             let attributes: UIMenuElement.Attributes = isSelected ? .disabled : []
@@ -198,10 +181,8 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
             }
         }
 
-        // Create shapes submenu
         let shapesMenu = UIMenu(title: "Shapes", children: shapeActions)
         
-        // Create actions for other brushes
         let otherActions = otherBrushes.map { brush in
             let isSelected = brush.0 == selectedBrushTitle
             let attributes: UIMenuElement.Attributes = isSelected ? .disabled : []
@@ -216,22 +197,20 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
             }
         }
 
-        // Create action for "Custom Brushes"
         let customBrushAction = UIAction(title: "Custom Brushes", image: UIImage(systemName: "list.dash")) { _ in
             self.openTableViewController()
         }
 
-        // Combine shapes submenu, other actions, and custom brushes action
-        return [shapesMenu] + otherActions + [customBrushAction]
+        return [customBrushAction] + [shapesMenu] + otherActions
     }
     
     private func createLineWidthActions() -> [UIAction] {
-        let lineWidths: [Float] = [1.0, 2.0, 4.0, 8.0, 16.0]
+        let lineWidths: [Float] = [1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 16.0]
         
         return lineWidths.map { lineWidth in
             let isSelected = lineWidth == selectedLineWidth
             let attributes: UIMenuElement.Attributes = isSelected ? .disabled : []
-            let action = UIAction(
+            return UIAction(
                 title: "\(lineWidth) points",
                 image: isSelected ? UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal) : nil,
                 attributes: attributes
@@ -240,7 +219,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
                 self.canvas.strokeWidth = lineWidth
                 self.updateLineWidthMenu()
             }
-            return action
         }
     }
     
@@ -260,92 +238,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         if let lineWidthButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "pencil.tip") }) {
             lineWidthButton.menu = lineWidthMenu
         }
-    }
-    
-    override func setupNavigationBarTitle(title: String) {
-        let titleButton = UIButton(type: .system)
-        titleButton.translatesAutoresizingMaskIntoConstraints = false
-
-        // Create an attributed string with underline
-        let attributedTitle = NSAttributedString(
-            string: title,
-            attributes: [
-                .font: UIFont.customFont(name: "Milanello", size: 24),
-                .foregroundColor: UIColor(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1),
-                .underlineStyle: NSUnderlineStyle.single.rawValue
-            ]
-        )
-        titleButton.setAttributedTitle(attributedTitle, for: .normal)
-        
-        // Create the menu
-        let titleMenu = createTitleMenu()
-        titleButton.menu = titleMenu
-        titleButton.showsMenuAsPrimaryAction = true
-        
-        // Container view for the button
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(titleButton)
-        
-        // Constraints
-        NSLayoutConstraint.activate([
-            titleButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            titleButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            titleButton.topAnchor.constraint(equalTo: containerView.topAnchor),
-            titleButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-        ])
-        
-        // Add container view to the navigation bar
-        let leftItem = UIBarButtonItem(customView: containerView)
-        navigationItem.leftBarButtonItem = leftItem
-        
-        titleView = containerView // Keep a reference to the title view
-    }
-    
-    private func createTitleMenu() -> UIMenu {
-        let item1 = UIAction(title: "Playground", image: UIImage(systemName: "bubbles.and.sparkles")) { [weak self] _ in
-            guard let self = self else { return }
-            let cpvc = ColorPickerViewController()
-            generateHapticFeedback(.selection)
-            self.present(cpvc, animated: true, completion: nil)
-        }
-
-        let item2 = UIAction(title: "Support Me", image: UIImage(systemName: "heart")) { [weak self] _ in
-            guard let self = self else { return }
-            let moreInfoVC = MoreInfoVC()
-            generateHapticFeedback(.selection)
-            self.present(moreInfoVC, animated: true, completion: nil)
-        }
-
-        let item3 = UIAction(title: "Introduction Page", image: UIImage(systemName: "lightbulb.min")) { [weak self] _ in
-            guard let self = self else { return }
-
-            let alert = UIAlertController(title: "Go Back to Tutorial Page?", message: "If you go back to the tutorial, any unsaved progress will be lost. Are you sure you want to continue?", preferredStyle: .alert)
-
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-
-            alert.addAction(UIAlertAction(title: "Continue", style: .destructive, handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.presentIntroductionController()
-            }))
-
-            generateHapticFeedback(.selection)
-            self.present(alert, animated: true, completion: nil)
-        }
-
-        return UIMenu(title: "", children: [item1, item2, item3])
-    }
-
-    private func presentIntroductionController() {
-        let introductionController = SwipingController()
-
-        introductionController.onFinish = {
-            introductionController.dismiss(animated: true, completion: nil)
-        }
-
-        introductionController.modalTransitionStyle = .crossDissolve
-        introductionController.modalPresentationStyle = .fullScreen
-        present(introductionController, animated: true, completion: nil)
     }
     
     // MARK: - Action Methods
@@ -385,7 +277,6 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         canvas.isGridVisible = isGridVisible
         canvas.setNeedsDisplay()
         
-        // Update grid button image
         let gridImageName = isGridVisible ? "grid.circle.fill" : "grid.circle"
         gridButton?.image = UIImage(systemName: gridImageName)
     }
@@ -425,8 +316,8 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
     // MARK: - New Action Method
     @objc func openTableViewController(_ sender: UIBarButtonItem? = nil) {
         let tableViewController = TableViewController()
-        tableViewController.canvas = self.canvas // Pass the canvas instance
-        tableViewController.delegate = self // Set the delegate
+        tableViewController.canvas = self.canvas
+        tableViewController.delegate = self
         let navController = UINavigationController(rootViewController: tableViewController)
         present(navController, animated: true, completion: nil)
     }
@@ -446,10 +337,8 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate {
         colorPicker.selectedColor = view.strokeColor
         present(colorPicker, animated: true, completion: nil)
     }
-}
-
-// MARK: - UIColorPickerViewControllerDelegate
-extension SimpleDrawController: UIColorPickerViewControllerDelegate {
+    
+    // MARK: - UIColorPickerViewControllerDelegate
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         updateCanvasColor(with: viewController.selectedColor)
         generateHapticFeedback(.selection)

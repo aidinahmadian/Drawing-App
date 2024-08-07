@@ -34,17 +34,6 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         return vc
     }()
     
-    let colorPaletteVC: ColorPickerViewController = {
-        let vc = ColorPickerViewController()
-        let icon = UIImage(systemName: "paintpalette")?.withRenderingMode(.alwaysTemplate)
-        let iconSelected = UIImage(systemName: "paintpalette.fill")?.withRenderingMode(.alwaysTemplate)
-        let tabBarItem = UITabBarItem(title: "Playground", image: icon, selectedImage: iconSelected)
-        tabBarItem.tag = 3
-        vc.tabBarItem.selectedImage = iconSelected
-        vc.tabBarItem = tabBarItem
-        return vc
-    }()
-    
     // MARK: - UIViewController - (viewDidLoad)
     
     override func viewDidLoad() {
@@ -54,7 +43,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.tintColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
         self.tabBarItem.title = nil
         
-        let controllers = [scribbleVC, patternVC, colorPaletteVC]
+        let controllers = [scribbleVC, patternVC]
         self.viewControllers = controllers.map {UINavigationController(rootViewController: $0)}
     }
 }

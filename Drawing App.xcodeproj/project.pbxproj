@@ -50,12 +50,7 @@
 		E86980AB2C4E626000DFCAB5 /* MoreInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86980AA2C4E626000DFCAB5 /* MoreInfoVC.swift */; };
 		E87194E22C403EFE006A79AA /* LineBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194E12C403EFE006A79AA /* LineBrush.swift */; };
 		E87194E42C403F0A006A79AA /* DottedBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194E32C403F0A006A79AA /* DottedBrush.swift */; };
-		E87194E62C403F15006A79AA /* ChalkBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194E52C403F15006A79AA /* ChalkBrush.swift */; };
 		E87194E82C403F1E006A79AA /* RustBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194E72C403F1E006A79AA /* RustBrush.swift */; };
-		E87194EA2C403F27006A79AA /* SquareTextureBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194E92C403F27006A79AA /* SquareTextureBrush.swift */; };
-		E87194EC2C403F31006A79AA /* PencilBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194EB2C403F31006A79AA /* PencilBrush.swift */; };
-		E87194EE2C403F3D006A79AA /* CharcoalBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194ED2C403F3D006A79AA /* CharcoalBrush.swift */; };
-		E87194F02C403F49006A79AA /* PastelBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194EF2C403F49006A79AA /* PastelBrush.swift */; };
 		E87194F22C403F57006A79AA /* WatercolorBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194F12C403F57006A79AA /* WatercolorBrush.swift */; };
 		E87194F42C403F61006A79AA /* SplatterBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194F32C403F61006A79AA /* SplatterBrush.swift */; };
 		E87194F62C403F6B006A79AA /* InkBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194F52C403F6B006A79AA /* InkBrush.swift */; };
@@ -68,7 +63,7 @@
 		E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670132C380DEB00F1CE33 /* TableViewController.swift */; };
 		E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */; };
 		E8ECBE1E2C53A7FD00A93AD6 /* StraightLineBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */; };
-		E8ECBE202C53AA1000A93AD6 /* OvalBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE1F2C53AA1000A93AD6 /* OvalBrush.swift */; };
+		E8ECBE202C53AA1000A93AD6 /* CircleBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE1F2C53AA1000A93AD6 /* CircleBrush.swift */; };
 		E8ECBE262C53CD2D00A93AD6 /* NavBarAnimationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE252C53CD2D00A93AD6 /* NavBarAnimationManager.swift */; };
 		E8EE469B2C5510B0008F78C4 /* RectangleBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EE469A2C5510B0008F78C4 /* RectangleBrush.swift */; };
 		E8EE469D2C55118B008F78C4 /* StarBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EE469C2C55118B008F78C4 /* StarBrush.swift */; };
@@ -126,12 +121,7 @@
 		E86980AA2C4E626000DFCAB5 /* MoreInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfoVC.swift; sourceTree = "<group>"; };
 		E87194E12C403EFE006A79AA /* LineBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineBrush.swift; sourceTree = "<group>"; };
 		E87194E32C403F0A006A79AA /* DottedBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DottedBrush.swift; sourceTree = "<group>"; };
-		E87194E52C403F15006A79AA /* ChalkBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalkBrush.swift; sourceTree = "<group>"; };
 		E87194E72C403F1E006A79AA /* RustBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RustBrush.swift; sourceTree = "<group>"; };
-		E87194E92C403F27006A79AA /* SquareTextureBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareTextureBrush.swift; sourceTree = "<group>"; };
-		E87194EB2C403F31006A79AA /* PencilBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PencilBrush.swift; sourceTree = "<group>"; };
-		E87194ED2C403F3D006A79AA /* CharcoalBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharcoalBrush.swift; sourceTree = "<group>"; };
-		E87194EF2C403F49006A79AA /* PastelBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastelBrush.swift; sourceTree = "<group>"; };
 		E87194F12C403F57006A79AA /* WatercolorBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatercolorBrush.swift; sourceTree = "<group>"; };
 		E87194F32C403F61006A79AA /* SplatterBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplatterBrush.swift; sourceTree = "<group>"; };
 		E87194F52C403F6B006A79AA /* InkBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InkBrush.swift; sourceTree = "<group>"; };
@@ -144,7 +134,7 @@
 		E8E670132C380DEB00F1CE33 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushDetailsViewController.swift; sourceTree = "<group>"; };
 		E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraightLineBrush.swift; sourceTree = "<group>"; };
-		E8ECBE1F2C53AA1000A93AD6 /* OvalBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvalBrush.swift; sourceTree = "<group>"; };
+		E8ECBE1F2C53AA1000A93AD6 /* CircleBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBrush.swift; sourceTree = "<group>"; };
 		E8ECBE252C53CD2D00A93AD6 /* NavBarAnimationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarAnimationManager.swift; sourceTree = "<group>"; };
 		E8EE469A2C5510B0008F78C4 /* RectangleBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleBrush.swift; sourceTree = "<group>"; };
 		E8EE469C2C55118B008F78C4 /* StarBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarBrush.swift; sourceTree = "<group>"; };
@@ -403,12 +393,7 @@
 				E87194E12C403EFE006A79AA /* LineBrush.swift */,
 				E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */,
 				E87194E32C403F0A006A79AA /* DottedBrush.swift */,
-				E87194E52C403F15006A79AA /* ChalkBrush.swift */,
 				E87194E72C403F1E006A79AA /* RustBrush.swift */,
-				E87194E92C403F27006A79AA /* SquareTextureBrush.swift */,
-				E87194EB2C403F31006A79AA /* PencilBrush.swift */,
-				E87194ED2C403F3D006A79AA /* CharcoalBrush.swift */,
-				E87194EF2C403F49006A79AA /* PastelBrush.swift */,
 				E87194F12C403F57006A79AA /* WatercolorBrush.swift */,
 				E87194F32C403F61006A79AA /* SplatterBrush.swift */,
 				E87194F52C403F6B006A79AA /* InkBrush.swift */,
@@ -427,12 +412,12 @@
 		E8ADFE682C562CBA00B87DFB /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
-				E8ECBE1F2C53AA1000A93AD6 /* OvalBrush.swift */,
-				E8EE469A2C5510B0008F78C4 /* RectangleBrush.swift */,
-				E8EE469C2C55118B008F78C4 /* StarBrush.swift */,
 				E8EE469E2C55119B008F78C4 /* ArrowBrush.swift */,
-				E8EE46A02C551436008F78C4 /* HexagonBrush.swift */,
+				E8ECBE1F2C53AA1000A93AD6 /* CircleBrush.swift */,
+				E8EE469A2C5510B0008F78C4 /* RectangleBrush.swift */,
 				E8EE46A22C55144A008F78C4 /* TriangleBrush.swift */,
+				E8EE469C2C55118B008F78C4 /* StarBrush.swift */,
+				E8EE46A02C551436008F78C4 /* HexagonBrush.swift */,
 				E8EE46A42C551462008F78C4 /* SpiralBrush.swift */,
 			);
 			path = Shapes;
@@ -527,7 +512,6 @@
 				E8EE469D2C55118B008F78C4 /* StarBrush.swift in Sources */,
 				E82FEB072C35A572008BAD04 /* SimpleDrawController.swift in Sources */,
 				E82FEAE72C35A2A0008BAD04 /* Global.swift in Sources */,
-				E87194E62C403F15006A79AA /* ChalkBrush.swift in Sources */,
 				E82FEAFE2C35A4F3008BAD04 /* SimpleDrawCanvas.swift in Sources */,
 				E8EE46A72C562A96008F78C4 /* DrawableBrush.swift in Sources */,
 				E8ECBE262C53CD2D00A93AD6 /* NavBarAnimationManager.swift in Sources */,
@@ -536,11 +520,9 @@
 				E87194F22C403F57006A79AA /* WatercolorBrush.swift in Sources */,
 				E82FEAD12C359FEB008BAD04 /* Drawing_App.xcdatamodeld in Sources */,
 				E87194E82C403F1E006A79AA /* RustBrush.swift in Sources */,
-				E87194F02C403F49006A79AA /* PastelBrush.swift in Sources */,
 				E8EE46A32C55144A008F78C4 /* TriangleBrush.swift in Sources */,
 				E8EE46A52C551462008F78C4 /* SpiralBrush.swift in Sources */,
-				E87194EE2C403F3D006A79AA /* CharcoalBrush.swift in Sources */,
-				E8ECBE202C53AA1000A93AD6 /* OvalBrush.swift in Sources */,
+				E8ECBE202C53AA1000A93AD6 /* CircleBrush.swift in Sources */,
 				E87194E22C403EFE006A79AA /* LineBrush.swift in Sources */,
 				E8BF779A2C4B90F000B761DD /* BaseDrawController.swift in Sources */,
 				E82FEADF2C35A22F008BAD04 /* CustomTabBarController.swift in Sources */,
@@ -559,7 +541,6 @@
 				E80103112C4FA402008B9482 /* FilterDataModel.swift in Sources */,
 				E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */,
 				E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */,
-				E87194EA2C403F27006A79AA /* SquareTextureBrush.swift in Sources */,
 				E82FEB052C35A559008BAD04 /* PatternViewController.swift in Sources */,
 				E82FEB012C35A524008BAD04 /* SwipingController.swift in Sources */,
 				E8461DC02C3AC36B00CBCC76 /* GradientView.swift in Sources */,
@@ -573,7 +554,6 @@
 				E82FEAC72C359FEB008BAD04 /* AppDelegate.swift in Sources */,
 				E82FEAC92C359FEB008BAD04 /* SceneDelegate.swift in Sources */,
 				E8EE469F2C55119B008F78C4 /* ArrowBrush.swift in Sources */,
-				E87194EC2C403F31006A79AA /* PencilBrush.swift in Sources */,
 				E82FEAF92C35A490008BAD04 /* PatternView.swift in Sources */,
 				E82FEB032C35A544008BAD04 /* HomePageViewController.swift in Sources */,
 				E87194F62C403F6B006A79AA /* InkBrush.swift in Sources */,

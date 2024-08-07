@@ -1,5 +1,5 @@
 //
-//  OvalBrush.swift
+//  CircleBrush.swift
 //  Drawing App
 //
 //  Created by Aidin Ahmadian on 7/26/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OvalBrush: Brush {
+class CircleBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         guard let firstPoint = points.first, let lastPoint = points.last else { return }
         
