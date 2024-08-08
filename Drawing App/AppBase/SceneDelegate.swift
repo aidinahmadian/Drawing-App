@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  Test
+//  Drawing App
 //
 //  Created by aidin ahmadian on 7/20/20.
 //  Copyright © 2020 aidin ahmadian. All rights reserved.
@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if hasShownSwipingController {
             window?.rootViewController = CustomTabBarController()
         } else {
-            let swipingController = SwipingController()
+            let swipingController = WelcomeController()
             swipingController.onFinish = {
                 UserDefaults.standard.set(true, forKey: "hasShownSwipingController")
                 let customTabBarController = CustomTabBarController()

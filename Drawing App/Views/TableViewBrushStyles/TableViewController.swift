@@ -1,5 +1,5 @@
 //
-//  t2.swift
+//  TableViewController.swift
 //  Drawing App
 //
 //  Created by Aidin Ahmadian on 7/5/24.

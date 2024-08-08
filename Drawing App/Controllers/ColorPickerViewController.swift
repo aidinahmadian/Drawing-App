@@ -12,7 +12,6 @@ protocol ColorPickerViewControllerDelegate: AnyObject {
     func colorPickerViewController(_ viewController: ColorPickerViewController, didSelectColor color: UIColor)
 }
 
-
 class ColorPickerViewController: UIViewController {
     
     weak var delegate: ColorPickerViewControllerDelegate?
@@ -80,8 +79,8 @@ class ColorPickerViewController: UIViewController {
         setupGestureRecognizers()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         tapToCopylabel.startBlink()
     }
     

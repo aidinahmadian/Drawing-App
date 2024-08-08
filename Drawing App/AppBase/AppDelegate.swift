@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Test
+//  Drawing App
 //
 //  Created by aidin ahmadian on 7/20/20.
 //  Copyright © 2020 aidin ahmadian. All rights reserved.

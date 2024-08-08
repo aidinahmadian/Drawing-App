@@ -1,6 +1,6 @@
 //
-//  SwipingController.swift
-//  Test
+//  WelcomeController.swift
+//  Drawing App
 //
 //  Created by aidin ahmadian on 7/22/20.
 //  Copyright © 2020 aidin ahmadian. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import AVKit
 
-class SwipingController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Properties
     

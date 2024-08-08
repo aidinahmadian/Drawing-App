@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class MoreInfoVC: UIViewController {
     
@@ -18,8 +19,8 @@ class MoreInfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        moreInfoView.wallpaperButton.addTarget(self, action: #selector(startRainingEmojis), for: .touchUpInside)
-        moreInfoView.pixelPalsButton.addTarget(self, action: #selector(startRainingEmojis), for: .touchUpInside)        
+        moreInfoView.celebrationBT.addTarget(self, action: #selector(startRainingEmojis), for: .touchUpInside)
+        moreInfoView.otherProjectsBT.addTarget(self, action: #selector(otherProjcsAction), for: .touchUpInside)
     }
     
     @objc private func startRainingEmojis() {
@@ -39,5 +40,39 @@ class MoreInfoVC: UIViewController {
                 emojiLabel.removeFromSuperview()
             })
         }
+    }
+    
+    func showSafariVC(for url: String) {
+        guard let url = URL(string: url) else {
+            print("Invalid URL")
+            return
+        }
+        let safariVC = SFSafariViewController(url: url)
+        
+        if let topController = UIApplication.shared.topMostViewController() {
+            topController.present(safariVC, animated: true, completion: nil)
+        } else {
+            print("Unable to find the top view controller")
+        }
+    }
+    
+    @objc func otherProjcsAction() {
+        showSafariVC(for: "https://github.com/aidinahmadian")
+    }
+}
+
+extension UIApplication {
+    func topMostViewController() -> UIViewController? {
+        guard let windowScene = connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+            return nil
+        }
+        
+        var topController: UIViewController? = window.rootViewController
+        while let presentedViewController = topController?.presentedViewController {
+            topController = presentedViewController
+        }
+        
+        return topController
     }
 }

@@ -1,6 +1,6 @@
 //
 //  CustomTabBarController.swift
-//  Test
+//  Drawing App
 //
 //  Created by aidin ahmadian on 7/22/20.
 //  Copyright © 2020 aidin ahmadian. All rights reserved.
@@ -16,7 +16,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         let vc = SimpleDrawController()
         let icon = UIImage(systemName: "pencil.and.scribble")?.withRenderingMode(.alwaysOriginal)
         let iconSelected = UIImage(systemName: "pencil.and.scribble")?.withRenderingMode(.alwaysTemplate)
-        let tabBarItem = UITabBarItem(title: "Draw", image: icon, selectedImage: iconSelected)
+        let tabBarItem = UITabBarItem(title: "Scribble", image: icon, selectedImage: iconSelected)
         tabBarItem.tag = 1
         vc.tabBarItem.selectedImage = iconSelected
         vc.tabBarItem = tabBarItem
@@ -27,7 +27,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate {
         let vc = PatternViewController()
         let icon = UIImage(systemName: "lasso.badge.sparkles")?.withRenderingMode(.alwaysOriginal)
         let iconSelected = UIImage(systemName: "lasso.badge.sparkles")?.withRenderingMode(.alwaysTemplate)
-        let tabBarItem = UITabBarItem(title: "Pattern", image: icon, selectedImage: iconSelected)
+        let tabBarItem = UITabBarItem(title: "Symmetrix", image: icon, selectedImage: iconSelected)
         tabBarItem.tag = 2
         vc.tabBarItem.selectedImage = iconSelected
         vc.tabBarItem = tabBarItem

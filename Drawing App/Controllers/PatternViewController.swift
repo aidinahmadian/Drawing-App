@@ -23,7 +23,7 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBarButtons()
-        setupNavigationBarTitle(title: "Pattern")
+        setupNavigationBarTitle(title: "Symmetrix")
         NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: .init(PatternView.viewWasTouched), object: nil)
     }
     

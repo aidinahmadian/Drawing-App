@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class MoreInfoView: UIView {
     
@@ -62,7 +63,7 @@ class MoreInfoView: UIView {
         return label
     }()
     
-    let wallpaperButton: UIButton = {
+    let celebrationBT: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Celebration Button 🎉", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -73,13 +74,14 @@ class MoreInfoView: UIView {
         return button
     }()
     
-    let pixelPalsButton: UIButton = {
+    let otherProjectsBT: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Check Out My Other Projects ✨", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.systemPink
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        //button.addTarget(self, action: #selector(otherProjcsAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -102,8 +104,8 @@ class MoreInfoView: UIView {
         contentView.addSubview(heartImageView)
         contentView.addSubview(thankYouLabel)
         contentView.addSubview(messageLabel)
-        contentView.addSubview(wallpaperButton)
-        contentView.addSubview(pixelPalsButton)
+        contentView.addSubview(celebrationBT)
+        contentView.addSubview(otherProjectsBT)
         setupConstraints()
     }
     
@@ -148,16 +150,16 @@ class MoreInfoView: UIView {
             messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
-            wallpaperButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20),
-            wallpaperButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            wallpaperButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            wallpaperButton.heightAnchor.constraint(equalToConstant: 50),
+            celebrationBT.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20),
+            celebrationBT.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            celebrationBT.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            celebrationBT.heightAnchor.constraint(equalToConstant: 50),
             
-            pixelPalsButton.topAnchor.constraint(equalTo: wallpaperButton.bottomAnchor, constant: 10),
-            pixelPalsButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            pixelPalsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            pixelPalsButton.heightAnchor.constraint(equalToConstant: 50),
-            pixelPalsButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            otherProjectsBT.topAnchor.constraint(equalTo: celebrationBT.bottomAnchor, constant: 10),
+            otherProjectsBT.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            otherProjectsBT.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            otherProjectsBT.heightAnchor.constraint(equalToConstant: 50),
+            otherProjectsBT.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
         ])
     }
 }

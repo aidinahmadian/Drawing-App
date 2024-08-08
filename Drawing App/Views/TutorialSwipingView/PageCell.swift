@@ -1,6 +1,6 @@
 //
 //  PageCell.swift
-//  Test
+//  Drawing App
 //
 //  Created by aidin ahmadian on 7/22/20.
 //  Copyright © 2020 aidin ahmadian. All rights reserved.
@@ -44,6 +44,7 @@ class PageCell: UICollectionViewCell {
         vc.showsPlaybackControls = false
         vc.view.translatesAutoresizingMaskIntoConstraints = false
         vc.videoGravity = .resizeAspectFill
+        vc.view.backgroundColor = .white
         return vc
     }()
     
@@ -53,6 +54,7 @@ class PageCell: UICollectionViewCell {
         super.init(frame: frame)
         setupLayout()
         setupDefaultText()
+        backgroundColor = .white
     }
     
     required init?(coder aDecoder: NSCoder) {
