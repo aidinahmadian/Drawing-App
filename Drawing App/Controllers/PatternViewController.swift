@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 class PatternViewController: BaseDrawController, UIColorPickerViewControllerDelegate, ColorPickerViewControllerDelegate {
     
@@ -57,7 +58,7 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
         
         let turnActions = createTurnActions()
         let turnMenu = UIMenu(title: "Number of Lines", children: turnActions)
-        let turnButton = UIBarButtonItem(image: UIImage(systemName: "line.3.crossed.swirl.circle.fill"), menu: turnMenu)
+        let turnButton = UIBarButtonItem(image: UIImage(systemName: "laser.burst"), menu: turnMenu)
         
         let buttonItems = [
             turnButton,
@@ -115,7 +116,7 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
         let turnActions = createTurnActions()
         let turnMenu = UIMenu(title: "Number of Lines", children: turnActions)
         
-        if let turnButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "line.3.crossed.swirl.circle.fill") }) {
+        if let turnButton = navBarButtonItems.first(where: { $0.image == UIImage(systemName: "laser.burst") }) {
             turnButton.menu = turnMenu
         }
     }
@@ -160,10 +161,55 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
     }
     
     @objc private func handleSave(_ sender: UIBarButtonItem) {
-        guard let view = view as? PatternView, let image = view.getImage() else { return }
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        animateSaveLabel()
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .authorized:
+            saveImage()
+        case .denied, .restricted:
+            promptForPhotosAccess()
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { newStatus in
+                DispatchQueue.main.async {
+                    if newStatus == .authorized {
+                        self.saveImage()
+                    } else {
+                        self.promptForPhotosAccess()
+                    }
+                }
+            }
+        @unknown default:
+            break
+        }
+    }
+    
+    private func saveImage() {
+        guard let view = view as? PatternView, let image = view.getImage() else {
+            return
+        }
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
         generateHapticFeedback(.success)
+    }
+    
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            print("Error saving image: \(error.localizedDescription)")
+        } else {
+            animateSaveLabel()
+        }
+    }
+    
+    private func promptForPhotosAccess() {
+        let alert = UIAlertController(title: "Photos Access Needed", message: "Please allow access to your photo library to save images.", preferredStyle: .alert)
+        let openSettingsAction = UIAlertAction(title: "Open Settings", style: .default) { _ in
+            guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+            if UIApplication.shared.canOpenURL(settingsURL) {
+                UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(openSettingsAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
     }
     
     private func animateSaveLabel() {

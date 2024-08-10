@@ -16,10 +16,10 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     var onFinish: (() -> Void)?
     
     private let pages = [
-        Page(videoName: "Video1.mp4", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
-        Page(videoName: "Video2.mp4", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
-        Page(videoName: "Video6.mp4", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process."),
-        Page(videoName: "Video7.mp4", headerText: "\nSketchBook for Everybody!", bodyText: "At Autodesk, we believe creativity starts with an idea. From quick conceptual sketches to fully finished artwork, sketching is at the heart of the creative process.")
+        Page(videoName: "Video1.mp4", headerText: "\nEvery Masterpiece Begins with a Single Stroke!", bodyText: "We believe every masterpiece begins with a single stroke. Whether you're sketching freehand or utilizing our Symmetrix pattern tool, our app is designed to bring your creative ideas to life."),
+        Page(videoName: "Video2.mp4", headerText: "\nInspiration Strikes Anytime!", bodyText: "We know that inspiration strikes at any moment. From initial doodles to polished designs, our app offers the tools you need, including the unique Symmetrix pattern feature, to create stunning artwork."),
+        Page(videoName: "Video6.mp4", headerText: "\nCelebrate the Spark of Creativity!", bodyText: "We celebrate the spark of creativity. With options to draw freely or use our advanced Symmetrix pattern tool, artists can seamlessly transform their concepts into beautiful finished pieces."),
+        Page(videoName: "Video7.mp4", headerText: "\nSupporting Your Artistic Journey!", bodyText: "Creativity is our core. Whether you're capturing a fleeting idea with a quick sketch or using our Symmetrix pattern view for detailed symmetrical designs, our app supports every step of your artistic journey.")
     ]
     
     // MARK: - UI Components
