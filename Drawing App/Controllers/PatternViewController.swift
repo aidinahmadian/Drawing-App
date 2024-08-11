@@ -64,7 +64,7 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
             turnButton,
             lineWidthButton,
             UIBarButtonItem(image: UIImage(systemName: "paintpalette"), style: .plain, target: self, action: #selector(handleColor)),
-            UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.down"), style: .plain, target: self, action: #selector(handleSave)),
+            UIBarButtonItem(image: UIImage(systemName: "arrow.down.to.line.circle"), style: .plain, target: self, action: #selector(handleSave)),
             cancelButton,
         ]
         

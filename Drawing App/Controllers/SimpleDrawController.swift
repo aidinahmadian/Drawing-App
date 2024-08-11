@@ -20,6 +20,10 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
     private var selectedLineWidth: Float?
     private var isMoveMode = false
     
+    // Brush name label and cancel button
+    private var brushNameLabel: UILabel!
+    private var cancelButton: UIButton!
+    
     // MARK: - Lifecycle Methods
     override func loadView() {
         view = canvas
@@ -44,6 +48,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
         canvas.backgroundColor = .white
         configureToggleLabel()
         configureBlurEffectView()
+        configureBrushNameLabel() // Configure the brush name label and cancel button
     }
     
     private func configureToggleLabel() {
@@ -76,7 +81,7 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
         let blurEffect = UIBlurEffect(style: .light)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        blurEffectView.layer.borderWidth = 0.8
+        blurEffectView.layer.borderWidth = 1.0
         blurEffectView.layer.borderColor = UIColor.orange.cgColor
         blurEffectView.layer.cornerRadius = 12
         blurEffectView.layer.masksToBounds = true
@@ -98,6 +103,69 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
             toggleLabel.bottomAnchor.constraint(equalTo: blurEffectView.bottomAnchor)
         ])
     }
+    
+    private func configureBrushNameLabel() {
+        brushNameLabel = UILabel()
+        brushNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        brushNameLabel.textAlignment = .center
+        brushNameLabel.textColor = .black
+        brushNameLabel.backgroundColor = UIColor(white: 1.0, alpha: 0.7)
+        brushNameLabel.layer.cornerRadius = 12
+        brushNameLabel.layer.borderWidth = 1.0
+        brushNameLabel.layer.borderColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        brushNameLabel.layer.masksToBounds = true
+        brushNameLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        brushNameLabel.text = "Selected Brush: Line"
+        
+        view.addSubview(brushNameLabel)
+        
+        // Configure the cancel button
+        cancelButton = UIButton(type: .system)
+        cancelButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        cancelButton.tintColor = #colorLiteral(red: 0.2, green: 0.262745098, blue: 0.2196078431, alpha: 1)
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        cancelButton.addTarget(self, action: #selector(hideBrushNameLabel), for: .touchUpInside)
+        
+        view.addSubview(cancelButton)
+        
+        // Add constraints
+        NSLayoutConstraint.activate([
+            brushNameLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            brushNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            brushNameLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 250),
+            brushNameLabel.heightAnchor.constraint(equalToConstant: 40),
+            
+//            cancelButton.leadingAnchor.constraint(equalTo: brushNameLabel.trailingAnchor, constant: 5),
+//            cancelButton.centerYAnchor.constraint(equalTo: brushNameLabel.centerYAnchor),
+//            cancelButton.widthAnchor.constraint(equalToConstant: 24),
+//            cancelButton.heightAnchor.constraint(equalToConstant: 24),
+            
+            cancelButton.leadingAnchor.constraint(equalTo: brushNameLabel.trailingAnchor, constant: -15),
+            cancelButton.topAnchor.constraint(equalTo: brushNameLabel.topAnchor, constant: -10),
+            cancelButton.widthAnchor.constraint(equalToConstant: 24),
+            cancelButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
+    }
+    
+    private func updateBrushNameLabel(with brushName: String) {
+        brushNameLabel.text = "Selected Brush: \(brushName)"
+        brushNameLabel.isHidden = false
+        cancelButton.isHidden = false
+    }
+    
+    @objc private func hideBrushNameLabel() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.brushNameLabel.alpha = 0.0
+            self.cancelButton.alpha = 0.0
+        }) { _ in
+            self.brushNameLabel.isHidden = true
+            self.cancelButton.isHidden = true
+            self.brushNameLabel.alpha = 1.0
+            self.cancelButton.alpha = 1.0
+        }
+        generateHapticFeedback(.selection)
+    }
+
     
     override func setupNavBarButtons() {
         let expandButton = UIBarButtonItem(image: UIImage(systemName: "shippingbox.and.arrow.backward.fill"), style: .plain, target: self, action: #selector(toggleNavBarButtons))
@@ -145,26 +213,27 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
     }
     
     private func createBrushActions() -> [UIMenuElement] {
-        let brushes: [(String, Brush)] = [
+        let brushes: [(String, Brush, String?)] = [
             // Shapes
-            ("Arrow", ArrowBrush()),
-            ("Circle", CircleBrush()),
-            ("Rectangle", RectangleBrush()),
-            ("Triangle", TriangleBrush()),
-            ("Star", StarBrush()),
-            ("Hexagon", HexagonBrush()),
-            ("Spiral", SpiralBrush()),
+            ("Arrow", ArrowBrush(), nil),
+            ("Circle", CircleBrush(), nil),
+            ("Rectangle", RectangleBrush(), nil),
+            ("Triangle", TriangleBrush(), nil),
+            ("Star", StarBrush(), nil),
+            ("Hexagon", HexagonBrush(), nil),
+            ("Spiral", SpiralBrush(), nil),
             // Other Brushes
-            ("Line", LineBrush()),
-            ("Straight Line", StraightLineBrush()),
-            ("Dotted", DottedBrush()),
-            ("Rust", RustBrush()),
-            ("Watercolor", WatercolorBrush()),
-            ("Splatter", SplatterBrush()),
-            ("Ink", InkBrush()),
+            ("Line", LineBrush(), nil),
+            ("Straight Line", StraightLineBrush(), nil),
+            ("Dotted", DottedBrush(), nil),
+            ("Rust", RustBrush(), nil),
+            ("Watercolor", WatercolorBrush(), nil),
+            ("Splatter", SplatterBrush(), nil),
+            ("Ink", InkBrush(), nil),
+            ("Eraser", EraserBrush(), "eraser")
         ]
         
-        let shapeBrushes = brushes.filter { ["Arrow" ,"Circle", "Rectangle", "Triangle", "Star", "Hexagon", "Spiral"].contains($0.0) }
+        let shapeBrushes = brushes.filter { ["Arrow", "Circle", "Rectangle", "Triangle", "Star", "Hexagon", "Spiral"].contains($0.0) }
         let otherBrushes = brushes.filter { !["Arrow", "Circle", "Rectangle", "Star", "Hexagon", "Triangle", "Spiral"].contains($0.0) }
         
         let shapeActions = shapeBrushes.map { brush in
@@ -178,22 +247,22 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
                 self.selectedBrushTitle = brush.0
                 self.canvas.setBrush(brush.1)
                 self.updateBrushMenu()
+                self.updateBrushNameLabel(with: brush.0) // Update the label
             }
         }
-        
-        let shapesMenu = UIMenu(title: "Shapes", children: shapeActions)
         
         let otherActions = otherBrushes.map { brush in
             let isSelected = brush.0 == selectedBrushTitle
             let attributes: UIMenuElement.Attributes = isSelected ? .disabled : []
             return UIAction(
                 title: brush.0,
-                image: isSelected ? UIImage(systemName: "checkmark.circle.fill")?.withTintColor(.systemGreen, renderingMode: .alwaysOriginal) : nil,
+                image: brush.2 != nil ? UIImage(systemName: brush.2!) : nil, // Set the icon if it exists
                 attributes: attributes
             ) { _ in
                 self.selectedBrushTitle = brush.0
                 self.canvas.setBrush(brush.1)
                 self.updateBrushMenu()
+                self.updateBrushNameLabel(with: brush.0) // Update the label
             }
         }
         
@@ -201,8 +270,9 @@ class SimpleDrawController: BaseDrawController, BrushSelectionDelegate, UIColorP
             self.openTableViewController()
         }
         
-        return [customBrushAction] + [shapesMenu] + otherActions
+        return [customBrushAction] + [UIMenu(title: "Shapes", children: shapeActions)] + otherActions
     }
+
     
     private func createLineWidthActions() -> [UIAction] {
         let lineWidths: [Float] = [1.0, 2.0, 4.0, 6.0, 8.0, 10.0, 16.0]

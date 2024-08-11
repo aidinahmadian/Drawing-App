@@ -37,6 +37,9 @@ class SimpleDrawCanvas: UIView {
     
     func setBrush(_ brush: Brush) {
         self.currentBrush = brush
+        if brush is EraserBrush {
+            updateCachedImage()
+        }
     }
     
     func undo() {

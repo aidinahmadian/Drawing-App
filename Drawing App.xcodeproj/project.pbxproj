@@ -56,6 +56,7 @@
 		E87194FC2C4044C2006A79AA /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */; };
 		E8782BF12C5E440100148FAC /* SankofaDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8782BF02C5E440100148FAC /* SankofaDisplay-Regular.ttf */; };
 		E88FECA02C5E33E800F69F23 /* Milanello.otf in Resources */ = {isa = PBXBuildFile; fileRef = E88FEC9F2C5E33E800F69F23 /* Milanello.otf */; };
+		E8ABBBE42C68CA7400A09387 /* EraserBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ABBBE32C68CA7400A09387 /* EraserBrush.swift */; };
 		E8ADFE6A2C56348100B87DFB /* SimpleDrawCanvas(MainLogic).swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ADFE692C56348100B87DFB /* SimpleDrawCanvas(MainLogic).swift */; };
 		E8BF779A2C4B90F000B761DD /* BaseDrawController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BF77992C4B90F000B761DD /* BaseDrawController.swift */; };
 		E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */; };
@@ -126,6 +127,7 @@
 		E87194FB2C4044C2006A79AA /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E8782BF02C5E440100148FAC /* SankofaDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SankofaDisplay-Regular.ttf"; sourceTree = "<group>"; };
 		E88FEC9F2C5E33E800F69F23 /* Milanello.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Milanello.otf; sourceTree = "<group>"; };
+		E8ABBBE32C68CA7400A09387 /* EraserBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EraserBrush.swift; sourceTree = "<group>"; };
 		E8ADFE692C56348100B87DFB /* SimpleDrawCanvas(MainLogic).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SimpleDrawCanvas(MainLogic).swift"; sourceTree = "<group>"; };
 		E8BF77992C4B90F000B761DD /* BaseDrawController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDrawController.swift; sourceTree = "<group>"; };
 		E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				E8ADFE682C562CBA00B87DFB /* Shapes */,
 				E8ADFE672C562C9E00B87DFB /* Custom Brushes */,
 				E87194E12C403EFE006A79AA /* LineBrush.swift */,
+				E8ABBBE32C68CA7400A09387 /* EraserBrush.swift */,
 				E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */,
 				E87194E32C403F0A006A79AA /* DottedBrush.swift */,
 				E87194E72C403F1E006A79AA /* RustBrush.swift */,
@@ -540,6 +543,7 @@
 				E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */,
 				E82FEB052C35A559008BAD04 /* PatternViewController.swift in Sources */,
 				E82FEB012C35A524008BAD04 /* WelcomeController.swift in Sources */,
+				E8ABBBE42C68CA7400A09387 /* EraserBrush.swift in Sources */,
 				E8461DC02C3AC36B00CBCC76 /* GradientView.swift in Sources */,
 				E8461DB92C3AABF800CBCC76 /* UIView+BlinkingAnimation.swift in Sources */,
 				E82FEAED2C35A327008BAD04 /* PageCell.swift in Sources */,
