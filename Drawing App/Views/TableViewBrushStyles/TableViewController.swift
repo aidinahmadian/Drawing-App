@@ -79,7 +79,7 @@ class TableViewController: UIViewController {
     
     private func setupNavigationBar() {
         let rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "info.circle"),
+            image: UIImage(systemName: "plus.circle"),
             style: .plain,
             target: self,
             action: #selector(rightBarButtonTapped)
@@ -122,9 +122,12 @@ class TableViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func rightBarButtonTapped() {
-        let moreInfoVC = MoreInfoVC()
-        present(moreInfoVC, animated: true, completion: nil)
-        print("Right bar button tapped")
+        let alert = UIAlertController(title: "Feature Coming Soon\n🤩",
+                                      message: "This feature will be available in the near future.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+        generateHapticFeedback(.soft)
     }
 }
 

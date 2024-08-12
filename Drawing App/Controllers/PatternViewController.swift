@@ -25,6 +25,15 @@ class PatternViewController: BaseDrawController, UIColorPickerViewControllerDele
         super.viewDidLoad()
         setupNavBarButtons()
         setupNavigationBarTitle(title: "Symmetrix")
+        
+        // Initialize selectedLineWidth and selectedTurn with default values from PatternView
+        selectedLineWidth = patternView.lineWidth
+        selectedTurn = patternView.turns
+        
+        // Update menus to reflect the default selections
+        updateLineWidthMenu()
+        updateTurnMenu()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: .init(PatternView.viewWasTouched), object: nil)
     }
     
