@@ -8,18 +8,25 @@
 
 import UIKit
 
+// Protocol definition for the ColorPickerViewController delegate
 protocol ColorPickerViewControllerDelegate: AnyObject {
     func colorPickerViewController(_ viewController: ColorPickerViewController, didSelectColor color: UIColor)
 }
 
+// Main view controller for color picking functionality
 class ColorPickerViewController: UIViewController {
     
+    // Delegate to handle color selection events
     weak var delegate: ColorPickerViewControllerDelegate?
+    
+    // Instance of a custom filter launcher
     let filterLaucher = FilterLauncher()
     
+    // UI components
     private var gradientView: GradientView!
     private var buttonGradientLayer: CAGradientLayer!
     
+    // Label to display color picker prompt
     private let colorPickerlabel: UILabel = {
         let label = UILabel()
         label.text = "Choose Your Color"
@@ -39,6 +46,7 @@ class ColorPickerViewController: UIViewController {
         return label
     }()
     
+    // Label to display tap-to-copy hint
     private let tapToCopylabel: UILabel = {
         let label = UILabel()
         label.text = "(Tap to copy!)"
@@ -49,6 +57,7 @@ class ColorPickerViewController: UIViewController {
         return label
     }()
     
+    // Button to open the color picker
     private let colorPickerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Color Picker", for: .normal)
@@ -66,8 +75,12 @@ class ColorPickerViewController: UIViewController {
         return button
     }()
     
+    // MARK: - View Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Setup gradient background and UI components
         gradientView = GradientView(frame: self.view.bounds)
         gradientView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(gradientView)
@@ -81,20 +94,17 @@ class ColorPickerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tapToCopylabel.startBlink()
+        tapToCopylabel.startBlink() // Start blinking animation for tap-to-copy label
     }
     
-    @objc private func didFilterBtnTapped() {
-        filterLaucher.showFilter()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        buttonGradientLayer.frame = colorPickerButton.bounds // Adjust gradient layer to button bounds
     }
     
-    @objc private func handleCP() {
-        let picker = UIColorPickerViewController()
-        picker.selectedColor = .white
-        picker.delegate = self
-        present(picker, animated: true, completion: nil)
-    }
+    // MARK: - Setup Functions
     
+    // Setup and layout the UI components
     private func setupViews() {
         let blurEffect = UIBlurEffect(style: .systemThinMaterialLight)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -125,6 +135,7 @@ class ColorPickerViewController: UIViewController {
         ])
     }
     
+    // Setup Auto Layout constraints for UI components
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             colorPickerlabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
@@ -143,6 +154,7 @@ class ColorPickerViewController: UIViewController {
         ])
     }
     
+    // Setup the gradient layer for the color picker button
     private func setupGradientLayer() {
         buttonGradientLayer = CAGradientLayer()
         buttonGradientLayer.frame = colorPickerButton.bounds
@@ -156,6 +168,7 @@ class ColorPickerViewController: UIViewController {
         colorPickerButton.layer.insertSublayer(buttonGradientLayer, at: 0)
     }
     
+    // Start the gradient animation for the button
     private func startGradientAnimation() {
         let color1 = #colorLiteral(red: 0.9485061765, green: 0.8026962876, blue: 0.7942721248, alpha: 1).cgColor
         let color2 = #colorLiteral(red: 0.9406943321, green: 0.9392179847, blue: 0.7521005869, alpha: 1).cgColor
@@ -171,35 +184,28 @@ class ColorPickerViewController: UIViewController {
         buttonGradientLayer.add(gradientAnimation, forKey: "colorChange")
     }
     
-    private func updateGradientColor(to color: UIColor) {
-        gradientView.updateGradientColor(at: 0, to: color) // Change the first color
-        colorPickerlabel.text = color.toHexString() // Update the label with HEX value
-        colorPickerlabel.attributedText = NSAttributedString(
-            string: color.toHexString(),
-            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
-        )
-        // Animate button gradient layer
-        let gradientAnimation = CABasicAnimation(keyPath: "colors")
-        gradientAnimation.duration = 4.0
-        gradientAnimation.toValue = [color.cgColor, UIColor.white.cgColor]
-        gradientAnimation.fillMode = .forwards
-        gradientAnimation.isRemovedOnCompletion = false
-        gradientAnimation.autoreverses = true
-        gradientAnimation.repeatCount = Float.infinity
-        
-        buttonGradientLayer.add(gradientAnimation, forKey: "colorChange")
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        buttonGradientLayer.frame = colorPickerButton.bounds
-    }
-    
+    // Setup gesture recognizers for interactive elements
     private func setupGestureRecognizers() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleLabelTap))
         colorPickerlabel.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    // MARK: - Action Handlers
+    
+    // Handle the filter button tap event
+    @objc private func didFilterBtnTapped() {
+        filterLaucher.showFilter() // Display the filter options
+    }
+    
+    // Handle the color picker button tap event
+    @objc private func handleCP() {
+        let picker = UIColorPickerViewController()
+        picker.selectedColor = .white
+        picker.delegate = self
+        present(picker, animated: true, completion: nil)
+    }
+    
+    // Handle the label tap event to copy the color HEX value
     @objc private func handleLabelTap() {
         generateHapticFeedback(.success)
         guard let labelText = colorPickerlabel.text else { return }
@@ -215,9 +221,32 @@ class ColorPickerViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
+    
+    // Update the gradient color and label when a new color is selected
+    private func updateGradientColor(to color: UIColor) {
+        gradientView.updateGradientColor(at: 0, to: color) // Change the first color in the gradient view
+        colorPickerlabel.text = color.toHexString() // Update the label with HEX value
+        colorPickerlabel.attributedText = NSAttributedString(
+            string: color.toHexString(),
+            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
+        )
+        
+        // Animate the gradient layer on the button
+        let gradientAnimation = CABasicAnimation(keyPath: "colors")
+        gradientAnimation.duration = 4.0
+        gradientAnimation.toValue = [color.cgColor, UIColor.white.cgColor]
+        gradientAnimation.fillMode = .forwards
+        gradientAnimation.isRemovedOnCompletion = false
+        gradientAnimation.autoreverses = true
+        gradientAnimation.repeatCount = Float.infinity
+        
+        buttonGradientLayer.add(gradientAnimation, forKey: "colorChange")
+    }
 }
 
 // MARK: - UIColorPickerViewControllerDelegate
+
+// Extension to handle color picker events
 extension ColorPickerViewController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         let selectedColor = viewController.selectedColor

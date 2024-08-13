@@ -9,12 +9,14 @@
 import UIKit
 import AVKit
 
+// MARK: - WelcomeController
 class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Properties
     
     var onFinish: (() -> Void)?
     
+    // Data model representing pages with video, header, and body text
     private let pages = [
         Page(videoName: "Video1.mp4", headerText: "\nEvery Masterpiece Begins with a Single Stroke!", bodyText: "We believe every masterpiece begins with a single stroke. Whether you're sketching freehand or utilizing our Symmetrix pattern tool, our app is designed to bring your creative ideas to life."),
         Page(videoName: "Video2.mp4", headerText: "\nInspiration Strikes Anytime!", bodyText: "We know that inspiration strikes at any moment. From initial doodles to polished designs, our app offers the tools you need, including the unique Symmetrix pattern feature, to create stunning artwork."),
@@ -24,18 +26,21 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - UI Components
     
+    // Previous button configuration
     private let previousButton: UIButton = {
         let button = createButton(title: "PREV")
         button.addTarget(self, action: #selector(handlePrev), for: .touchUpInside)
         return button
     }()
     
+    // Next button configuration
     private let nextButton: UIButton = {
         let button = createButton(title: "NEXT")
         button.addTarget(self, action: #selector(handleNextOrSkip), for: .touchUpInside)
         return button
     }()
     
+    // Skip button configuration
     private let skipButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
@@ -46,6 +51,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         return button
     }()
     
+    // Page control configuration
     private lazy var pageControl: UIPageControl = {
         let pc = UIPageControl()
         pc.translatesAutoresizingMaskIntoConstraints = false
@@ -59,10 +65,12 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - Initialization
     
+    // Custom initializer with a UICollectionViewFlowLayout
     init() {
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
+    // Required initializer
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -71,7 +79,6 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureCollectionView()
         setupViews()
         setupConstraints()
@@ -84,6 +91,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - Setup Functions
     
+    // Configures the collection view properties and layout
     private func configureCollectionView() {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .white
@@ -99,11 +107,13 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         navigationController?.navigationBar.isHidden = true
     }
     
+    // Adds skip button and bottom controls to the view
     private func setupViews() {
         view.addSubview(skipButton)
         setupBottomControls()
     }
     
+    // Sets up constraints for UI elements
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -113,6 +123,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         ])
     }
     
+    // Sets up bottom control buttons (previous, next, and page control)
     private func setupBottomControls() {
         let bottomControlsStackView = UIStackView(arrangedSubviews: [previousButton, pageControl, nextButton])
         bottomControlsStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -139,12 +150,14 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - Button Actions
     
+    // Handles the previous button tap
     @objc private func handlePrev() {
         generateHapticFeedback(.light)
         let nextIndex = max(pageControl.currentPage - 1, 0)
         scrollToPage(at: nextIndex)
     }
     
+    // Handles the next button or skip button tap
     @objc private func handleNextOrSkip() {
         generateHapticFeedback(.light)
         if pageControl.currentPage == pages.count - 1 {
@@ -155,6 +168,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     
+    // Handles the skip button tap and transitions to the home view controller
     @objc private func handleSkip() {
         let homeViewController = CustomTabBarController()
         generateHapticFeedback(.medium)
@@ -169,6 +183,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     
+    // Handles page control value change
     @objc private func handlePageControlChange() {
         let currentPage = pageControl.currentPage
         scrollToPage(at: currentPage)
@@ -177,6 +192,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - Helper Functions
     
+    // Scrolls the collection view to a specific page
     private func scrollToPage(at index: Int) {
         let indexPath = IndexPath(item: index, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
@@ -184,6 +200,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         updateNextButtonTitle(animated: true)
     }
     
+    // Updates the next button title and appearance based on the current page
     private func updateNextButtonTitle(animated: Bool) {
         let isLastPage = pageControl.currentPage == pages.count - 1
         let title = isLastPage ? "SKIP" : "NEXT"
@@ -204,12 +221,14 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         applyCornerRadius()
     }
     
+    // Applies corner radius to specified buttons
     private func applyCornerRadius() {
         applyCornerRadius(to: nextButton, roundingCorners: [.topLeft, .bottomLeft, .bottomRight], radius: 20)
         applyCornerRadius(to: previousButton, roundingCorners: [.topRight, .bottomRight, .topLeft], radius: 20)
         applyCornerRadius(to: skipButton, roundingCorners: [.bottomLeft, .topLeft], radius: 20)
     }
     
+    // Helper function to create a button with specific title
     private static func createButton(title: String) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(title, for: .normal)
@@ -220,6 +239,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         return button
     }
     
+    // Applies corner radius to a specified button with specific rounded corners and radius
     private func applyCornerRadius(to button: UIButton, roundingCorners: UIRectCorner, radius: CGFloat) {
         let path = UIBezierPath(roundedRect: button.bounds,
                                 byRoundingCorners: roundingCorners,
@@ -231,6 +251,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
+    // Configures the size for collection view cells
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let safeAreaInsets = view.safeAreaInsets
         let width = view.frame.width - safeAreaInsets.left - safeAreaInsets.right
@@ -238,10 +259,14 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
         return CGSize(width: width, height: height)
     }
     
+    // MARK: - UICollectionViewDataSource
+    
+    // Returns the number of items in the section
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pages.count
     }
     
+    // Configures the cell for each item
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! PageCell
         let page = pages[indexPath.item]
@@ -251,6 +276,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
 
     // MARK: - UIScrollViewDelegate
     
+    // Handles the scroll view will end dragging event
     override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let x = targetContentOffset.pointee.x
         pageControl.currentPage = Int(x / view.frame.width)
@@ -260,6 +286,7 @@ class WelcomeController: UICollectionViewController, UICollectionViewDelegateFlo
     
     // MARK: - View Transition
     
+    // Handles view transitions, especially for orientation changes
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { (_) in
             self.collectionViewLayout.invalidateLayout()
