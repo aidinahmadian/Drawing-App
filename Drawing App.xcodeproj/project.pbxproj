@@ -61,7 +61,6 @@
 		E8BF779A2C4B90F000B761DD /* BaseDrawController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BF77992C4B90F000B761DD /* BaseDrawController.swift */; };
 		E8E6700E2C3802FB00F1CE33 /* LeftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */; };
 		E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670132C380DEB00F1CE33 /* TableViewController.swift */; };
-		E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */; };
 		E8ECBE1E2C53A7FD00A93AD6 /* StraightLineBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */; };
 		E8ECBE202C53AA1000A93AD6 /* CircleBrush.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE1F2C53AA1000A93AD6 /* CircleBrush.swift */; };
 		E8ECBE262C53CD2D00A93AD6 /* NavBarAnimationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8ECBE252C53CD2D00A93AD6 /* NavBarAnimationManager.swift */; };
@@ -132,7 +131,6 @@
 		E8BF77992C4B90F000B761DD /* BaseDrawController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDrawController.swift; sourceTree = "<group>"; };
 		E8E6700D2C3802FB00F1CE33 /* LeftTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftTableViewCell.swift; sourceTree = "<group>"; };
 		E8E670132C380DEB00F1CE33 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrushDetailsViewController.swift; sourceTree = "<group>"; };
 		E8ECBE1D2C53A7FD00A93AD6 /* StraightLineBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraightLineBrush.swift; sourceTree = "<group>"; };
 		E8ECBE1F2C53AA1000A93AD6 /* CircleBrush.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleBrush.swift; sourceTree = "<group>"; };
 		E8ECBE252C53CD2D00A93AD6 /* NavBarAnimationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarAnimationManager.swift; sourceTree = "<group>"; };
@@ -319,7 +317,6 @@
 				E82FEB042C35A559008BAD04 /* PatternViewController.swift */,
 				E82FEB062C35A572008BAD04 /* SimpleDrawController.swift */,
 				E82FEB112C35A609008BAD04 /* ColorPickerViewController.swift */,
-				E8E670152C3816C800F1CE33 /* BrushDetailsViewController.swift */,
 				E86980AA2C4E626000DFCAB5 /* MoreInfoVC.swift */,
 			);
 			path = Controllers;
@@ -540,7 +537,6 @@
 				E8EF9A5B2C4D1FBF00FC9ABC /* Haptics.swift in Sources */,
 				E80103112C4FA402008B9482 /* FilterDataModel.swift in Sources */,
 				E8E670142C380DEB00F1CE33 /* TableViewController.swift in Sources */,
-				E8E670162C3816C800F1CE33 /* BrushDetailsViewController.swift in Sources */,
 				E82FEB052C35A559008BAD04 /* PatternViewController.swift in Sources */,
 				E82FEB012C35A524008BAD04 /* WelcomeController.swift in Sources */,
 				E8ABBBE42C68CA7400A09387 /* EraserBrush.swift in Sources */,

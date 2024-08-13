@@ -8,11 +8,15 @@
 import UIKit
 import SafariServices
 
+// Custom UIView class for displaying more information
 class MoreInfoView: UIView {
     
-    private let scrollView = UIScrollView()
-    private let contentView = UIView()
+    // MARK: - UI Elements
     
+    private let scrollView = UIScrollView() // Scrollable container
+    private let contentView = UIView() // Container for all content inside the scroll view
+    
+    // HeartImage View
     let heartImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "heart.fill")
@@ -22,6 +26,7 @@ class MoreInfoView: UIView {
         return imageView
     }()
     
+    // ThankYou Label
     let thankYouLabel: UILabel = {
         let label = UILabel()
         label.text = "Thank You"
@@ -32,9 +37,11 @@ class MoreInfoView: UIView {
         return label
     }()
     
+    // Message Label with attributed text
     let messageLabel: UILabel = {
         let label = UILabel()
         
+        // Message text
         let text = """
         
         Your support means the world to me. If you’d like to help with the growth and improvement of DrawingApp, here are a few ways you can contribute:
@@ -46,11 +53,10 @@ class MoreInfoView: UIView {
         - Aidin (u/Aidin)
         """
         
+        // Attributing bold font to specific parts of the text
         let attributedText = NSMutableAttributedString(string: text)
-        
         let provideFeedbackRange = (text as NSString).range(of: "Provide Feedback:")
         let makeDonationRange = (text as NSString).range(of: "Make a Donation:")
-        
         let boldFont = UIFont.boldSystemFont(ofSize: 16)
         attributedText.addAttribute(.font, value: boldFont, range: provideFeedbackRange)
         attributedText.addAttribute(.font, value: boldFont, range: makeDonationRange)
@@ -63,6 +69,7 @@ class MoreInfoView: UIView {
         return label
     }()
     
+    // Celebration Button
     let celebrationBT: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Celebration Button 🎉", for: .normal)
@@ -74,6 +81,7 @@ class MoreInfoView: UIView {
         return button
     }()
     
+    // OtherProjects Button
     let otherProjectsBT: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Check Out My Other Projects ✨", for: .normal)
@@ -81,12 +89,15 @@ class MoreInfoView: UIView {
         button.backgroundColor = UIColor.systemPink
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        //button.addTarget(self, action: #selector(otherProjcsAction), for: .touchUpInside)
+        // button.addTarget(self, action: #selector(otherProjcsAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
+    // Gradient Layer for background
     private let gradientLayer = CAGradientLayer()
+    
+    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -96,6 +107,8 @@ class MoreInfoView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Setup Methods
     
     private func setupView() {
         setupGradientBackground()
@@ -110,22 +123,26 @@ class MoreInfoView: UIView {
     }
     
     private func setupGradientBackground() {
-        //gradientLayer.colors = [#colorLiteral(red: 0.6807965636, green: 0.6584963202, blue: 0.9920480847, alpha: 1).cgColor, #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1).cgColor]
+        // Configure gradient colors and direction
         gradientLayer.colors = [#colorLiteral(red: 0.8549019608, green: 0.8862745098, blue: 0.9725490196, alpha: 1).cgColor, #colorLiteral(red: 0.8392156863, green: 0.6431372549, blue: 0.6431372549, alpha: 1).cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0.7, y: 0.7)
-        layer.insertSublayer(gradientLayer, at: 0)
+        layer.insertSublayer(gradientLayer, at: 0) // Insert gradient as the bottom-most layer
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        gradientLayer.frame = bounds
+        gradientLayer.frame = bounds // Ensure the gradient covers the entire view
     }
     
+    // MARK: - Constraints Setup
+    
     private func setupConstraints() {
+        // Disable autoresizing mask constraints
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
+        // Activate layout constraints
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -142,7 +159,7 @@ class MoreInfoView: UIView {
             heartImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             heartImageView.widthAnchor.constraint(equalToConstant: 50),
             heartImageView.heightAnchor.constraint(equalToConstant: 50),
-            
+                        
             thankYouLabel.topAnchor.constraint(equalTo: heartImageView.bottomAnchor, constant: 20),
             thankYouLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             

@@ -1,5 +1,5 @@
 //
-//  SymmetrixViewController.swift
+//  PatternViewController.swift
 //  Test
 //
 //  Created by aidin ahmadian on 7/21/20.

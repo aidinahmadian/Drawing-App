@@ -8,10 +8,15 @@
 import UIKit
 import SafariServices
 
+// ViewController responsible for displaying more information and handling related actions
 class MoreInfoVC: UIViewController {
     
+    // Custom view that contains UI elements for the more info screen
     private let moreInfoView = MoreInfoView()
     
+    // MARK: - View Lifecycle
+    
+    // Load the custom view when the view controller's view is requested
     override func loadView() {
         view = moreInfoView
     }
@@ -19,14 +24,20 @@ class MoreInfoVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set up button actions
         moreInfoView.celebrationBT.addTarget(self, action: #selector(startRainingEmojis), for: .touchUpInside)
         moreInfoView.otherProjectsBT.addTarget(self, action: #selector(otherProjcsAction), for: .touchUpInside)
     }
     
+    // MARK: - Button Actions
+    
+    // Starts an animation where emojis "rain" down the screen
     @objc private func startRainingEmojis() {
         generateHapticFeedback(.success)
+        
         let emojiArray = ["🥳", "🎈", "✨", "🌟", "💫", "🎊", "🍾", "🎉", "👻", "❤️‍🔥", "🤩", "🤑"]
         
+        // Generate and animate 50 emoji labels falling down the screen
         for _ in 0..<50 {
             let emojiLabel = UILabel()
             emojiLabel.text = emojiArray.randomElement()
@@ -42,6 +53,7 @@ class MoreInfoVC: UIViewController {
         }
     }
     
+    // Opens a Safari view controller to display the provided URL
     func showSafariVC(for url: String) {
         guard let url = URL(string: url) else {
             print("Invalid URL")
@@ -49,6 +61,7 @@ class MoreInfoVC: UIViewController {
         }
         let safariVC = SFSafariViewController(url: url)
         
+        // Present the Safari view controller from the topmost view controller
         if let topController = UIApplication.shared.topMostViewController() {
             topController.present(safariVC, animated: true, completion: nil)
         } else {
@@ -56,11 +69,15 @@ class MoreInfoVC: UIViewController {
         }
     }
     
+    // Opens a Safari view controller to show other projects (GitHub page)
     @objc func otherProjcsAction() {
         showSafariVC(for: "https://github.com/aidinahmadian")
     }
 }
 
+// MARK: - UIApplication Extension
+
+// Extension to find the topmost view controller in the application
 extension UIApplication {
     func topMostViewController() -> UIViewController? {
         guard let windowScene = connectedScenes.first as? UIWindowScene,
