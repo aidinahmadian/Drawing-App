@@ -9,17 +9,20 @@ import UIKit
 
 class BaseDrawController: UIViewController, UIPopoverPresentationControllerDelegate {
 
-    // Common Properties
+    // MARK: - Properties
+
+    // UILabel to prompt the user to draw something
     let drawSomethingLabel: UILabel = {
         let label = UILabel()
         label.text = "Draw Something!"
-        //label.font = UIFont(name: "HelveticaNeue", size: 18)
+        // label.font = UIFont(name: "HelveticaNeue", size: 18)
         label.font = UIFont.customFont(name: "SankofaDisplay-Regular", size: 22)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         return label
     }()
 
+    // UILabel to notify the user that the drawing has been saved
     let savedLabel: UILabel = {
         let label = UILabel()
         label.text = "Saved To Camera Roll"
@@ -33,7 +36,7 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
         return label
     }()
 
-    //scribbleIMG
+    // UIImageView to display a temporary scribble image
     let temporaryScribbleImage: UIImageView = {
         let tci = UIImageView()
         tci.image = UIImage(named: "scribbleIMG")
@@ -46,8 +49,37 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
     var titleView: UIView?
     var isBlinking = false
 
+    // MARK: - Lifecycle Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+        setupLayout()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !isBlinking {
+            startBlinking()
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !isBlinking {
+            startBlinking()
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopBlinking()
+    }
+
+    // MARK: - Setup Methods
+
+    /// Configures the initial view settings and registers notifications
+    private func setupView() {
         view.backgroundColor = .systemBackground
         navigationController?.view.backgroundColor = .systemBackground
         navigationController?.navigationBar.isHidden = false
@@ -56,15 +88,33 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
 
         NotificationCenter.default.addObserver(self, selector: #selector(viewWasTouched), name: Notification.Name("viewWasTouched"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        
-        setupLayout()
     }
 
-    // Setup Methods
-    func setupNavBarButtons() {
-        // Override in subclasses to set up nav bar buttons
+    /// Sets up the layout for the views
+    func setupLayout() {
+        view.addSubview(drawSomethingLabel)
+        drawSomethingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        drawSomethingLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+
+        view.addSubview(savedLabel)
+        savedLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        savedLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        savedLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        savedLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
+
+        view.addSubview(temporaryScribbleImage)
+        temporaryScribbleImage.topAnchor.constraint(equalTo: drawSomethingLabel.bottomAnchor, constant: 10).isActive = true
+        temporaryScribbleImage.heightAnchor.constraint(equalToConstant: 98).isActive = true
+        temporaryScribbleImage.widthAnchor.constraint(equalToConstant: 75).isActive = true
+        temporaryScribbleImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
 
+    // MARK: - Navigation Bar Methods
+
+    /// Override this method in subclasses to set up custom navigation bar buttons
+    func setupNavBarButtons() {}
+
+    /// Sets up the navigation bar title with a menu attached to it
     func setupNavigationBarTitle(title: String) {
         let titleButton = UIButton(type: .system)
         titleButton.translatesAutoresizingMaskIntoConstraints = false
@@ -100,42 +150,23 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
         titleView = containerView
     }
 
-    func setupLayout() {
-        view.addSubview(drawSomethingLabel)
-        drawSomethingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        drawSomethingLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    // MARK: - Blinking Animation Methods
 
-        view.addSubview(savedLabel)
-        savedLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        savedLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        savedLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        savedLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80).isActive = true
-
-        view.addSubview(temporaryScribbleImage)
-        temporaryScribbleImage.topAnchor.constraint(equalTo: drawSomethingLabel.bottomAnchor, constant: 10).isActive = true
-        temporaryScribbleImage.heightAnchor.constraint(equalToConstant: 98).isActive = true
-        temporaryScribbleImage.widthAnchor.constraint(equalToConstant: 75).isActive = true
-        temporaryScribbleImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    /// Starts the blinking animation for the labels and images
+    private func startBlinking() {
+        drawSomethingLabel.startBlink()
+        temporaryScribbleImage.startBlink()
+        isBlinking = true
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if !isBlinking {
-            startBlinking()
-        }
+    /// Stops the blinking animation
+    private func stopBlinking() {
+        drawSomethingLabel.stopBlink()
+        temporaryScribbleImage.stopBlink()
+        isBlinking = false
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if !isBlinking {
-            startBlinking()
-        }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        stopBlinking()
-    }
+    // MARK: - Notification Handlers
 
     @objc func viewWasTouched(notification: NSNotification) {
         drawSomethingLabel.isHidden = true
@@ -146,18 +177,9 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
         startBlinking()
     }
 
-    private func startBlinking() {
-        drawSomethingLabel.startBlink()
-        temporaryScribbleImage.startBlink()
-        isBlinking = true
-    }
+    // MARK: - Popover Presentation Methods
 
-    private func stopBlinking() {
-        drawSomethingLabel.stopBlink()
-        temporaryScribbleImage.stopBlink()
-        isBlinking = false
-    }
-
+    /// Presents a popover with the specified view controller
     func presentPopover(_ controller: UIViewController, sender: UIBarButtonItem) {
         self.dismiss(animated: false)
         controller.modalPresentationStyle = .popover
@@ -170,6 +192,9 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
         self.present(controller, animated: true)
     }
 
+    // MARK: - Title Menu Methods
+
+    /// Creates a title menu with different actions
     func createTitleMenu() -> UIMenu {
         let item1 = UIAction(title: "Playground", image: UIImage(systemName: "fireworks")) { [weak self] _ in
             guard let self = self else { return }
@@ -210,19 +235,19 @@ class BaseDrawController: UIViewController, UIPopoverPresentationControllerDeleg
         return UIMenu(title: "", children: [item1, item2, item3])
     }
 
+    /// Presents the introduction controller
     private func presentIntroductionController() {
         let introductionController = WelcomeController()
-
         introductionController.onFinish = {
             introductionController.dismiss(animated: true, completion: nil)
         }
-
         introductionController.modalTransitionStyle = .crossDissolve
         introductionController.modalPresentationStyle = .fullScreen
         present(introductionController, animated: true, completion: nil)
     }
 
     // MARK: - UIPopoverPresentationControllerDelegate
+
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
