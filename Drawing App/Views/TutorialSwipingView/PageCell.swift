@@ -9,10 +9,13 @@
 import UIKit
 import AVKit
 
+// MARK: - PageCell: Custom UICollectionViewCell
+
 class PageCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    // Page property to configure the cell when set
     var page: Page? {
         didSet {
             guard let page = page else { return }
@@ -22,6 +25,7 @@ class PageCell: UICollectionViewCell {
     
     // MARK: - UI Components
     
+    // Image view for displaying the main image
     private let mainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -29,6 +33,7 @@ class PageCell: UICollectionViewCell {
         return imageView
     }()
     
+    // Text view for displaying the description text
     private let descriptionTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -39,6 +44,7 @@ class PageCell: UICollectionViewCell {
         return textView
     }()
     
+    // Video player controller for displaying video content
     private let videoPlayerController: AVPlayerViewController = {
         let vc = AVPlayerViewController()
         vc.showsPlaybackControls = false
@@ -50,6 +56,7 @@ class PageCell: UICollectionViewCell {
     
     // MARK: - Initializers
     
+    // Initializer for creating the cell programmatically
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
@@ -57,18 +64,21 @@ class PageCell: UICollectionViewCell {
         backgroundColor = .white
     }
     
+    // Initializer when creating the cell from a storyboard or XIB file
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Configuration
     
+    // Configure the cell with a Page object
     private func configurePage(_ page: Page) {
         configureImageView(with: page.imageName)
         configureVideoPlayer(with: page.videoName)
         configureDescriptionText(header: page.headerText, body: page.bodyText)
     }
     
+    // Configure the main image view with an image name
     private func configureImageView(with imageName: String?) {
         if let imageName = imageName {
             mainImageView.image = UIImage(named: imageName)
@@ -77,6 +87,7 @@ class PageCell: UICollectionViewCell {
         }
     }
     
+    // Configure the video player with a video name
     private func configureVideoPlayer(with videoName: String?) {
         guard let videoName = videoName, let videoURL = Bundle.main.url(forResource: videoName, withExtension: nil) else {
             return
@@ -92,6 +103,7 @@ class PageCell: UICollectionViewCell {
         player.play()
     }
     
+    // Configure the description text with a header and body
     private func configureDescriptionText(header: String, body: String) {
         let attributedText = NSMutableAttributedString(
             string: header,
@@ -105,9 +117,9 @@ class PageCell: UICollectionViewCell {
             ]
         ))
         descriptionTextView.attributedText = attributedText
-        //descriptionTextView.textAlignment = .center
     }
     
+    // Handle the event when the video player reaches the end
     @objc private func playerItemDidReachEnd(notification: Notification) {
         if let playerItem = notification.object as? AVPlayerItem {
             playerItem.seek(to: .zero, completionHandler: nil)
@@ -116,6 +128,7 @@ class PageCell: UICollectionViewCell {
     
     // MARK: - Layout Setup
     
+    // Setup the layout of the cell's subviews
     private func setupLayout() {
         let topImageContainerView = UIView()
         addSubview(topImageContainerView)
@@ -154,10 +167,12 @@ class PageCell: UICollectionViewCell {
     
     // MARK: - Helper Methods
     
+    // Setup the default text for the descriptionTextView
     private func setupDefaultText() {
         descriptionTextView.attributedText = PageCell.defaultAttributedText()
     }
     
+    // Generate the default attributed text
     private static func defaultAttributedText() -> NSAttributedString {
         let attributedText = NSMutableAttributedString(
             string: "TEST",

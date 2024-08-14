@@ -7,10 +7,13 @@
 
 import UIKit
 
+// MARK: - TableViewController: Custom UIViewController
+
 class TableViewController: UIViewController {
     
     // MARK: - Properties
     
+    // Left TableView for displaying line width options
     fileprivate lazy var leftTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -23,6 +26,7 @@ class TableViewController: UIViewController {
         return tableView
     }()
     
+    // Right TableView for displaying brushes based on the selected line width
     fileprivate lazy var rightTableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -34,12 +38,14 @@ class TableViewController: UIViewController {
         return tableView
     }()
     
+    // Line width options for the left TableView
     fileprivate let lineWidthOptions: [LineWidthOption] = [
         LineWidthOption(width: 1.0, label: "Pencil"),
         LineWidthOption(width: 2.0, label: "Brushes"),
         LineWidthOption(width: 3.0, label: "Watercolors")
     ]
     
+    // Brush data for the right TableView, organized by line width
     fileprivate lazy var brushData: [[Line]] = {
         let brushNames: [[String]] = [
             ["testBrush1", "brush2"],  // Brushes for 1.0 Points
@@ -58,6 +64,7 @@ class TableViewController: UIViewController {
         }
     }()
     
+    // Other properties to manage scrolling and selection state
     fileprivate var selectIndex = 0
     fileprivate var isScrollDown = true
     fileprivate var lastOffsetY: CGFloat = 0.0
@@ -77,6 +84,9 @@ class TableViewController: UIViewController {
         setupNavigationBar()
     }
     
+    // MARK: - UI Setup
+    
+    // Setup the navigation bar
     private func setupNavigationBar() {
         let rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus.circle"),
@@ -87,8 +97,7 @@ class TableViewController: UIViewController {
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
-    // MARK: - UI Setup
-    
+    // Setup the UI elements and constraints
     private func setupUI() {
         view.backgroundColor = .white
         navigationItem.title = "Brush Library"
@@ -102,6 +111,7 @@ class TableViewController: UIViewController {
         leftTableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .none)
     }
     
+    // Setup the layout constraints for the TableViews
     private func setupConstraints() {
         leftTableView.translatesAutoresizingMaskIntoConstraints = false
         rightTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -121,10 +131,13 @@ class TableViewController: UIViewController {
     
     // MARK: - Actions
     
+    // Action for the right bar button tap
     @objc private func rightBarButtonTapped() {
-        let alert = UIAlertController(title: "Feature Coming Soon\n🤩",
-                                      message: "This feature will be available in the near future.",
-                                      preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: "Feature Coming Soon\n🤩",
+            message: "This feature will be available in the near future.",
+            preferredStyle: .alert
+        )
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
         generateHapticFeedback(.soft)
@@ -135,14 +148,17 @@ class TableViewController: UIViewController {
 
 extension TableViewController: UITableViewDataSource, UITableViewDelegate {
     
+    // Number of sections in the TableView
     func numberOfSections(in tableView: UITableView) -> Int {
         return tableView == leftTableView ? 1 : brushData.count
     }
     
+    // Number of rows in each section of the TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableView == leftTableView ? lineWidthOptions.count : brushData[section].count
     }
     
+    // Configure the cell for each row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == leftTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "LeftTableViewCell", for: indexPath) as! LeftTableViewCell
@@ -152,17 +168,19 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RightTableViewCell", for: indexPath) as! RightTableViewCell
             let brush = brushData[indexPath.section][indexPath.row]
-            // Configure cell with brush data, e.g., brush name if available
-            cell.secondLabel.text = "Test Brush"  // Adjust this line if you have a name property
+            // Configure cell with brush data
+            cell.secondLabel.text = "Test Brush"
             //cell.imageView?.image = UIImage(named: brush.texture.accessibilityIdentifier ?? "")
             return cell
         }
     }
     
+    // Height for the section headers
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return tableView == leftTableView ? 0 : 20
     }
     
+    // View for the section headers
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard tableView != leftTableView else { return nil }
         let headerView = TableViewHeaderView()
@@ -170,16 +188,19 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
         return headerView
     }
     
+    // Handle when a section header is about to be displayed
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard tableView == rightTableView, !isScrollDown, !isManualScrolling, !isAutoScrolling else { return }
         updateLeftTableViewSelection(forSection: section)
     }
     
+    // Handle when a section header ends displaying
     func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
         guard tableView == rightTableView, isScrollDown, !isManualScrolling, !isAutoScrolling else { return }
         updateLeftTableViewSelection(forSection: section + 1)
     }
     
+    // Update the selection in the left TableView based on the section in the right TableView
     private func updateLeftTableViewSelection(forSection section: Int) {
         guard section < lineWidthOptions.count else { return }
         isAutoScrolling = true
@@ -187,6 +208,7 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
         isAutoScrolling = false
     }
     
+    // Handle row selection in the TableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == leftTableView {
             rightTableView.scrollToRow(at: IndexPath(row: 0, section: indexPath.row), at: .top, animated: true)
@@ -201,6 +223,8 @@ extension TableViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: - UIScrollViewDelegate
 
 extension TableViewController {
+    
+    // Handle scroll events in the TableView
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let tableView = scrollView as? UITableView, tableView == rightTableView else { return }
         

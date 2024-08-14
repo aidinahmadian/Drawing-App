@@ -8,6 +8,9 @@
 
 import Foundation
 
+// MARK: - Page Struct
+
+/// Represents a page with properties for imageName, videoName, headerText, and bodyText.
 struct Page {
     let imageName: String?
     let videoName: String?

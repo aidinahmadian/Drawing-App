@@ -29,7 +29,6 @@
 		E82FEAD62C359FEC008BAD04 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E82FEAD52C359FEC008BAD04 /* Base */; };
 		E82FEADF2C35A22F008BAD04 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEADE2C35A22F008BAD04 /* CustomTabBarController.swift */; };
 		E82FEAE52C35A294008BAD04 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAE42C35A294008BAD04 /* Page.swift */; };
-		E82FEAE72C35A2A0008BAD04 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAE62C35A2A0008BAD04 /* Global.swift */; };
 		E82FEAE92C35A2AB008BAD04 /* Lines.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAE82C35A2AB008BAD04 /* Lines.swift */; };
 		E82FEAED2C35A327008BAD04 /* PageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAEC2C35A327008BAD04 /* PageCell.swift */; };
 		E82FEAF42C35A3C6008BAD04 /* RightTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAF32C35A3C6008BAD04 /* RightTableViewCell.swift */; };
@@ -99,7 +98,6 @@
 		E82FEAD72C359FEC008BAD04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E82FEADE2C35A22F008BAD04 /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		E82FEAE42C35A294008BAD04 /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
-		E82FEAE62C35A2A0008BAD04 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E82FEAE82C35A2AB008BAD04 /* Lines.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lines.swift; sourceTree = "<group>"; };
 		E82FEAEC2C35A327008BAD04 /* PageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCell.swift; sourceTree = "<group>"; };
 		E82FEAF32C35A3C6008BAD04 /* RightTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightTableViewCell.swift; sourceTree = "<group>"; };
@@ -255,7 +253,6 @@
 			isa = PBXGroup;
 			children = (
 				E82FEAE42C35A294008BAD04 /* Page.swift */,
-				E82FEAE62C35A2A0008BAD04 /* Global.swift */,
 				E82FEAE82C35A2AB008BAD04 /* Lines.swift */,
 			);
 			path = Model;
@@ -508,7 +505,6 @@
 				E801030B2C4FA386008B9482 /* FilterCategoryView.swift in Sources */,
 				E8EE469D2C55118B008F78C4 /* StarBrush.swift in Sources */,
 				E82FEB072C35A572008BAD04 /* SimpleDrawController.swift in Sources */,
-				E82FEAE72C35A2A0008BAD04 /* Global.swift in Sources */,
 				E82FEAFE2C35A4F3008BAD04 /* SimpleDrawCanvas.swift in Sources */,
 				E8EE46A72C562A96008F78C4 /* DrawableBrush.swift in Sources */,
 				E8ECBE262C53CD2D00A93AD6 /* NavBarAnimationManager.swift in Sources */,

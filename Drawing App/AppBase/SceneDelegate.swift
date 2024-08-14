@@ -10,15 +10,21 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    // MARK: - Properties
+    
     var window: UIWindow?
     
+    // MARK: - Scene Lifecycle
+
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
+        // Set up the window with the scene's bounds and assign the windowScene
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         window?.overrideUserInterfaceStyle = .light
 
+        // Check if the user has previously shown the swiping controller
         let hasShownSwipingController = UserDefaults.standard.bool(forKey: "hasShownSwipingController")
         
         if hasShownSwipingController {
@@ -26,6 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else {
             let swipingController = WelcomeController()
             swipingController.onFinish = {
+                // Once the swiping controller is finished, mark it as shown and transition to CustomTabBarController
                 UserDefaults.standard.set(true, forKey: "hasShownSwipingController")
                 let customTabBarController = CustomTabBarController()
                 self.window?.rootViewController = customTabBarController
