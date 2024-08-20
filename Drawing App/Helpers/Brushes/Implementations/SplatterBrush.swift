@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Splatter Brush
+
 class SplatterBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         context.setLineCap(.round)

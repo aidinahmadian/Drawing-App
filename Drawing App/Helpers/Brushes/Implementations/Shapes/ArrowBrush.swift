@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Arrow Brush
+
 class ArrowBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         guard let startPoint = points.first, let endPoint = points.last else { return }

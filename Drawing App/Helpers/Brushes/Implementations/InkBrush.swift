@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Ink Brush
+
 class InkBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         context.setLineCap(.round)

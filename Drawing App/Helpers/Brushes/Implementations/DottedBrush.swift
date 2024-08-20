@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Dotted Brush
+
 class DottedBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         guard let firstPoint = points.first else { return }

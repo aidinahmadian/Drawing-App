@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Line Brush
+
 class LineBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         guard let firstPoint = points.first else { return }

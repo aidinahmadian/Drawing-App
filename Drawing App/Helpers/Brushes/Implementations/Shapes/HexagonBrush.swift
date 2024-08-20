@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Hexagon Brush
+
 class HexagonBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         guard let center = points.first, let edgePoint = points.last else { return }

@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Eraser Brush
+
 class EraserBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor = .white) {
         guard let firstPoint = points.first else { return }

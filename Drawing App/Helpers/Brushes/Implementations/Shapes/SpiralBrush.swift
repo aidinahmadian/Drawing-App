@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Spiral Brush
+
 class SpiralBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         guard let firstPoint = points.first, let lastPoint = points.last else { return }

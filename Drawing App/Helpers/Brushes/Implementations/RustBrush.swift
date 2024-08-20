@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Rust Brush
+
 class RustBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         guard let firstPoint = points.first else { return }

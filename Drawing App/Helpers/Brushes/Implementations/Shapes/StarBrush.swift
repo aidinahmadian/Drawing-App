@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: - Star Brush
+
 class StarBrush: Brush {
     func draw(in context: CGContext, with points: [CGPoint], strokeWidth: Float, strokeColor: UIColor) {
         guard let center = points.first, let outerPoint = points.last else { return }
