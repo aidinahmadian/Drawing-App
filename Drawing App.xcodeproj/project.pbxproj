@@ -22,6 +22,7 @@
 		E818DC502C5E6D65006D3215 /* Video7.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E818DC4E2C5E6D65006D3215 /* Video7.mp4 */; };
 		E818DC582C5E6FA7006D3215 /* Video6.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E818DC572C5E6FA7006D3215 /* Video6.mp4 */; };
 		E818DC5A2C5E70A9006D3215 /* Video2.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E818DC592C5E70A9006D3215 /* Video2.mp4 */; };
+		E81A65112C7F20CE009946B6 /* Kalam-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E81A65102C7F20CE009946B6 /* Kalam-Regular.ttf */; };
 		E82FEAC72C359FEB008BAD04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAC62C359FEB008BAD04 /* AppDelegate.swift */; };
 		E82FEAC92C359FEB008BAD04 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E82FEAC82C359FEB008BAD04 /* SceneDelegate.swift */; };
 		E82FEAD12C359FEB008BAD04 /* Drawing_App.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E82FEACF2C359FEB008BAD04 /* Drawing_App.xcdatamodeld */; };
@@ -89,6 +90,7 @@
 		E818DC4E2C5E6D65006D3215 /* Video7.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Video7.mp4; sourceTree = "<group>"; };
 		E818DC572C5E6FA7006D3215 /* Video6.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Video6.mp4; sourceTree = "<group>"; };
 		E818DC592C5E70A9006D3215 /* Video2.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Video2.mp4; sourceTree = "<group>"; };
+		E81A65102C7F20CE009946B6 /* Kalam-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Kalam-Regular.ttf"; sourceTree = "<group>"; };
 		E82FEAC32C359FEB008BAD04 /* Drawing App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Drawing App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E82FEAC62C359FEB008BAD04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E82FEAC82C359FEB008BAD04 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 			children = (
 				E85ADBDA2C5E9E550017F63B /* UIFont+Extensions.swift */,
 				E88FEC9F2C5E33E800F69F23 /* Milanello.otf */,
+				E81A65102C7F20CE009946B6 /* Kalam-Regular.ttf */,
 				E8782BF02C5E440100148FAC /* SankofaDisplay-Regular.ttf */,
 				E818DC432C5E5225006D3215 /* HelveticaNeue.ttc */,
 			);
@@ -477,6 +480,7 @@
 			files = (
 				E818DC582C5E6FA7006D3215 /* Video6.mp4 in Resources */,
 				E82FEAD32C359FEC008BAD04 /* Assets.xcassets in Resources */,
+				E81A65112C7F20CE009946B6 /* Kalam-Regular.ttf in Resources */,
 				E818DC442C5E5225006D3215 /* HelveticaNeue.ttc in Resources */,
 				E818DC5A2C5E70A9006D3215 /* Video2.mp4 in Resources */,
 				E88FECA02C5E33E800F69F23 /* Milanello.otf in Resources */,
@@ -696,6 +700,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Drawing App/Info.plist";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need your permission to save photos.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need your permission to save photos.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -724,6 +729,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Drawing App/Info.plist";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We need your permission to save photos.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need your permission to save photos.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

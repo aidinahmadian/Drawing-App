@@ -50,7 +50,6 @@ class MoreInfoView: UIView {
         - Make a Donation: If you’re able to, consider making a financial contribution. Every bit helps me maintain and enhance the app, bringing you more features and a better experience.
         
         If you’d like to support me, there’s some options below!
-        - Aidin (u/Aidin)
         """
         
         // Attributing bold font to specific parts of the text
@@ -67,6 +66,25 @@ class MoreInfoView: UIView {
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    // Wallet Stack View
+    private lazy var walletStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: walletButtons)
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.alignment = .center
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    // Wallet Buttons
+    private lazy var walletButtons: [UIButton] = {
+        let coinbaseButton = createWalletButton(title: "Coinbase", address: "aiddiin.cb.id")
+        let ethButton = createWalletButton(title: "ETH", address: "0x5E9f94e175a98564bE3962c4a7D1afA4c87F6b70")
+        let btcButton = createWalletButton(title: "BTC", address: "bc1qvkq8uktdufujxme8xqwf3agq6366zsextye2lx")
+        return [coinbaseButton, ethButton, btcButton]
     }()
     
     // Celebration Button
@@ -89,7 +107,6 @@ class MoreInfoView: UIView {
         button.backgroundColor = UIColor.systemPink
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        // button.addTarget(self, action: #selector(otherProjcsAction), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -117,6 +134,10 @@ class MoreInfoView: UIView {
         contentView.addSubview(heartImageView)
         contentView.addSubview(thankYouLabel)
         contentView.addSubview(messageLabel)
+        
+        // Add wallet stack view to content view
+        contentView.addSubview(walletStackView)
+        
         contentView.addSubview(celebrationBT)
         contentView.addSubview(otherProjectsBT)
         setupConstraints()
@@ -134,6 +155,54 @@ class MoreInfoView: UIView {
         super.layoutSubviews()
         gradientLayer.frame = bounds // Ensure the gradient covers the entire view
     }
+    
+    // MARK: - Helper Methods
+    
+    private func createWalletButton(title: String, address: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.darkGray, for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 0.3528300911)
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.borderColor = UIColor.yellow.cgColor
+        button.layer.borderWidth = 0.7
+        
+        button.addAction(UIAction(handler: { _ in
+            self.copyToClipboard(text: address)
+        }), for: .touchUpInside)
+        return button
+    }
+    
+    private func copyToClipboard(text: String) {
+        // Copy to clipboard
+        UIPasteboard.general.string = text
+        
+        // Create an alert
+        let alert = UIAlertController(title: "Copied 📋", message: "Wallet Address:\n\(text)", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        // Find the top-most view controller to present the alert
+        if let topViewController = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })     // Get all UIWindowScene instances
+            .flatMap({ $0.windows })                  // Get all windows for each scene
+            .first(where: { $0.isKeyWindow })?.rootViewController { // Find the key window's root view controller
+            
+            // Find the top-most presented view controller if there is one
+            var currentViewController = topViewController
+            while let presentedViewController = currentViewController.presentedViewController {
+                currentViewController = presentedViewController
+            }
+            
+            // Present the alert from the top-most view controller
+            currentViewController.present(alert, animated: true, completion: nil)
+        }
+        
+        // Generate haptic feedback
+        generateHapticFeedback(.soft)
+    }
+
     
     // MARK: - Constraints Setup
     
@@ -167,7 +236,13 @@ class MoreInfoView: UIView {
             messageLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             messageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
-            celebrationBT.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20),
+            // Wallet stack view constraints
+            walletStackView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20),
+            walletStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            walletStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            walletStackView.heightAnchor.constraint(equalToConstant: 50),
+            
+            celebrationBT.topAnchor.constraint(equalTo: walletStackView.bottomAnchor, constant: 10),
             celebrationBT.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             celebrationBT.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             celebrationBT.heightAnchor.constraint(equalToConstant: 50),
