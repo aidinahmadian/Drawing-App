@@ -87,6 +87,7 @@ Scribble offers a range of brush types, each with its own unique style:
 - **Splatter**: Adds a splattered paint effect to your drawings.
 - **Ink**: An ink-style brush for bold, sharp strokes.
 - **Eraser**: Erase parts of your drawing with the eraser tool.
+- **CustomBrushes**: (Coming Soon!)
 
 ### Customizing Brushes
 
