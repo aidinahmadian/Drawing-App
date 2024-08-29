@@ -263,7 +263,7 @@
 		E82FEAEA2C35A2E4008BAD04 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E82FEAEB2C35A2EA008BAD04 /* TutorialSwipingView */,
+				E82FEAEB2C35A2EA008BAD04 /* WelcomeSwipingView */,
 				E82FEAEE2C35A334008BAD04 /* TableViewBrushStyles */,
 				E82FEAF72C35A471008BAD04 /* DrawingPatternView */,
 				E82FEAFC2C35A4BA008BAD04 /* SimpleDrawView */,
@@ -273,12 +273,12 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		E82FEAEB2C35A2EA008BAD04 /* TutorialSwipingView */ = {
+		E82FEAEB2C35A2EA008BAD04 /* WelcomeSwipingView */ = {
 			isa = PBXGroup;
 			children = (
 				E82FEAEC2C35A327008BAD04 /* PageCell.swift */,
 			);
-			path = TutorialSwipingView;
+			path = WelcomeSwipingView;
 			sourceTree = "<group>";
 		};
 		E82FEAEE2C35A334008BAD04 /* TableViewBrushStyles */ = {
