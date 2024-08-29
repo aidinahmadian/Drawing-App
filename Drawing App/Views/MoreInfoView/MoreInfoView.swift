@@ -166,7 +166,7 @@ class MoreInfoView: UIView {
         button.layer.cornerRadius = 10
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.borderColor = UIColor.yellow.cgColor
+        button.layer.borderColor = UIColor.orange.cgColor
         button.layer.borderWidth = 0.7
         
         button.addAction(UIAction(handler: { _ in
