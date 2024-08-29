@@ -43,8 +43,8 @@ To get started with Scribble, follow these steps:
 
 ### Prerequisites
 
-- iOS 15.0 or later
-- Xcode 17 or later
+- iOS 17.0 or later
+- Xcode 15 or later
 
 ### Installation
 
