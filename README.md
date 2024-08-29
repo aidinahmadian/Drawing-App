@@ -1,4 +1,4 @@
-# Scribble - A Simple iOS Drawing/Symmetry App
+# Scribble: Minimal Symmetry and Drawing App for iOS
 
 Scribble is an easy-to-use iOS drawing app for iOS that makes it easy to create quick sketches, imaginative doodles, and captivating symmetric designs. With a range of user-friendly tools and features, Scribble offers everything you need to explore your creativity and craft beautiful artwork on the go.
 
